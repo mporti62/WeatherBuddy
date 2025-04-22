@@ -338,7 +338,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             month: "May",
             time: "5:00 PM",
             categories: ["Music", "Festival", "Outdoor"],
-            imageUrl: "/images/categories/events.svg"
+            imageUrl: getImageByCategory("event", 0)
           },
           {
             id: "evt2",
@@ -349,7 +349,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             month: "May",
             time: "10:00 AM",
             categories: ["Art", "Exhibition", "Indoor"],
-            imageUrl: "/images/categories/events.svg"
+            imageUrl: getImageByCategory("event", 1)
           },
           {
             id: "evt3",
@@ -360,7 +360,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             month: "May",
             time: "8:00 AM",
             categories: ["Sports", "Charity", "Outdoor"],
-            imageUrl: "/images/categories/events.svg"
+            imageUrl: getImageByCategory("event", 2)
           },
           {
             id: "evt4",
@@ -371,7 +371,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             month: "Jun",
             time: "12:00 PM",
             categories: ["Food", "Fair", "Outdoor"],
-            imageUrl: "/images/categories/events.svg"
+            imageUrl: getImageByCategory("event", 3)
           }
         ];
         
