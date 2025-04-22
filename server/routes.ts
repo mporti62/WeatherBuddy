@@ -552,7 +552,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             month: currentMonth,
             time: "7:00 PM",
             categories: ["Music"],
-            imageUrl: "https://via.placeholder.com/400x300?text=Music+Concert"
+            imageUrl: "/images/event.svg"
           },
           {
             id: "evt2",
@@ -563,7 +563,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             month: currentMonth,
             time: "11:00 AM",
             categories: ["Festival"],
-            imageUrl: "https://via.placeholder.com/400x300?text=Community+Festival"
+            imageUrl: "/images/event.svg"
           }
         ];
         
@@ -604,7 +604,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Central Park",
             description: "A beautiful park with walking trails and picnic areas.",
             address: "100 Park Ave, Test City, FL",
-            imageUrl: "https://via.placeholder.com/400x300?text=Park",
+            imageUrl: "/images/recreation.svg",
             rating: 4.5,
             tags: ["park", "outdoor"],
             hours: "8:00 - 20:00",
