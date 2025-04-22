@@ -3,6 +3,8 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import axios from "axios";
 import NodeCache from "node-cache";
+import path from "path";
+import express from "express";
 
 // Cache with 10 minute TTL
 const cache = new NodeCache({ stdTTL: 600 });
@@ -13,6 +15,8 @@ const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY || "";
 const TICKETMASTER_API_KEY = process.env.TICKETMASTER_API_KEY || "";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Set up static file serving from the public directory
+  app.use('/images', express.static(path.join(process.cwd(), 'public/images')));
   // LOCATION ENDPOINTS
   app.get("/api/location/:zipCode", async (req, res) => {
     try {
