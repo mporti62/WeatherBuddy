@@ -7,7 +7,11 @@ import "leaflet/dist/leaflet.css";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, MapPin, Clock, Star, Calendar } from "lucide-react";
+import { 
+  ChevronRight, MapPin, Clock, Star, Calendar, Heart, 
+  Navigation, Route, Compass, Award, Sparkles, Map, 
+  Camera, ArrowRight, Check
+} from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
 
 // Definir interface para JourneyLocation
@@ -845,16 +849,74 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
         </motion.div>
       )}
       
-      {/* Botón de acción */}
-      <div className="flex justify-center mt-6">
-        <Button 
-          className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 px-8"
-          size="lg"
-          onClick={nextAnimationStep}
-        >
-          {getButtonText()} {animationStep < 2 && <ChevronRight className="ml-2 h-5 w-5" />}
-        </Button>
-      </div>
+      {/* Botones de acción */}
+      <motion.div 
+        className="flex justify-center mt-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        {animationStep === 0 && (
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Button 
+              className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 px-10 py-6 text-lg"
+              onClick={nextAnimationStep}
+            >
+              <Compass className="mr-2 h-5 w-5" />
+              {language === "es" ? "Comenzar aventura" : "Start adventure"}
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </motion.div>
+        )}
+        
+        {animationStep === 1 && (
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Button 
+              className={`px-10 py-6 text-lg 
+                ${activeLocationIndex < (currentJourney?.locations.length || 0) - 1 
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600' 
+                  : 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600'}`}
+              onClick={nextAnimationStep}
+            >
+              {activeLocationIndex < (currentJourney?.locations.length || 0) - 1 ? (
+                <>
+                  <Navigation className="mr-2 h-5 w-5" />
+                  {language === "es" ? "Siguiente destino" : "Next destination"}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </>
+              ) : (
+                <>
+                  <Award className="mr-2 h-5 w-5" />
+                  {language === "es" ? "Completar viaje" : "Complete journey"}
+                  <Check className="ml-2 h-5 w-5" />
+                </>
+              )}
+            </Button>
+          </motion.div>
+        )}
+        
+        {animationStep === 2 && (
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Button 
+              className="bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 px-10 py-6 text-lg"
+              onClick={nextAnimationStep}
+            >
+              <Map className="mr-2 h-5 w-5" />
+              {language === "es" ? "Descubrir más aventuras" : "Discover more adventures"}
+              <Sparkles className="ml-2 h-5 w-5" />
+            </Button>
+          </motion.div>
+        )}
+      </motion.div>
     </div>
   );
 }
