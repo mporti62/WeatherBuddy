@@ -414,7 +414,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           hours: "9:00 - 17:00",
           isOpen,
           services,
-          distance: ((index + 1) * 0.6).toFixed(1)
+          distance: ((index + 1) * 0.6).toFixed(1),
+          latitude: bank.geometry.location.lat,
+          longitude: bank.geometry.location.lng
         };
       });
       

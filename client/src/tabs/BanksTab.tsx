@@ -48,119 +48,189 @@ export default function BanksTab({ zipCode }: BanksTabProps) {
     investments: language === 'es' ? "Inversiones" : "Investments",
     noBanks: language === 'es'
       ? "No hay bancos en esta área. Intenta con otro código postal."
-      : "No banks in this area. Try a different ZIP code."
+      : "No banks in this area. Try a different ZIP code.",
+    list: language === 'es' ? "Lista" : "List",
+    map: language === 'es' ? "Mapa" : "Map",
+    centralLocation: language === 'es' ? "Ubicación central" : "Central Location"
+  };
+
+  // Vista de mapa
+  const renderMapView = () => {
+    if (!banks || banks.length === 0) {
+      return (
+        <div className="text-center py-6">{translations.noBanks}</div>
+      );
+    }
+
+    return (
+      <>
+        {/* Mapa interactivo con Leaflet */}
+        <div className="w-full h-72 rounded-lg mb-4 overflow-hidden">
+          <LocationMap 
+            location={{ 
+              latitude: Number(banks[0]?.latitude) || 0, 
+              longitude: Number(banks[0]?.longitude) || 0,
+              name: translations.centralLocation
+            }}
+            places={banks.map(bank => ({
+              latitude: Number(bank.latitude) || 0,
+              longitude: Number(bank.longitude) || 0,
+              name: bank.name,
+              description: `${bank.address}<br/>${bank.hours}<br/>${bank.isOpen ? translations.openNow : translations.closed}`
+            }))}
+            className="w-full h-72 rounded-lg"
+          />
+        </div>
+        
+        {/* Lista de bancos en formato compacto debajo del mapa */}
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {banks.map((bank) => (
+            <div key={bank.id} className="border rounded-lg overflow-hidden p-3 hover:shadow-md transition">
+              <div className="flex items-start">
+                <div className="bg-darkNeutral bg-opacity-10 p-2 rounded-lg mr-3">
+                  <Building className="text-darkNeutral h-4 w-4" />
+                </div>
+                <div>
+                  <h5 className="font-medium text-md mb-1">{bank.name}</h5>
+                  <p className="text-xs text-gray-600">
+                    <MapPin className="inline h-3 w-3 mr-1" /> {bank.address}
+                  </p>
+                  <div className="flex items-center mt-1">
+                    <span className="text-xs mr-2">{bank.distance} {language === 'es' ? 'km' : 'mi'}</span>
+                    <span className={`text-xs ${bank.isOpen ? "text-green-600" : "text-red-600"}`}>
+                      {bank.isOpen ? translations.openNow : translations.closed}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </>
+    );
+  };
+
+  // Vista de lista
+  const renderListView = () => {
+    if (isLoading) {
+      return (
+        <div className="space-y-4">
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className="border rounded-lg p-4">
+              <div className="flex justify-between items-start">
+                <div className="flex items-start">
+                  <Skeleton className="h-12 w-12 rounded-lg mr-3" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-6 w-48" />
+                    <Skeleton className="h-4 w-40" />
+                    <Skeleton className="h-4 w-32" />
+                    <div className="flex space-x-2">
+                      <Skeleton className="h-6 w-24" />
+                      <Skeleton className="h-6 w-24" />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <Skeleton className="h-4 w-12 mr-2" />
+                  <Skeleton className="h-8 w-8 rounded-full" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    if (!banks || banks.length === 0) {
+      return (
+        <div className="text-center py-6">{translations.noBanks}</div>
+      );
+    }
+
+    return (
+      <div className="space-y-4">
+        {banks.map((bank) => (
+          <div key={bank.id} className="border rounded-lg p-4 hover:shadow-md transition">
+            <div className="flex justify-between items-start">
+              <div className="flex items-start">
+                <div className="bg-darkNeutral bg-opacity-10 p-3 rounded-lg mr-3">
+                  <Building className="text-darkNeutral" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-lg mb-1">{bank.name}</h4>
+                  <p className="text-sm text-gray-600 mb-2">
+                    <MapPin className="inline h-3 w-3 mr-1" /> {bank.address}
+                  </p>
+                  <div className="flex items-center text-sm mb-2">
+                    <div className="flex items-center mr-4">
+                      <Clock className="inline h-3 w-3 mr-1 text-gray-600" />
+                      <span>{bank.hours}</span>
+                    </div>
+                    <div className={bank.isOpen ? "text-green-600" : "text-red-600"}>
+                      {bank.isOpen ? translations.openNow : translations.closed}
+                    </div>
+                  </div>
+                  <div className="flex mb-2">
+                    {bank.services.map((service, index) => {
+                      let serviceTranslation = service;
+                      if (service === "ATM") serviceTranslation = translations.atm;
+                      if (service === "Customer Service") serviceTranslation = translations.customerService;
+                      if (service === "Loans") serviceTranslation = translations.loans;
+                      if (service === "Investments") serviceTranslation = translations.investments;
+                      
+                      return (
+                        <span 
+                          key={index} 
+                          className="text-xs bg-darkNeutral bg-opacity-10 text-darkNeutral px-2 py-1 rounded mr-2"
+                        >
+                          {serviceTranslation}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <span className="text-gray-600 mr-2">{bank.distance} {language === 'es' ? 'km' : 'mi'}</span>
+                <Button 
+                  variant="link" 
+                  className="text-primary p-0 h-auto"
+                >
+                  <Navigation className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
     <Card>
-      <CardHeader className="bg-darkNeutral bg-opacity-10 border-b">
+      <CardHeader className="bg-darkNeutral bg-opacity-10 border-b flex flex-row justify-between items-center">
         <CardTitle>{translations.banksTitle}</CardTitle>
+        <div className="flex space-x-2">
+          <Button 
+            variant={viewMode === "list" ? "default" : "outline"} 
+            size="sm"
+            onClick={() => setViewMode("list")}
+            className="text-sm"
+          >
+            <List className="h-4 w-4 mr-1" /> {translations.list}
+          </Button>
+          <Button 
+            variant={viewMode === "map" ? "default" : "outline"} 
+            size="sm"
+            onClick={() => setViewMode("map")}
+            className="text-sm"
+          >
+            <Map className="h-4 w-4 mr-1" /> {translations.map}
+          </Button>
+        </div>
       </CardHeader>
       <CardContent className="p-6">
-        <div className="mb-4">
-          <div className="w-full h-64 bg-gray-300 rounded-lg mb-4 flex items-center justify-center">
-            <div className="text-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="mx-auto h-12 w-12 text-gray-500 mb-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                />
-              </svg>
-              <p className="text-gray-500">{translations.mapOfFinancial}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="space-y-4">
-          {isLoading ? (
-            [...Array(3)].map((_, index) => (
-              <div key={index} className="border rounded-lg p-4">
-                <div className="flex justify-between items-start">
-                  <div className="flex items-start">
-                    <Skeleton className="h-12 w-12 rounded-lg mr-3" />
-                    <div className="space-y-2">
-                      <Skeleton className="h-6 w-48" />
-                      <Skeleton className="h-4 w-40" />
-                      <Skeleton className="h-4 w-32" />
-                      <div className="flex space-x-2">
-                        <Skeleton className="h-6 w-24" />
-                        <Skeleton className="h-6 w-24" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <Skeleton className="h-4 w-12 mr-2" />
-                    <Skeleton className="h-8 w-8 rounded-full" />
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : banks && banks.length > 0 ? (
-            banks.map((bank) => (
-              <div key={bank.id} className="border rounded-lg p-4 hover:shadow-md transition">
-                <div className="flex justify-between items-start">
-                  <div className="flex items-start">
-                    <div className="bg-darkNeutral bg-opacity-10 p-3 rounded-lg mr-3">
-                      <Building className="text-darkNeutral" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-lg mb-1">{bank.name}</h4>
-                      <p className="text-sm text-gray-600 mb-2">
-                        <MapPin className="inline h-3 w-3 mr-1" /> {bank.address}
-                      </p>
-                      <div className="flex items-center text-sm mb-2">
-                        <div className="flex items-center mr-4">
-                          <Clock className="inline h-3 w-3 mr-1 text-gray-600" />
-                          <span>{bank.hours}</span>
-                        </div>
-                        <div className={bank.isOpen ? "text-green-600" : "text-red-600"}>
-                          {bank.isOpen ? translations.openNow : translations.closed}
-                        </div>
-                      </div>
-                      <div className="flex mb-2">
-                        {bank.services.map((service, index) => {
-                          let serviceTranslation = service;
-                          if (service === "ATM") serviceTranslation = translations.atm;
-                          if (service === "Customer Service") serviceTranslation = translations.customerService;
-                          if (service === "Loans") serviceTranslation = translations.loans;
-                          if (service === "Investments") serviceTranslation = translations.investments;
-                          
-                          return (
-                            <span 
-                              key={index} 
-                              className="text-xs bg-darkNeutral bg-opacity-10 text-darkNeutral px-2 py-1 rounded mr-2"
-                            >
-                              {serviceTranslation}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-gray-600 mr-2">{bank.distance} {language === 'es' ? 'km' : 'mi'}</span>
-                    <Button 
-                      variant="link" 
-                      className="text-primary p-0 h-auto"
-                    >
-                      <Navigation className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="text-center py-6">{translations.noBanks}</div>
-          )}
-        </div>
+        {viewMode === "map" ? renderMapView() : renderListView()}
       </CardContent>
     </Card>
   );
