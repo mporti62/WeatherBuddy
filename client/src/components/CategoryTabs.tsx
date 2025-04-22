@@ -50,7 +50,7 @@ export default function CategoryTabs({ activeTab, onTabChange }: CategoryTabsPro
   ];
 
   return (
-    <nav className="bg-white border-t">
+    <nav className="bg-[#1a1a1a] border-t border-[#333]">
       <div className="container mx-auto">
         <ul className="flex overflow-x-auto md:justify-center">
           {tabs.map((tab) => (
@@ -62,7 +62,7 @@ export default function CategoryTabs({ activeTab, onTabChange }: CategoryTabsPro
                 onClick={() => onTabChange(tab.id)}
               >
                 {tab.icon}
-                <span className="text-sm mt-1">{tab.label}</span>
+                <span className="text-sm mt-1 text-gray-300">{tab.label}</span>
               </button>
             </li>
           ))}

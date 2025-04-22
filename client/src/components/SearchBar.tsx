@@ -79,18 +79,18 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
             onChange={handleZipCodeChange}
             onFocus={() => zipCode.length >= 3 && setShowSuggestions(true)}
             placeholder={placeholderText}
-            className="w-full px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="dark-input w-full px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             maxLength={5}
           />
           {showSuggestions && suggestions.length > 0 && (
             <div 
               ref={suggestionsRef}
-              className="absolute w-full bg-white border-l border-r border-b rounded-b-lg shadow-lg z-10"
+              className="absolute w-full bg-[#2d2d2d] border-l border-r border-b border-[#444] rounded-b-lg shadow-lg z-10"
             >
               {suggestions.map((suggestion, index) => (
                 <div 
                   key={index}
-                  className="px-4 py-2 hover:bg-lightNeutral cursor-pointer"
+                  className="px-4 py-2 hover:bg-[#3d3d3d] text-gray-200 cursor-pointer"
                   onClick={() => selectSuggestion(suggestion)}
                 >
                   {suggestion}
@@ -101,7 +101,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
         </div>
         <Button 
           type="submit" 
-          className="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 focus:outline-none"
+          className="dark-button px-4 py-2 rounded-r-lg focus:outline-none"
         >
           <Search className="h-4 w-4" />
         </Button>

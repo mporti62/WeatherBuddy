@@ -13,13 +13,13 @@ export default function Header({ onSearch, activeTab, onTabChange }: HeaderProps
   const { language, toggleLanguage } = useLanguage();
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md">
+    <header className="sticky top-0 z-50 dark-header">
       <div className="container mx-auto px-4 py-3">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="flex items-center mb-3 md:mb-0">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-primary mr-2"
+              className="h-6 w-6 text-blue-400 mr-2"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -37,10 +37,10 @@ export default function Header({ onSearch, activeTab, onTabChange }: HeaderProps
                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-            <h1 className="text-xl font-bold">LocaInfo</h1>
+            <h1 className="text-xl font-bold gradient-text">LocaInfo</h1>
             <div className="ml-auto md:hidden">
               <button 
-                className="px-2 py-1 text-sm border rounded"
+                className="px-2 py-1 text-sm border border-blue-500 text-blue-400 rounded"
                 onClick={toggleLanguage}
               >
                 {language === 'es' ? 'EN' : 'ES'}
@@ -52,7 +52,7 @@ export default function Header({ onSearch, activeTab, onTabChange }: HeaderProps
           
           <div className="hidden md:block">
             <button 
-              className="px-3 py-1 border rounded"
+              className="px-3 py-1 border border-blue-500 text-blue-400 rounded hover:bg-blue-900 hover:bg-opacity-30 transition-colors"
               onClick={toggleLanguage}
             >
               {language === 'es' ? 'EN' : 'ES'}

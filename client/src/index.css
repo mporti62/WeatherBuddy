@@ -60,7 +60,7 @@
   }
 
   body {
-    @apply bg-lightNeutral text-darkNeutral font-sans antialiased;
+    @apply bg-[#121212] text-gray-200 font-sans antialiased;
   }
 }
 
@@ -71,4 +71,33 @@
 
 .inactive-tab {
   @apply hover:text-primary border-b-2 border-transparent;
+}
+
+/* Dark theme customizations */
+.card {
+  @apply bg-[#1e1e1e] border-[#333] text-gray-200;
+}
+
+.gradient-text {
+  @apply bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text;
+}
+
+.dark-header {
+  @apply bg-[#1a1a1a] border-b border-[#333];
+}
+
+.dark-footer {
+  @apply bg-[#1a1a1a] border-t border-[#333];
+}
+
+.dark-input {
+  @apply bg-[#2d2d2d] border-[#444] text-gray-200 placeholder:text-gray-400;
+}
+
+.dark-button {
+  @apply bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white;
+}
+
+.dark-tab-panel {
+  @apply bg-[#1e1e1e] rounded-md p-4;
 }
