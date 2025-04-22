@@ -115,27 +115,29 @@ export default function RestaurantsTab({ zipCode }: RestaurantsTabProps) {
   };
 
   // Filter restaurants
-  const filteredRestaurants = restaurants?.filter((restaurant: Restaurant) => {
-    // Filter by price range
-    if (restaurant.priceLevel > filters.priceRange[0]) {
-      return false;
-    }
-    
-    // Filter by cuisine
-    if (filters.cuisine.mexican || filters.cuisine.italian || filters.cuisine.american || filters.cuisine.asian) {
-      return (
-        (filters.cuisine.mexican && restaurant.cuisine.includes('mexican')) ||
-        (filters.cuisine.italian && restaurant.cuisine.includes('italian')) ||
-        (filters.cuisine.american && restaurant.cuisine.includes('american')) ||
-        (filters.cuisine.asian && restaurant.cuisine.includes('asian'))
-      );
-    }
-    
-    return true;
-  });
+  const filteredRestaurants = restaurants && Array.isArray(restaurants) 
+    ? restaurants.filter((restaurant: Restaurant) => {
+        // Filter by price range
+        if (restaurant.priceLevel > filters.priceRange[0]) {
+          return false;
+        }
+        
+        // Filter by cuisine
+        if (filters.cuisine.mexican || filters.cuisine.italian || filters.cuisine.american || filters.cuisine.asian) {
+          return (
+            (filters.cuisine.mexican && restaurant.cuisine.includes('mexican')) ||
+            (filters.cuisine.italian && restaurant.cuisine.includes('italian')) ||
+            (filters.cuisine.american && restaurant.cuisine.includes('american')) ||
+            (filters.cuisine.asian && restaurant.cuisine.includes('asian'))
+          );
+        }
+        
+        return true;
+      })
+    : [];
 
   // Get map locations for restaurants
-  const mapLocations = filteredRestaurants?.map(restaurant => ({
+  const mapLocations = filteredRestaurants?.map((restaurant: Restaurant) => ({
     latitude: restaurant.latitude || 0,
     longitude: restaurant.longitude || 0,
     name: restaurant.name,
