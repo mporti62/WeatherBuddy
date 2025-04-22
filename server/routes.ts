@@ -632,7 +632,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             distance: "2.3",
             latitude: latitude + 0.012,
             longitude: longitude - 0.009,
-            imageUrl: "/images/categories/banks.svg"
+            imageUrl: getImageByCategory("bank", 3)
           }
         ];
         
@@ -715,7 +715,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           name: "Fiesta Theater & Entertainment",
           location: "123 Cinema Drive, Test City, FL",
           description: "Experience one of the best entertainment options in your area with dining, movies, and games all in one place!",
-          imageUrl: "/images/categories/entertainment.svg",
+          imageUrl: getImageByCategory("entertainment", 0),
           categories: ["Movie Theater", "Restaurant"]
         };
         
@@ -725,7 +725,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             id: "ent2",
             name: "Gourmet Experience Restaurant",
             location: "456 Food Blvd, Test City, FL",
-            imageUrl: "/images/categories/restaurants.svg",
+            imageUrl: getImageByCategory("restaurant", 5),
             rating: 4.8,
             reviewCount: 120,
             category: "Restaurant"
@@ -734,7 +734,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             id: "ent3",
             name: "City Art Gallery",
             location: "789 Culture St, Test City, FL",
-            imageUrl: "/images/categories/entertainment.svg",
+            imageUrl: getImageByCategory("entertainment", 1),
             rating: 4.5,
             reviewCount: 85,
             category: "Art"
@@ -743,7 +743,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             id: "ent4",
             name: "Downtown Bowling Center",
             location: "234 Fun Ave, Test City, FL",
-            imageUrl: "/images/categories/entertainment.svg",
+            imageUrl: getImageByCategory("entertainment", 2),
             rating: 4.3,
             reviewCount: 95,
             category: "Bowling"
@@ -752,7 +752,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             id: "ent5",
             name: "Rhythm Night Club",
             location: "567 Music Lane, Test City, FL",
-            imageUrl: "/images/categories/entertainment.svg",
+            imageUrl: getImageByCategory("entertainment", 3),
             rating: 4.6,
             reviewCount: 150,
             category: "Night Life"
