@@ -103,7 +103,8 @@ export default function Home() {
       <Header 
         onSearch={handleSearch} 
         activeTab={activeTab} 
-        onTabChange={setActiveTab} 
+        onTabChange={setActiveTab}
+        hasValidZipCode={showContent && zipCode.length === 5} 
       />
       
       {!showContent ? (

@@ -7,9 +7,10 @@ interface HeaderProps {
   onSearch: (zipCode: string) => void;
   activeTab: string;
   onTabChange: (tab: string) => void;
+  hasValidZipCode?: boolean; // Indica si hay un código postal válido
 }
 
-export default function Header({ onSearch, activeTab, onTabChange }: HeaderProps) {
+export default function Header({ onSearch, activeTab, onTabChange, hasValidZipCode = false }: HeaderProps) {
   const { language, toggleLanguage } = useLanguage();
 
   return (
@@ -61,7 +62,7 @@ export default function Header({ onSearch, activeTab, onTabChange }: HeaderProps
         </div>
       </div>
       
-      <CategoryTabs activeTab={activeTab} onTabChange={onTabChange} />
+      <CategoryTabs activeTab={activeTab} onTabChange={onTabChange} hasValidZipCode={hasValidZipCode} />
     </header>
   );
 }

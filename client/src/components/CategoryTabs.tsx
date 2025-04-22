@@ -12,9 +12,10 @@ import {
 interface CategoryTabsProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  hasValidZipCode?: boolean; // Indica si hay un código postal válido
 }
 
-export default function CategoryTabs({ activeTab, onTabChange }: CategoryTabsProps) {
+export default function CategoryTabs({ activeTab, onTabChange, hasValidZipCode = false }: CategoryTabsProps) {
   const { language } = useLanguage();
 
   const tabs = [
@@ -64,8 +65,10 @@ export default function CategoryTabs({ activeTab, onTabChange }: CategoryTabsPro
               <button
                 className={`px-4 py-3 flex flex-col items-center whitespace-nowrap border-b-2 focus:outline-none ${
                   activeTab === tab.id ? "active-tab" : "inactive-tab"
-                }`}
-                onClick={() => onTabChange(tab.id)}
+                } ${!hasValidZipCode ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={() => hasValidZipCode && onTabChange(tab.id)}
+                disabled={!hasValidZipCode}
+                title={!hasValidZipCode ? (language === 'es' ? 'Ingresa un código postal primero' : 'Enter a ZIP code first') : ''}
               >
                 {tab.icon}
                 <span className="text-sm mt-1 text-gray-300">{tab.label}</span>
