@@ -25,7 +25,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json(cachedData);
       }
       
-      // Fetch location data using zipcode
+      // If we don't have Google Places API key, use mockup data for testing
+      if (!GOOGLE_PLACES_API_KEY || GOOGLE_PLACES_API_KEY === "") {
+        console.log("Using mockup data: No Google Places API key available");
+        
+        // Generate location data based on zipCode using a consistent algorithm
+        // This ensures the same zipCode always returns the same coordinates
+        const zipSeed = parseInt(zipCode) || 12345;
+        const latitude = 25.94 + (zipSeed % 100) * 0.01;
+        const longitude = -80.25 + (zipSeed % 100) * 0.01;
+        
+        const mockLocation = {
+          zipCode,
+          city: "Test City",
+          state: "FL",
+          latitude,
+          longitude
+        };
+        
+        // Save to cache
+        cache.set(cacheKey, mockLocation);
+        
+        return res.json(mockLocation);
+      }
+      
+      // If we have an API key, fetch real data
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${zipCode}&key=${GOOGLE_PLACES_API_KEY}`
       );
@@ -192,8 +216,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       );
       
       // Process forecast data to group by day
-      const days = [];
-      const dayMap = new Map();
+      const days: Array<{
+        name: string;
+        highTemp: number;
+        lowTemp: number;
+        condition: string;
+      }> = [];
+      
+      const dayMap = new Map<string, {
+        temps: number[];
+        conditions: string[];
+      }>();
       
       response.data.list.forEach((item: any) => {
         const date = new Date(item.dt * 1000);
@@ -207,18 +240,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
         
         const dayData = dayMap.get(day);
-        dayData.temps.push(item.main.temp);
-        dayData.conditions.push(item.weather[0].main.toLowerCase());
+        if (dayData) {
+          dayData.temps.push(item.main.temp);
+          dayData.conditions.push(item.weather[0].main.toLowerCase());
+        }
       });
       
       // Calculate high/low and most common condition for each day
       dayMap.forEach((value, key) => {
         const mostCommonCondition = value.conditions
           .sort((a: string, b: string) => 
-            value.conditions.filter(v => v === a).length
-            - value.conditions.filter(v => v === b).length
+            value.conditions.filter((v: string) => v === a).length
+            - value.conditions.filter((v: string) => v === b).length
           )
-          .pop();
+          .pop() || 'clear';
           
         days.push({
           name: key,
@@ -320,7 +355,69 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const locationRes = await axios.get(`http://localhost:${req.socket.localPort}/api/location/${zipCode}`);
       const { latitude, longitude } = locationRes.data;
       
-      // Fetch recreation places using Google Places API
+      // If we don't have Google Places API key, use mockup data for testing
+      if (!GOOGLE_PLACES_API_KEY || GOOGLE_PLACES_API_KEY === "") {
+        console.log("Using mockup data: No Google Places API key available for recreation places");
+        
+        // Create mockup recreation places
+        const mockPlaces = [
+          {
+            id: "rec1",
+            name: "Central Park",
+            description: "A beautiful park with walking trails and picnic areas.",
+            address: "100 Park Ave, Test City, FL",
+            imageUrl: "https://via.placeholder.com/400x300?text=Park",
+            rating: 4.5,
+            tags: ["park", "outdoor"],
+            hours: "8:00 - 20:00",
+            latitude: latitude + 0.01,
+            longitude: longitude + 0.01
+          },
+          {
+            id: "rec2",
+            name: "City Museum",
+            description: "A popular destination with activities for visitors of all ages.",
+            address: "200 Museum Blvd, Test City, FL",
+            imageUrl: "https://via.placeholder.com/400x300?text=Museum",
+            rating: 4.2,
+            tags: ["museum", "indoor"],
+            hours: "9:00 - 17:00",
+            latitude: latitude - 0.01,
+            longitude: longitude - 0.01
+          },
+          {
+            id: "rec3",
+            name: "Sports Stadium",
+            description: "Home of the local sports teams with regular events.",
+            address: "300 Stadium Way, Test City, FL",
+            imageUrl: "https://via.placeholder.com/400x300?text=Stadium",
+            rating: 4.0,
+            tags: ["sports"],
+            hours: "Varies by event",
+            latitude: latitude + 0.02,
+            longitude: longitude - 0.02
+          },
+          {
+            id: "rec4",
+            name: "Adventure Park",
+            description: "Outdoor activities and adventure courses for all ages.",
+            address: "400 Adventure Rd, Test City, FL",
+            imageUrl: "https://via.placeholder.com/400x300?text=Adventure",
+            rating: 4.7,
+            tags: ["park", "outdoor"],
+            hours: "9:00 - 18:00",
+            latitude: latitude - 0.02,
+            longitude: longitude + 0.02
+          }
+        ];
+        
+        // Save to cache
+        cache.set(cacheKey, mockPlaces);
+        
+        return res.json(mockPlaces);
+      }
+      
+      // If we have an API key, fetch real data
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&type=park|museum|stadium|zoo&key=${GOOGLE_PLACES_API_KEY}`
       );
@@ -386,7 +483,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const locationRes = await axios.get(`http://localhost:${req.socket.localPort}/api/location/${zipCode}`);
       const { latitude, longitude } = locationRes.data;
       
-      // Fetch banks using Google Places API
+      // If we don't have Google Places API key, use mockup data for testing
+      if (!GOOGLE_PLACES_API_KEY || GOOGLE_PLACES_API_KEY === "") {
+        console.log("Using mockup data: No Google Places API key available for banks");
+        
+        // Create mockup banks
+        const mockBanks = [
+          {
+            id: "bank1",
+            name: "First National Bank",
+            address: "100 Main St, Test City, FL",
+            hours: "9:00 - 17:00",
+            isOpen: new Date().getHours() >= 9 && new Date().getHours() < 17,
+            services: ["ATM", "Customer Service", "Loans"],
+            distance: "0.5",
+            latitude: latitude + 0.005,
+            longitude: longitude + 0.005
+          },
+          {
+            id: "bank2",
+            name: "Community Credit Union",
+            address: "200 Market St, Test City, FL",
+            hours: "9:00 - 17:00",
+            isOpen: new Date().getHours() >= 9 && new Date().getHours() < 17,
+            services: ["ATM", "Investments"],
+            distance: "1.2",
+            latitude: latitude - 0.007,
+            longitude: longitude - 0.003
+          },
+          {
+            id: "bank3",
+            name: "City Bank & Trust",
+            address: "300 Finance Blvd, Test City, FL",
+            hours: "8:30 - 16:30",
+            isOpen: new Date().getHours() >= 8.5 && new Date().getHours() < 16.5,
+            services: ["Customer Service", "Loans", "Investments"],
+            distance: "1.8",
+            latitude: latitude - 0.01,
+            longitude: longitude + 0.008
+          },
+          {
+            id: "bank4",
+            name: "International Banking Group",
+            address: "400 Global Ave, Test City, FL",
+            hours: "9:00 - 18:00",
+            isOpen: new Date().getHours() >= 9 && new Date().getHours() < 18,
+            services: ["ATM", "Foreign Currency"],
+            distance: "2.3",
+            latitude: latitude + 0.012,
+            longitude: longitude - 0.009
+          }
+        ];
+        
+        // Save to cache
+        cache.set(cacheKey, mockBanks);
+        
+        return res.json(mockBanks);
+      }
+      
+      // If we have an API key, fetch real data
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&type=bank&key=${GOOGLE_PLACES_API_KEY}`
       );
@@ -446,7 +601,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const locationRes = await axios.get(`http://localhost:${req.socket.localPort}/api/location/${zipCode}`);
       const { latitude, longitude } = locationRes.data;
       
-      // Fetch entertainment places using Google Places API
+      // If we don't have Google Places API key, use mockup data for testing
+      if (!GOOGLE_PLACES_API_KEY || GOOGLE_PLACES_API_KEY === "") {
+        console.log("Using mockup data: No Google Places API key available for entertainment");
+        
+        // Create mockup featured entertainment
+        const mockFeatured = {
+          id: "ent1",
+          name: "Fiesta Theater & Entertainment",
+          location: "123 Cinema Drive, Test City, FL",
+          description: "Experience one of the best entertainment options in your area with dining, movies, and games all in one place!",
+          imageUrl: "https://via.placeholder.com/400x300?text=Entertainment",
+          categories: ["Movie Theater", "Restaurant"]
+        };
+        
+        // Create mockup entertainment options
+        const mockOptions = [
+          {
+            id: "ent2",
+            name: "Gourmet Experience Restaurant",
+            location: "456 Food Blvd, Test City, FL",
+            imageUrl: "https://via.placeholder.com/400x300?text=Restaurant",
+            rating: 4.8,
+            reviewCount: 120,
+            category: "Restaurant"
+          },
+          {
+            id: "ent3",
+            name: "City Art Gallery",
+            location: "789 Culture St, Test City, FL",
+            imageUrl: "https://via.placeholder.com/400x300?text=Art+Gallery",
+            rating: 4.5,
+            reviewCount: 85,
+            category: "Art"
+          },
+          {
+            id: "ent4",
+            name: "Downtown Bowling Center",
+            location: "234 Fun Ave, Test City, FL",
+            imageUrl: "https://via.placeholder.com/400x300?text=Bowling",
+            rating: 4.3,
+            reviewCount: 95,
+            category: "Bowling"
+          },
+          {
+            id: "ent5",
+            name: "Rhythm Night Club",
+            location: "567 Music Lane, Test City, FL",
+            imageUrl: "https://via.placeholder.com/400x300?text=Night+Club",
+            rating: 4.6,
+            reviewCount: 150,
+            category: "Night Life"
+          }
+        ];
+        
+        const mockEntertainmentData = {
+          featured: mockFeatured,
+          options: mockOptions
+        };
+        
+        // Save to cache
+        cache.set(cacheKey, mockEntertainmentData);
+        
+        return res.json(mockEntertainmentData);
+      }
+      
+      // If we have an API key, fetch real data
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&type=restaurant|movie_theater|bowling_alley|night_club|art_gallery&key=${GOOGLE_PLACES_API_KEY}`
       );
