@@ -461,7 +461,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Central Park",
             description: "Un hermoso parque con senderos para caminar, áreas de picnic y juegos infantiles.",
             address: "123 Park Ave, Test City, FL",
-            imageUrl: "/images/categories/recreation.svg",
+            imageUrl: getImageByCategory("recreation", 0),
             rating: 4.7,
             tags: ["Park", "Nature", "Family Friendly"],
             hours: "6:00 AM - 10:00 PM",
@@ -473,7 +473,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Community Swimming Pool",
             description: "Una piscina pública ideal para refrescarse durante los días calurosos.",
             address: "456 Water St, Test City, FL",
-            imageUrl: "/images/categories/recreation.svg",
+            imageUrl: getImageByCategory("recreation", 1),
             rating: 4.2,
             tags: ["Swimming", "Sports", "Family Friendly"],
             hours: "8:00 AM - 8:00 PM",
@@ -485,7 +485,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Hiking Trail",
             description: "Senderos naturales con vistas panorámicas, perfecto para los amantes del senderismo.",
             address: "789 Mountain Rd, Test City, FL",
-            imageUrl: "/images/categories/recreation.svg",
+            imageUrl: getImageByCategory("recreation", 2),
             rating: 4.8,
             tags: ["Hiking", "Nature", "Adventure"],
             hours: "Sunrise to Sunset",
@@ -497,7 +497,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Tennis Courts",
             description: "Canchas de tenis públicas disponibles para reserva o por orden de llegada.",
             address: "101 Sports Blvd, Test City, FL",
-            imageUrl: "/images/categories/recreation.svg",
+            imageUrl: getImageByCategory("recreation", 3),
             rating: 4.0,
             tags: ["Tennis", "Sports", "Active"],
             hours: "7:00 AM - 9:00 PM",
@@ -596,7 +596,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             distance: "0.5",
             latitude: latitude + 0.005,
             longitude: longitude + 0.005,
-            imageUrl: "/images/categories/banks.svg"
+            imageUrl: getImageByCategory("bank", 0)
           },
           {
             id: "bank2",
@@ -608,7 +608,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             distance: "1.2",
             latitude: latitude - 0.007,
             longitude: longitude - 0.003,
-            imageUrl: "/images/categories/banks.svg"
+            imageUrl: getImageByCategory("bank", 1)
           },
           {
             id: "bank3",
@@ -620,7 +620,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             distance: "1.8",
             latitude: latitude - 0.01,
             longitude: longitude + 0.008,
-            imageUrl: "/images/categories/banks.svg"
+            imageUrl: getImageByCategory("bank", 2)
           },
           {
             id: "bank4",
@@ -922,7 +922,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Healthy Bites Café",
             description: "Opciones saludables, orgánicas y deliciosas para todos los gustos.",
             address: "555 Green Street, Test City, FL",
-            imageUrl: "/images/categories/restaurants.svg",
+            imageUrl: getImageByCategory("restaurant", 4),
             rating: 4.4,
             priceLevel: 2,
             cuisine: ["healthy", "vegetarian", "vegan"],
