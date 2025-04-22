@@ -6,6 +6,7 @@ import {
   Building2,
   Film,
   Map,
+  Utensils,
 } from "lucide-react";
 
 interface CategoryTabsProps {
@@ -19,32 +20,37 @@ export default function CategoryTabs({ activeTab, onTabChange }: CategoryTabsPro
   const tabs = [
     {
       id: "weather",
-      icon: <Cloud className="text-primary" />,
+      icon: <Cloud className="text-blue-400" />,
       label: language === 'es' ? "Clima" : "Weather",
     },
     {
       id: "events",
-      icon: <Calendar className="text-secondary" />,
+      icon: <Calendar className="text-purple-400" />,
       label: language === 'es' ? "Eventos" : "Events",
     },
     {
       id: "recreation",
-      icon: <Network className="text-accent" />,
+      icon: <Network className="text-green-400" />,
       label: language === 'es' ? "Recreación" : "Recreation",
     },
     {
+      id: "restaurants",
+      icon: <Utensils className="text-red-400" />,
+      label: language === 'es' ? "Restaurantes" : "Restaurants",
+    },
+    {
       id: "banks",
-      icon: <Building2 className="text-darkNeutral" />,
+      icon: <Building2 className="text-yellow-400" />,
       label: language === 'es' ? "Bancos" : "Banks",
     },
     {
       id: "entertainment",
-      icon: <Film className="text-secondary" />,
+      icon: <Film className="text-pink-400" />,
       label: language === 'es' ? "Entretenimiento" : "Entertainment",
     },
     {
       id: "journey",
-      icon: <Map className="text-accent" />,
+      icon: <Map className="text-indigo-400" />,
       label: language === 'es' ? "Viajes" : "Journeys",
     },
   ];

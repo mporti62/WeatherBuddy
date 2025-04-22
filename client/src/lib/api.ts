@@ -47,3 +47,10 @@ export async function getEntertainment(zipCode: string) {
   if (!response.ok) throw new Error("Failed to fetch entertainment options");
   return response.json();
 }
+
+// Restaurants API
+export async function getRestaurants(zipCode: string) {
+  const response = await fetch(`/api/restaurants/${zipCode}`);
+  if (!response.ok) throw new Error("Failed to fetch restaurants");
+  return response.json();
+}
