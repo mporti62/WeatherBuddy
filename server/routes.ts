@@ -15,6 +15,59 @@ const __dirname = path.dirname(__filename);
 // Cache para almacenar datos temporalmente y reducir llamadas API
 const cache = new NodeCache({ stdTTL: 3600 }); // 1 hora de caché por defecto
 
+// Función para obtener URLs de imágenes reales por categoría
+function getImageByCategory(category: string, index: number = 0): string {
+  // Variedad de imágenes por categoría
+  const imageLibrary = {
+    restaurant: [
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1592861956120-e524fc739696?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&auto=format&fit=crop"
+    ],
+    bank: [
+      "https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1526304760382-3591d3840148?w=800&auto=format&fit=crop"
+    ],
+    recreation: [
+      "https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1523761057508-c9fce6814194?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1565992441121-4367c2967103?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1603201277993-bfd45a7a4031?w=800&auto=format&fit=crop"
+    ],
+    entertainment: [
+      "https://images.unsplash.com/photo-1571863533956-01c88e79957e?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1603190287605-e6ade32fa852?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1513106580091-1d82408b8cd6?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1509315811345-672d83ef2fbc?w=800&auto=format&fit=crop"
+    ],
+    event: [
+      "https://images.unsplash.com/photo-1538333702852-c1b7a2a93001?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1472653431158-6364773b2a56?w=800&auto=format&fit=crop"
+    ]
+  };
+
+  // Obtener array de imágenes para la categoría solicitada
+  const images = imageLibrary[category as keyof typeof imageLibrary] || [];
+  
+  // Si no hay imágenes disponibles, devolver una imagen de respaldo
+  if (images.length === 0) {
+    return `https://via.placeholder.com/800x600?text=${encodeURIComponent(category)}`;
+  }
+  
+  // Devolver una imagen según el índice (con wrap-around)
+  return images[index % images.length];
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Configuración CORS
   app.use(cors());
@@ -809,7 +862,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "El Rincón Mexicano",
             description: "Auténtica cocina mexicana con un ambiente acogedor y cálido servicio.",
             address: "123 Taco Street, Test City, FL",
-            imageUrl: "/images/categories/restaurants.svg",
+            imageUrl: getImageByCategory("restaurant", 0),
             rating: 4.7,
             priceLevel: 2,
             cuisine: ["mexican", "latin"],
@@ -824,7 +877,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Pasta Paradise",
             description: "Restaurante italiano familiar con las mejores pastas caseras de la ciudad.",
             address: "456 Pasta Avenue, Test City, FL",
-            imageUrl: "/images/categories/restaurants.svg",
+            imageUrl: getImageByCategory("restaurant", 1),
             rating: 4.5,
             priceLevel: 3,
             cuisine: ["italian", "european"],
@@ -839,7 +892,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Burger Bistro",
             description: "Las hamburguesas gourmet más jugosas con ingredientes frescos y locales.",
             address: "789 Burger Boulevard, Test City, FL",
-            imageUrl: "/images/categories/restaurants.svg",
+            imageUrl: getImageByCategory("restaurant", 2),
             rating: 4.6,
             priceLevel: 2,
             cuisine: ["american", "burgers"],
@@ -854,7 +907,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Sushi Sensation",
             description: "Exquisito sushi y platos japoneses preparados por chefs expertos.",
             address: "321 Sushi Street, Test City, FL",
-            imageUrl: "/images/categories/restaurants.svg",
+            imageUrl: getImageByCategory("restaurant", 3),
             rating: 4.8,
             priceLevel: 4,
             cuisine: ["japanese", "asian", "sushi"],
