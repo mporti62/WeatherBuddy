@@ -285,7 +285,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             month: "May",
             time: "5:00 PM",
             categories: ["Music", "Festival", "Outdoor"],
-            imageUrl: "/images/event.svg"
+            imageUrl: "/images/categories/events.svg"
           },
           {
             id: "evt2",
@@ -296,7 +296,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             month: "May",
             time: "10:00 AM",
             categories: ["Art", "Exhibition", "Indoor"],
-            imageUrl: "/images/event.svg"
+            imageUrl: "/images/categories/events.svg"
           },
           {
             id: "evt3",
@@ -307,7 +307,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             month: "May",
             time: "8:00 AM",
             categories: ["Sports", "Charity", "Outdoor"],
-            imageUrl: "/images/event.svg"
+            imageUrl: "/images/categories/events.svg"
           },
           {
             id: "evt4",
@@ -318,7 +318,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             month: "Jun",
             time: "12:00 PM",
             categories: ["Food", "Fair", "Outdoor"],
-            imageUrl: "/images/event.svg"
+            imageUrl: "/images/categories/events.svg"
           }
         ];
         
@@ -408,7 +408,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Central Park",
             description: "Un hermoso parque con senderos para caminar, áreas de picnic y juegos infantiles.",
             address: "123 Park Ave, Test City, FL",
-            imageUrl: "/images/recreation.svg",
+            imageUrl: "/images/categories/recreation.svg",
             rating: 4.7,
             tags: ["Park", "Nature", "Family Friendly"],
             hours: "6:00 AM - 10:00 PM",
@@ -420,7 +420,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Community Swimming Pool",
             description: "Una piscina pública ideal para refrescarse durante los días calurosos.",
             address: "456 Water St, Test City, FL",
-            imageUrl: "/images/recreation.svg",
+            imageUrl: "/images/categories/recreation.svg",
             rating: 4.2,
             tags: ["Swimming", "Sports", "Family Friendly"],
             hours: "8:00 AM - 8:00 PM",
@@ -432,7 +432,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Hiking Trail",
             description: "Senderos naturales con vistas panorámicas, perfecto para los amantes del senderismo.",
             address: "789 Mountain Rd, Test City, FL",
-            imageUrl: "/images/recreation.svg",
+            imageUrl: "/images/categories/recreation.svg",
             rating: 4.8,
             tags: ["Hiking", "Nature", "Adventure"],
             hours: "Sunrise to Sunset",
@@ -444,7 +444,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Tennis Courts",
             description: "Canchas de tenis públicas disponibles para reserva o por orden de llegada.",
             address: "101 Sports Blvd, Test City, FL",
-            imageUrl: "/images/recreation.svg",
+            imageUrl: "/images/categories/recreation.svg",
             rating: 4.0,
             tags: ["Tennis", "Sports", "Active"],
             hours: "7:00 AM - 9:00 PM",
@@ -543,7 +543,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             distance: "0.5",
             latitude: latitude + 0.005,
             longitude: longitude + 0.005,
-            imageUrl: "/images/bank.svg"
+            imageUrl: "/images/categories/banks.svg"
           },
           {
             id: "bank2",
@@ -555,7 +555,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             distance: "1.2",
             latitude: latitude - 0.007,
             longitude: longitude - 0.003,
-            imageUrl: "/images/bank.svg"
+            imageUrl: "/images/categories/banks.svg"
           },
           {
             id: "bank3",
@@ -567,7 +567,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             distance: "1.8",
             latitude: latitude - 0.01,
             longitude: longitude + 0.008,
-            imageUrl: "/images/bank.svg"
+            imageUrl: "/images/categories/banks.svg"
           },
           {
             id: "bank4",
@@ -579,7 +579,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             distance: "2.3",
             latitude: latitude + 0.012,
             longitude: longitude - 0.009,
-            imageUrl: "/images/bank.svg"
+            imageUrl: "/images/categories/banks.svg"
           }
         ];
         
@@ -662,7 +662,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           name: "Fiesta Theater & Entertainment",
           location: "123 Cinema Drive, Test City, FL",
           description: "Experience one of the best entertainment options in your area with dining, movies, and games all in one place!",
-          imageUrl: "/images/entertainment.svg",
+          imageUrl: "/images/categories/entertainment.svg",
           categories: ["Movie Theater", "Restaurant"]
         };
         
@@ -672,7 +672,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             id: "ent2",
             name: "Gourmet Experience Restaurant",
             location: "456 Food Blvd, Test City, FL",
-            imageUrl: "/images/restaurant.svg",
+            imageUrl: "/images/categories/restaurants.svg",
             rating: 4.8,
             reviewCount: 120,
             category: "Restaurant"
@@ -681,7 +681,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             id: "ent3",
             name: "City Art Gallery",
             location: "789 Culture St, Test City, FL",
-            imageUrl: "/images/entertainment.svg",
+            imageUrl: "/images/categories/entertainment.svg",
             rating: 4.5,
             reviewCount: 85,
             category: "Art"
@@ -690,7 +690,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             id: "ent4",
             name: "Downtown Bowling Center",
             location: "234 Fun Ave, Test City, FL",
-            imageUrl: "/images/entertainment.svg",
+            imageUrl: "/images/categories/entertainment.svg",
             rating: 4.3,
             reviewCount: 95,
             category: "Bowling"
@@ -699,7 +699,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             id: "ent5",
             name: "Rhythm Night Club",
             location: "567 Music Lane, Test City, FL",
-            imageUrl: "/images/entertainment.svg",
+            imageUrl: "/images/categories/entertainment.svg",
             rating: 4.6,
             reviewCount: 150,
             category: "Night Life"
@@ -809,7 +809,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "El Rincón Mexicano",
             description: "Auténtica cocina mexicana con un ambiente acogedor y cálido servicio.",
             address: "123 Taco Street, Test City, FL",
-            imageUrl: "/images/restaurant.svg",
+            imageUrl: "/images/categories/restaurants.svg",
             rating: 4.7,
             priceLevel: 2,
             cuisine: ["mexican", "latin"],
@@ -824,7 +824,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Pasta Paradise",
             description: "Restaurante italiano familiar con las mejores pastas caseras de la ciudad.",
             address: "456 Pasta Avenue, Test City, FL",
-            imageUrl: "/images/restaurant.svg",
+            imageUrl: "/images/categories/restaurants.svg",
             rating: 4.5,
             priceLevel: 3,
             cuisine: ["italian", "european"],
@@ -839,7 +839,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Burger Bistro",
             description: "Las hamburguesas gourmet más jugosas con ingredientes frescos y locales.",
             address: "789 Burger Boulevard, Test City, FL",
-            imageUrl: "/images/restaurant.svg",
+            imageUrl: "/images/categories/restaurants.svg",
             rating: 4.6,
             priceLevel: 2,
             cuisine: ["american", "burgers"],
@@ -854,7 +854,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Sushi Sensation",
             description: "Exquisito sushi y platos japoneses preparados por chefs expertos.",
             address: "321 Sushi Street, Test City, FL",
-            imageUrl: "/images/restaurant.svg",
+            imageUrl: "/images/categories/restaurants.svg",
             rating: 4.8,
             priceLevel: 4,
             cuisine: ["japanese", "asian", "sushi"],
@@ -869,7 +869,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Healthy Bites Café",
             description: "Opciones saludables, orgánicas y deliciosas para todos los gustos.",
             address: "555 Green Street, Test City, FL",
-            imageUrl: "/images/restaurant.svg",
+            imageUrl: "/images/categories/restaurants.svg",
             rating: 4.4,
             priceLevel: 2,
             cuisine: ["healthy", "vegetarian", "vegan"],
@@ -1093,7 +1093,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               id: "loc5",
               name: "Sendero Natural",
               description: "Ruta escénica con vistas panorámicas",
-              imageUrl: "/images/recreation.svg",
+              imageUrl: "/images/categories/recreation.svg",
               latitude: latitude + 0.015,
               longitude: longitude - 0.015,
               type: "recreation",
@@ -1104,7 +1104,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               id: "loc6",
               name: "Lago para Kayak",
               description: "Actividades acuáticas para toda la familia",
-              imageUrl: "/images/recreation.svg",
+              imageUrl: "/images/categories/recreation.svg",
               latitude: latitude + 0.02,
               longitude: longitude - 0.02,
               type: "recreation",
@@ -1115,7 +1115,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               id: "loc7",
               name: "Mirador de Aves",
               description: "Observa especies exóticas en su hábitat natural",
-              imageUrl: "/images/entertainment.svg",
+              imageUrl: "/images/categories/entertainment.svg",
               latitude: latitude + 0.025,
               longitude: longitude - 0.025,
               type: "entertainment",
@@ -1126,7 +1126,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               id: "loc8",
               name: "Restaurante Rústico",
               description: "Cocina local con ingredientes frescos",
-              imageUrl: "/images/restaurant.svg",
+              imageUrl: "/images/categories/restaurants.svg",
               latitude: latitude + 0.03,
               longitude: longitude - 0.01,
               type: "restaurant",

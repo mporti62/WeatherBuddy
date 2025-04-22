@@ -18,7 +18,7 @@ interface JourneyLocation {
   imageUrl: string;
   latitude: number;
   longitude: number;
-  type: "recreation" | "entertainment" | "event" | "bank";
+  type: "recreation" | "entertainment" | "event" | "bank" | "restaurant";
   story: string;
   duration: number; // duración estimada en minutos
 }
@@ -94,7 +94,7 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
             description: language === "es" 
               ? "Un hermoso parque con senderos para caminar" 
               : "A beautiful park with walking trails",
-            imageUrl: "/images/recreation.svg",
+            imageUrl: "/images/categories/recreation.svg",
             latitude: 26.1224,
             longitude: -80.3432,
             type: "recreation",
@@ -109,7 +109,7 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
             description: language === "es" 
               ? "Explora exposiciones fascinantes de arte moderno" 
               : "Explore fascinating exhibitions of modern art",
-            imageUrl: "/images/entertainment.svg",
+            imageUrl: "/images/categories/entertainment.svg",
             latitude: 26.1324,
             longitude: -80.3332,
             type: "entertainment",
@@ -124,7 +124,7 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
             description: language === "es" 
               ? "Prueba deliciosas comidas de diferentes culturas" 
               : "Try delicious foods from different cultures",
-            imageUrl: "/images/event.svg",
+            imageUrl: "/images/categories/events.svg",
             latitude: 26.1424,
             longitude: -80.3232,
             type: "event",
@@ -139,7 +139,7 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
             description: language === "es" 
               ? "Tiendas de moda y accesorios para todos los gustos" 
               : "Fashion stores and accessories for all tastes",
-            imageUrl: "/images/bank.svg",
+            imageUrl: "/images/categories/banks.svg",
             latitude: 26.1524,
             longitude: -80.3132,
             type: "bank",
@@ -164,7 +164,7 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
             description: language === "es" 
               ? "Ruta escénica con vistas panorámicas" 
               : "Scenic route with panoramic views",
-            imageUrl: "/images/recreation.svg",
+            imageUrl: "/images/categories/recreation.svg",
             latitude: 26.1624,
             longitude: -80.3532,
             type: "recreation",
@@ -179,7 +179,7 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
             description: language === "es" 
               ? "Actividades acuáticas para toda la familia" 
               : "Water activities for the whole family",
-            imageUrl: "/images/recreation.svg",
+            imageUrl: "/images/categories/recreation.svg",
             latitude: 26.1724,
             longitude: -80.3632,
             type: "recreation",
@@ -194,7 +194,7 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
             description: language === "es" 
               ? "Observa especies exóticas en su hábitat natural" 
               : "Observe exotic species in their natural habitat",
-            imageUrl: "/images/entertainment.svg",
+            imageUrl: "/images/categories/entertainment.svg",
             latitude: 26.1824,
             longitude: -80.3732,
             type: "entertainment",
