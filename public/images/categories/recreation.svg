@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3498db"/>
+      <stop offset="100%" stop-color="#85C1E9"/>
+    </linearGradient>
+    <linearGradient id="water-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2980b9"/>
+      <stop offset="100%" stop-color="#3498db"/>
+    </linearGradient>
+    <linearGradient id="grass-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#27ae60"/>
+      <stop offset="100%" stop-color="#2ecc71"/>
+    </linearGradient>
+    <linearGradient id="mountain-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#34495e"/>
+      <stop offset="100%" stop-color="#7f8c8d"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.5"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Sky background -->
+  <rect width="400" height="200" fill="url(#sky-grad)"/>
+  
+  <!-- Sun -->
+  <circle cx="350" cy="50" r="25" fill="#f1c40f"/>
+  
+  <!-- Mountains -->
+  <path d="M0,120 L60,40 L120,90 L200,20 L250,70 L320,30 L400,100 L400,160 L0,160 Z" fill="url(#mountain-grad)"/>
+  
+  <!-- Trees -->
+  <g transform="translate(40, 140)">
+    <rect x="-5" y="0" width="10" height="20" fill="#795548"/>
+    <path d="M0,-40 L-20,0 L20,0 Z" fill="#2ecc71"/>
+    <path d="M0,-30 L-15,5 L15,5 Z" fill="#27ae60"/>
+  </g>
+  
+  <g transform="translate(80, 130)">
+    <rect x="-6" y="0" width="12" height="30" fill="#795548"/>
+    <path d="M0,-50 L-25,0 L25,0 Z" fill="#2ecc71"/>
+    <path d="M0,-40 L-20,5 L20,5 Z" fill="#27ae60"/>
+    <path d="M0,-30 L-15,10 L15,10 Z" fill="#2ecc71"/>
+  </g>
+  
+  <g transform="translate(350, 130)">
+    <rect x="-4" y="0" width="8" height="25" fill="#795548"/>
+    <circle cx="0" cy="-15" r="15" fill="#2ecc71"/>
+  </g>
+  
+  <g transform="translate(380, 140)">
+    <rect x="-3" y="0" width="6" height="20" fill="#795548"/>
+    <circle cx="0" cy="-10" r="10" fill="#2ecc71"/>
+  </g>
+  
+  <!-- River and lake -->
+  <path d="M150,160 C180,155 210,165 240,160 C270,155 300,165 330,160 C360,155 390,165 400,160 L400,200 L150,200 Z" fill="url(#water-grad)"/>
+  <circle cx="140" cy="180" r="40" fill="url(#water-grad)"/>
+  
+  <!-- Grass area -->
+  <path d="M0,160 L150,160 C150,160 145,180 140,180 C130,180 130,190 120,190 L0,190 Z" fill="url(#grass-grad)"/>
+  <rect x="0" y="190" width="400" height="110" fill="url(#grass-grad)"/>
+  
+  <!-- Hiking path -->
+  <path d="M0,220 C50,215 100,225 150,220 C200,215 250,225 300,220 C350,215 400,225 400,220" 
+        stroke="#d35400" stroke-width="6" fill="none" stroke-dasharray="2,1"/>
+  
+  <!-- Hikers -->
+  <g transform="translate(180, 215)" filter="url(#shadow)">
+    <!-- Person 1 (hiker) -->
+    <circle cx="0" cy="0" r="5" fill="#f39c12"/> <!-- Head -->
+    <rect x="-1" y="5" width="2" height="10" fill="#e67e22"/> <!-- Body -->
+    <line x1="-1" y1="8" x2="-4" y2="12" stroke="#e67e22" stroke-width="1.5"/> <!-- Left arm -->
+    <line x1="1" y1="8" x2="6" y2="4" stroke="#e67e22" stroke-width="1.5"/> <!-- Right arm with hiking pole -->
+    <line x1="6" y1="4" x2="8" y2="12" stroke="#7f8c8d" stroke-width="1"/> <!-- Hiking pole -->
+    <line x1="-1" y1="15" x2="-3" y2="22" stroke="#34495e" stroke-width="1.5"/> <!-- Left leg -->
+    <line x1="1" y1="15" x2="2" y2="22" stroke="#34495e" stroke-width="1.5"/> <!-- Right leg -->
+    <rect x="-5" y="-2" width="10" height="2" fill="#16a085"/> <!-- Hat -->
+    <rect x="-3" y="-7" width="6" height="5" fill="#16a085" rx="2" ry="2"/>
+  </g>
+  
+  <g transform="translate(210, 210)" filter="url(#shadow)">
+    <!-- Person 2 (hiker) -->
+    <circle cx="0" cy="0" r="4" fill="#c0392b"/> <!-- Head -->
+    <rect x="-1" y="4" width="2" height="8" fill="#d35400"/> <!-- Body -->
+    <line x1="-1" y1="7" x2="-5" y2="4" stroke="#d35400" stroke-width="1.5"/> <!-- Left arm with hiking pole -->
+    <line x1="-5" y1="4" x2="-7" y2="12" stroke="#7f8c8d" stroke-width="1"/> <!-- Hiking pole -->
+    <line x1="1" y1="7" x2="3" y2="10" stroke="#d35400" stroke-width="1.5"/> <!-- Right arm -->
+    <line x1="-1" y1="12" x2="-2" y2="19" stroke="#2c3e50" stroke-width="1.5"/> <!-- Left leg -->
+    <line x1="1" y1="12" x2="3" y2="19" stroke="#2c3e50" stroke-width="1.5"/> <!-- Right leg -->
+  </g>
+  
+  <!-- Picnic Area -->
+  <g transform="translate(90, 230)">
+    <rect x="-20" y="0" width="40" height="2" fill="#795548"/>
+    <rect x="-18" y="-5" width="36" height="5" fill="#8d6e63"/>
+    <rect x="-15" y="2" width="4" height="10" fill="#5d4037"/>
+    <rect x="11" y="2" width="4" height="10" fill="#5d4037"/>
+  </g>
+  
+  <!-- Bicycle -->
+  <g transform="translate(320, 240)" filter="url(#shadow)">
+    <circle cx="0" cy="0" r="8" fill="none" stroke="#7f8c8d" stroke-width="1.5"/>
+    <circle cx="20" cy="0" r="8" fill="none" stroke="#7f8c8d" stroke-width="1.5"/>
+    <line x1="0" y1="0" x2="10" y2="-10" stroke="#c0392b" stroke-width="2"/>
+    <line x1="10" y1="-10" x2="15" y2="-5" stroke="#c0392b" stroke-width="2"/>
+    <line x1="15" y1="-5" x2="20" y2="0" stroke="#c0392b" stroke-width="2"/>
+    <line x1="0" y1="0" x2="8" y2="-5" stroke="#c0392b" stroke-width="2"/>
+    <line x1="10" y1="-10" x2="10" y2="-15" stroke="#c0392b" stroke-width="2"/>
+    <line x1="15" y1="-5" x2="10" y2="-15" stroke="#c0392b" stroke-width="1.5"/>
+    <circle cx="10" cy="-15" r="2" fill="#ecf0f1"/>
+  </g>
+  
+  <!-- Tent in the distance -->
+  <g transform="translate(30, 160)">
+    <path d="M0,20 L15,0 L30,20 Z" fill="#3498db" stroke="#2980b9" stroke-width="1"/>
+    <path d="M15,20 L15,0 L30,20 Z" fill="#2980b9" stroke="#2980b9" stroke-width="1"/>
+    <line x1="0" y1="20" x2="30" y2="20" stroke="#e67e22" stroke-width="1"/>
+  </g>
+</svg>

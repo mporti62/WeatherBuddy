@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cinema-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#9b59b6"/>
+      <stop offset="100%" stop-color="#8e44ad"/>
+    </linearGradient>
+    <linearGradient id="screen-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ecf0f1"/>
+      <stop offset="100%" stop-color="#bdc3c7"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="5"/>
+      <feOffset dx="0" dy="0" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.5"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Dark background for entertainment -->
+  <rect width="400" height="300" fill="#2c3e50"/>
+  
+  <!-- Cinema theater section -->
+  <g transform="translate(200, 160)">
+    <!-- Screen -->
+    <rect x="-100" y="-60" width="200" height="120" rx="5" ry="5" fill="url(#cinema-bg)"/>
+    <rect x="-80" y="-50" width="160" height="90" rx="3" ry="3" fill="url(#screen-grad)"/>
+    
+    <!-- Movie projection -->
+    <g filter="url(#glow)">
+      <path d="M-70,-40 L70,-40 L50,30 L-50,30 Z" fill="#3498db" opacity="0.4"/>
+      <ellipse cx="0" cy="-5" rx="30" ry="20" fill="#e74c3c" opacity="0.3"/>
+      <ellipse cx="20" cy="10" rx="20" ry="15" fill="#f1c40f" opacity="0.3"/>
+    </g>
+    
+    <!-- Audience seating -->
+    <g transform="translate(0, 70)">
+      <rect x="-90" y="0" width="180" height="30" rx="15" ry="15" fill="#34495e"/>
+      <rect x="-85" y="5" width="170" height="20" fill="#2c3e50"/>
+      <g fill="#7f8c8d">
+        <rect x="-80" y="7" width="10" height="16" rx="2" ry="2"/>
+        <rect x="-65" y="7" width="10" height="16" rx="2" ry="2"/>
+        <rect x="-50" y="7" width="10" height="16" rx="2" ry="2"/>
+        <rect x="-35" y="7" width="10" height="16" rx="2" ry="2"/>
+        <rect x="-20" y="7" width="10" height="16" rx="2" ry="2"/>
+        <rect x="-5" y="7" width="10" height="16" rx="2" ry="2"/>
+        <rect x="10" y="7" width="10" height="16" rx="2" ry="2"/>
+        <rect x="25" y="7" width="10" height="16" rx="2" ry="2"/>
+        <rect x="40" y="7" width="10" height="16" rx="2" ry="2"/>
+        <rect x="55" y="7" width="10" height="16" rx="2" ry="2"/>
+        <rect x="70" y="7" width="10" height="16" rx="2" ry="2"/>
+      </g>
+    </g>
+    <g transform="translate(0, 50)">
+      <rect x="-85" y="0" width="170" height="15" rx="7.5" ry="7.5" fill="#34495e"/>
+      <rect x="-80" y="2" width="160" height="10" fill="#2c3e50"/>
+      <g fill="#7f8c8d">
+        <rect x="-75" y="3" width="8" height="8" rx="1" ry="1"/>
+        <rect x="-62" y="3" width="8" height="8" rx="1" ry="1"/>
+        <rect x="-49" y="3" width="8" height="8" rx="1" ry="1"/>
+        <rect x="-36" y="3" width="8" height="8" rx="1" ry="1"/>
+        <rect x="-23" y="3" width="8" height="8" rx="1" ry="1"/>
+        <rect x="-10" y="3" width="8" height="8" rx="1" ry="1"/>
+        <rect x="3" y="3" width="8" height="8" rx="1" ry="1"/>
+        <rect x="16" y="3" width="8" height="8" rx="1" ry="1"/>
+        <rect x="29" y="3" width="8" height="8" rx="1" ry="1"/>
+        <rect x="42" y="3" width="8" height="8" rx="1" ry="1"/>
+        <rect x="55" y="3" width="8" height="8" rx="1" ry="1"/>
+        <rect x="68" y="3" width="8" height="8" rx="1" ry="1"/>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Popcorn -->
+  <g transform="translate(40, 220)" filter="url(#shadow)">
+    <path d="M0,0 L5,-20 L25,-15 L30,0 Z" fill="#e74c3c"/>
+    <path d="M0,0 L30,0 L25,30 L5,30 Z" fill="#f1c40f" stroke="#e67e22" stroke-width="1"/>
+    <g fill="white">
+      <circle cx="7" cy="-5" r="3"/>
+      <circle cx="15" cy="-10" r="3"/>
+      <circle cx="22" cy="-5" r="3"/>
+      <circle cx="11" cy="-2" r="3"/>
+      <circle cx="18" cy="-3" r="3"/>
+    </g>
+    <text x="15" y="20" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="#e74c3c">POPCORN</text>
+  </g>
+  
+  <!-- Theater "CINE" sign -->
+  <g transform="translate(200, 40)">
+    <rect x="-80" y="0" width="160" height="40" rx="5" ry="5" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+    <text x="0" y="25" font-family="Arial, sans-serif" font-size="20" text-anchor="middle" fill="#ecf0f1" font-weight="bold">CINE</text>
+    
+    <!-- Lights around the sign -->
+    <g fill="#f1c40f">
+      <circle cx="-70" cy="20" r="3"><animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/></circle>
+      <circle cx="-50" cy="20" r="3"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.5s" repeatCount="indefinite"/></circle>
+      <circle cx="-30" cy="20" r="3"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.7s" repeatCount="indefinite"/></circle>
+      <circle cx="-10" cy="20" r="3"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.2s" repeatCount="indefinite"/></circle>
+      <circle cx="10" cy="20" r="3"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.9s" repeatCount="indefinite"/></circle>
+      <circle cx="30" cy="20" r="3"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.3s" repeatCount="indefinite"/></circle>
+      <circle cx="50" cy="20" r="3"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite"/></circle>
+      <circle cx="70" cy="20" r="3"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.1s" repeatCount="indefinite"/></circle>
+    </g>
+  </g>
+  
+  <!-- 3D Glasses -->
+  <g transform="translate(340, 220)" filter="url(#shadow)">
+    <path d="M0,0 C5,-5 15,-5 20,0 C25,5 25,15 20,20 C15,25 5,25 0,20 C-5,15 -5,5 0,0 Z" fill="#34495e" stroke="#2c3e50" stroke-width="1"/>
+    <path d="M20,0 C25,-5 35,-5 40,0 C45,5 45,15 40,20 C35,25 25,25 20,20 C15,15 15,5 20,0 Z" fill="#34495e" stroke="#2c3e50" stroke-width="1"/>
+    <path d="M20,0 L20,20" stroke="#2c3e50" stroke-width="2"/>
+    <ellipse cx="10" cy="10" rx="8" ry="8" fill="#e74c3c" opacity="0.5"/>
+    <ellipse cx="30" cy="10" rx="8" ry="8" fill="#3498db" opacity="0.5"/>
+  </g>
+  
+  <!-- Film Strip -->
+  <g transform="translate(350, 100)">
+    <rect width="30" height="80" fill="#2c3e50" stroke="#34495e" stroke-width="1"/>
+    <g fill="#34495e">
+      <rect x="5" y="5" width="20" height="10"/>
+      <rect x="5" y="20" width="20" height="10"/>
+      <rect x="5" y="35" width="20" height="10"/>
+      <rect x="5" y="50" width="20" height="10"/>
+      <rect x="5" y="65" width="20" height="10"/>
+    </g>
+    <g fill="none" stroke="#7f8c8d" stroke-width="1">
+      <circle cx="5" cy="3" r="1.5"/>
+      <circle cx="25" cy="3" r="1.5"/>
+      <circle cx="5" cy="18" r="1.5"/>
+      <circle cx="25" cy="18" r="1.5"/>
+      <circle cx="5" cy="33" r="1.5"/>
+      <circle cx="25" cy="33" r="1.5"/>
+      <circle cx="5" cy="48" r="1.5"/>
+      <circle cx="25" cy="48" r="1.5"/>
+      <circle cx="5" cy="63" r="1.5"/>
+      <circle cx="25" cy="63" r="1.5"/>
+      <circle cx="5" cy="78" r="1.5"/>
+      <circle cx="25" cy="78" r="1.5"/>
+    </g>
+  </g>
+</svg>

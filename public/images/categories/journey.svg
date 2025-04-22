@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3a7bd5"/>
+      <stop offset="100%" stop-color="#00d2ff"/>
+    </linearGradient>
+    <linearGradient id="road-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7f8c8d"/>
+      <stop offset="100%" stop-color="#95a5a6"/>
+    </linearGradient>
+    <linearGradient id="grass-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#27ae60"/>
+      <stop offset="100%" stop-color="#2ecc71"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.5"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background with sky and ground -->
+  <rect width="400" height="200" fill="url(#sky-grad)"/>
+  <rect y="200" width="400" height="100" fill="url(#grass-grad)"/>
+  
+  <!-- Sun -->
+  <circle cx="350" cy="50" r="30" fill="#f1c40f">
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="5s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Clouds -->
+  <g transform="translate(80, 70)" fill="white" opacity="0.8">
+    <ellipse cx="0" cy="0" rx="25" ry="15"/>
+    <ellipse cx="20" cy="-5" rx="20" ry="10"/>
+    <ellipse cx="-15" cy="5" rx="15" ry="10"/>
+  </g>
+  
+  <g transform="translate(280, 90)" fill="white" opacity="0.8">
+    <ellipse cx="0" cy="0" rx="20" ry="12"/>
+    <ellipse cx="15" cy="-4" rx="15" ry="8"/>
+    <ellipse cx="-12" cy="3" rx="12" ry="7"/>
+  </g>
+  
+  <!-- Mountains -->
+  <g fill="#34495e">
+    <path d="M0,200 L100,100 L200,200 Z"/>
+    <path d="M150,200 L250,120 L350,200 Z"/>
+    <path d="M300,200 L350,150 L400,200 Z"/>
+  </g>
+  
+  <g fill="#2c3e50">
+    <path d="M0,200 L80,120 L160,200 Z"/>
+    <path d="M200,200 L280,130 L320,200 Z"/>
+  </g>
+  
+  <!-- Snow caps -->
+  <g fill="white">
+    <path d="M90,110 L100,100 L110,110 L105,115 Z"/>
+    <path d="M245,125 L250,120 L255,125 L250,130 Z"/>
+    <path d="M345,155 L350,150 L355,155 L350,160 Z"/>
+  </g>
+  
+  <!-- Road -->
+  <path d="M0,250 C50,240 100,260 150,250 C200,240 250,260 300,250 C350,240 400,260 400,250 L400,270 C350,260 300,280 250,270 C200,260 150,280 100,270 C50,260 0,280 0,270 Z" fill="url(#road-grad)"/>
+  
+  <!-- Road markings -->
+  <g stroke="white" stroke-width="4" stroke-dasharray="20,20" opacity="0.8">
+    <line x1="0" y1="260" x2="400" y2="260"/>
+  </g>
+  
+  <!-- Map with route -->
+  <g transform="translate(200, 150)" filter="url(#shadow)">
+    <rect x="-80" y="-50" width="160" height="100" rx="5" ry="5" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2"/>
+    
+    <!-- Map features -->
+    <rect x="-70" y="-40" width="60" height="35" fill="#3498db" opacity="0.5"/> <!-- Lake -->
+    <rect x="-70" y="5" width="30" height="35" fill="#27ae60" opacity="0.5"/> <!-- Forest -->
+    <rect x="20" y="-40" width="40" height="80" fill="#f1c40f" opacity="0.2"/> <!-- Desert/Field -->
+    
+    <!-- Cities/Points marked -->
+    <circle cx="-60" cy="-20" r="3" fill="#e74c3c"/>
+    <text x="-53" y="-17" font-family="Arial, sans-serif" font-size="7" fill="#2c3e50">Ciudad A</text>
+    
+    <circle cx="10" cy="30" r="3" fill="#e74c3c"/>
+    <text x="17" y="33" font-family="Arial, sans-serif" font-size="7" fill="#2c3e50">Ciudad B</text>
+    
+    <circle cx="40" cy="-20" r="3" fill="#e74c3c"/>
+    <text x="47" y="-17" font-family="Arial, sans-serif" font-size="7" fill="#2c3e50">Ciudad C</text>
+    
+    <!-- Route line -->
+    <path d="M-60,-20 C-30,0 -10,10 10,30 C20,40 30,0 40,-20" 
+          stroke="#9b59b6" stroke-width="2" fill="none" stroke-dasharray="4,2"/>
+    
+    <!-- Map title -->
+    <text x="0" y="-55" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#8e44ad" font-weight="bold">RUTA DEL VIAJE</text>
+  </g>
+  
+  <!-- Car -->
+  <g transform="translate(120, 245)" filter="url(#shadow)">
+    <rect x="-20" y="-10" width="40" height="12" rx="3" ry="3" fill="#e74c3c"/>
+    <rect x="-15" y="-18" width="30" height="8" rx="2" ry="2" fill="#e74c3c"/>
+    <rect x="-13" y="-16" width="8" height="5" fill="#ecf0f1"/> <!-- Left window -->
+    <rect x="5" y="-16" width="8" height="5" fill="#ecf0f1"/> <!-- Right window -->
+    <circle cx="-12" cy="2" r="5" fill="#34495e"/> <!-- Left wheel -->
+    <circle cx="12" cy="2" r="5" fill="#34495e"/> <!-- Right wheel -->
+    <circle cx="-12" cy="2" r="2" fill="#7f8c8d"/> <!-- Left wheel center -->
+    <circle cx="12" cy="2" r="2" fill="#7f8c8d"/> <!-- Right wheel center -->
+    
+    <!-- Headlights -->
+    <rect x="-18" y="-5" width="3" height="3" fill="#f1c40f"/>
+    <rect x="15" y="-5" width="3" height="3" fill="#f1c40f"/>
+  </g>
+  
+  <!-- Signpost -->
+  <g transform="translate(330, 210)">
+    <rect x="-3" y="-40" width="6" height="40" fill="#7f8c8d"/>
+    <g transform="rotate(-10)">
+      <rect x="0" y="-35" width="40" height="15" fill="#3498db"/>
+      <text x="20" y="-25" font-family="Arial, sans-serif" font-size="7" text-anchor="middle" fill="white">Ciudad B</text>
+      <polygon points="0,-35 0,-20 -5,-27.5" fill="#3498db"/>
+    </g>
+    <g transform="rotate(15)">
+      <rect x="0" y="-15" width="30" height="12" fill="#e74c3c"/>
+      <text x="15" y="-7" font-family="Arial, sans-serif" font-size="6" text-anchor="middle" fill="white">Ciudad C</text>
+      <polygon points="0,-15 0,-3 -5,-9" fill="#e74c3c"/>
+    </g>
+  </g>
+  
+  <!-- Compass -->
+  <g transform="translate(40, 40)">
+    <circle cx="0" cy="0" r="20" fill="white" stroke="#7f8c8d" stroke-width="1" opacity="0.8"/>
+    <line x1="0" y1="-18" x2="0" y2="18" stroke="#7f8c8d" stroke-width="1"/>
+    <line x1="-18" y1="0" x2="18" y2="0" stroke="#7f8c8d" stroke-width="1"/>
+    <path d="M0,-8 L4,0 L0,8 L-4,0 Z" fill="#e74c3c"/> <!-- Pointer arrow -->
+    <text x="0" y="-10" font-family="Arial, sans-serif" font-size="6" text-anchor="middle" fill="#2c3e50">N</text>
+    <text x="0" y="14" font-family="Arial, sans-serif" font-size="6" text-anchor="middle" fill="#2c3e50">S</text>
+    <text x="-12" y="2" font-family="Arial, sans-serif" font-size="6" text-anchor="middle" fill="#2c3e50">O</text>
+    <text x="12" y="2" font-family="Arial, sans-serif" font-size="6" text-anchor="middle" fill="#2c3e50">E</text>
+  </g>
+</svg>

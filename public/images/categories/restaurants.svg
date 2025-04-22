@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="restaurant-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e74c3c"/>
+      <stop offset="100%" stop-color="#c0392b"/>
+    </linearGradient>
+    <linearGradient id="table-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d35400"/>
+      <stop offset="100%" stop-color="#e67e22"/>
+    </linearGradient>
+    <filter id="plate-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="1" dy="1" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.5"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="restaurant-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="5"/>
+      <feOffset dx="3" dy="3" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.5"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background with restaurant wall texture -->
+  <rect width="400" height="300" fill="#ecf0f1"/>
+  
+  <!-- Restaurant building -->
+  <g transform="translate(100, 50)" filter="url(#restaurant-shadow)">
+    <rect width="200" height="150" fill="url(#restaurant-bg)" rx="5" ry="5"/>
+    <rect x="20" y="10" width="160" height="60" fill="#34495e"/>
+    
+    <!-- Restaurant name -->
+    <g transform="translate(100, 40)">
+      <text font-family="Arial, sans-serif" font-size="20" text-anchor="middle" fill="#ecf0f1" font-weight="bold">RESTAURANTE</text>
+      <text y="25" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#f1c40f" font-style="italic">Sabores</text>
+    </g>
+    
+    <!-- Door -->
+    <rect x="85" y="90" width="30" height="60" fill="#2c3e50"/>
+    <rect x="87" y="92" width="26" height="56" fill="#34495e"/>
+    <circle cx="105" cy="120" r="2" fill="#f1c40f"/>
+    
+    <!-- Windows -->
+    <rect x="25" y="100" width="40" height="25" fill="#2c3e50"/>
+    <rect x="27" y="102" width="36" height="21" fill="#3498db" opacity="0.7"/>
+    
+    <rect x="135" y="100" width="40" height="25" fill="#2c3e50"/>
+    <rect x="137" y="102" width="36" height="21" fill="#3498db" opacity="0.7"/>
+  </g>
+  
+  <!-- Dining table with food -->
+  <g transform="translate(200, 240)">
+    <!-- Table -->
+    <ellipse cx="0" cy="0" rx="120" ry="40" fill="url(#table-grad)"/>
+    
+    <!-- Plate 1 with steak -->
+    <g transform="translate(-50, -10)" filter="url(#plate-shadow)">
+      <circle cx="0" cy="0" r="20" fill="white" stroke="#bdc3c7" stroke-width="2"/>
+      <path d="M-10,-5 C-8,-10 8,-10 10,-5 C12,0 8,5 0,5 C-8,5 -12,0 -10,-5 Z" fill="#e74c3c"/>
+      <line x1="-10" y1="5" x2="10" y2="5" stroke="#2c3e50" stroke-width="0.5" opacity="0.5"/>
+      <path d="M-8,5 C-8,7 -4,10 0,10 C4,10 8,7 8,5" stroke="#27ae60" stroke-width="2" fill="none"/>
+    </g>
+    
+    <!-- Plate 2 with pasta -->
+    <g transform="translate(50, -10)" filter="url(#plate-shadow)">
+      <circle cx="0" cy="0" r="20" fill="white" stroke="#bdc3c7" stroke-width="2"/>
+      <path d="M-12,-2 C-10,-5 10,-5 12,-2 C14,1 10,8 0,8 C-10,8 -14,1 -12,-2 Z" fill="#f39c12"/>
+      <g stroke="#f1c40f" stroke-width="1" fill="none">
+        <path d="M-10,0 C-5,-5 5,5 10,0"/>
+        <path d="M-8,-2 C-3,-7 7,3 12,-2"/>
+        <path d="M-12,2 C-7,-3 3,7 8,2"/>
+      </g>
+    </g>
+    
+    <!-- Wine glass -->
+    <g transform="translate(0, -15)" filter="url(#plate-shadow)">
+      <path d="M0,0 L-5,15 L5,15 Z" fill="#ff6666" opacity="0.6"/>
+      <path d="M-5,15 L-2,20 L2,20 L5,15 Z" fill="#ecf0f1"/>
+      <rect x="-1" y="20" width="2" height="10" fill="#ecf0f1"/>
+      <ellipse cx="0" cy="30" rx="5" ry="1" fill="#ecf0f1"/>
+      <path d="M-5,15 L5,15" stroke="#bdc3c7" stroke-width="0.5"/>
+    </g>
+    
+    <!-- Cutlery -->
+    <g stroke="#7f8c8d" stroke-width="1.5" stroke-linecap="round">
+      <!-- Fork -->
+      <g transform="translate(-70, 0)">
+        <line x1="0" y1="-15" x2="0" y2="5"/>
+        <line x1="-3" y1="-15" x2="-3" y2="-5"/>
+        <line x1="3" y1="-15" x2="3" y2="-5"/>
+        <line x1="0" y1="5" x2="0" y2="15" stroke-width="2"/>
+      </g>
+      
+      <!-- Knife -->
+      <g transform="translate(70, 0)">
+        <path d="M2,-15 L-2,-5 L-2,5" stroke-width="2"/>
+        <line x1="-2" y1="5" x2="-2" y2="15" stroke-width="2"/>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Chef hat floating at the top -->
+  <g transform="translate(350, 50)">
+    <ellipse cx="0" cy="10" rx="15" ry="5" fill="white" stroke="#bdc3c7"/>
+    <rect x="-10" y="-15" width="20" height="25" rx="10" ry="10" fill="white" stroke="#bdc3c7"/>
+    <path d="M-10,5 C-10,-5 0,-10 0,-10 C0,-10 10,-5 10,5" fill="white" stroke="#bdc3c7"/>
+  </g>
+  
+  <!-- Menu board on the wall -->
+  <g transform="translate(40, 100)">
+    <rect width="40" height="60" fill="#2c3e50" stroke="#34495e" stroke-width="2"/>
+    <text x="20" y="20" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="white" font-weight="bold">MENÚ</text>
+    
+    <line x1="5" y1="25" x2="35" y2="25" stroke="#95a5a6" stroke-width="1"/>
+    <line x1="5" y1="35" x2="35" y2="35" stroke="#95a5a6" stroke-width="1"/>
+    <line x1="5" y1="45" x2="35" y2="45" stroke="#95a5a6" stroke-width="1"/>
+    <line x1="5" y1="55" x2="35" y2="55" stroke="#95a5a6" stroke-width="1"/>
+    
+    <line x1="25" y1="25" x2="35" y2="25" stroke="#f1c40f" stroke-width="1"/>
+    <line x1="25" y1="35" x2="35" y2="35" stroke="#f1c40f" stroke-width="1"/>
+    <line x1="25" y1="45" x2="35" y2="45" stroke="#f1c40f" stroke-width="1"/>
+    <line x1="25" y1="55" x2="35" y2="55" stroke="#f1c40f" stroke-width="1"/>
+  </g>
+</svg>

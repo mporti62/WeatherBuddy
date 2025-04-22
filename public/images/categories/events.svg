@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="calendar-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#9b59b6"/>
+      <stop offset="100%" stop-color="#8e44ad"/>
+    </linearGradient>
+    <linearGradient id="header-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d35400"/>
+      <stop offset="100%" stop-color="#e67e22"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.5"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background with party lights -->
+  <rect width="400" height="300" fill="#2c3e50"/>
+  
+  <g opacity="0.5">
+    <circle cx="50" cy="50" r="20" fill="#e74c3c">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="150" cy="30" r="15" fill="#2ecc71">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="250" cy="60" r="18" fill="#3498db">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="350" cy="40" r="12" fill="#f1c40f">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Calendar -->
+  <g transform="translate(120, 80)" filter="url(#shadow)">
+    <rect width="160" height="160" rx="10" ry="10" fill="url(#calendar-bg)"/>
+    <rect width="160" height="40" rx="10" ry="10" fill="url(#header-bg)"/>
+    
+    <text x="80" y="25" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="white" font-weight="bold">EVENTOS</text>
+    
+    <!-- Calendar grid -->
+    <line x1="0" y1="80" x2="160" y2="80" stroke="white" stroke-opacity="0.5"/>
+    <line x1="0" y1="120" x2="160" y2="120" stroke="white" stroke-opacity="0.5"/>
+    <line x1="0" y1="160" x2="160" y2="160" stroke="white" stroke-opacity="0.5"/>
+    <line x1="40" y1="40" x2="40" y2="200" stroke="white" stroke-opacity="0.5"/>
+    <line x1="80" y1="40" x2="80" y2="200" stroke="white" stroke-opacity="0.5"/>
+    <line x1="120" y1="40" x2="120" y2="200" stroke="white" stroke-opacity="0.5"/>
+    
+    <!-- Important dates -->
+    <circle cx="60" cy="60" r="15" fill="#e74c3c"/>
+    <text x="60" y="65" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="white" font-weight="bold">15</text>
+    
+    <circle cx="100" cy="100" r="15" fill="#3498db"/>
+    <text x="100" y="105" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="white" font-weight="bold">22</text>
+    
+    <circle cx="140" cy="140" r="15" fill="#2ecc71"/>
+    <text x="140" y="145" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="white" font-weight="bold">28</text>
+  </g>
+  
+  <!-- Music notes -->
+  <g fill="white" opacity="0.7">
+    <path d="M50,150 C50,140 50,130 50,120 C50,110 60,110 60,120 L60,140 L50,140 M50,120 L40,125" />
+    <path d="M350,170 C350,160 350,150 350,140 C350,130 360,130 360,140 L360,160 L350,160 M350,140 L340,145" />
+    <circle cx="45" cy="150" rx="7" ry="5" transform="rotate(-10, 45, 150)"/>
+    <circle cx="355" cy="170" rx="7" ry="5" transform="rotate(-10, 355, 170)"/>
+  </g>
+  
+  <!-- Confetti -->
+  <g>
+    <rect x="320" y="100" width="5" height="15" fill="#e74c3c" transform="rotate(30, 320, 100)"/>
+    <rect x="330" y="90" width="5" height="15" fill="#3498db" transform="rotate(-20, 330, 90)"/>
+    <rect x="340" y="110" width="5" height="15" fill="#f1c40f" transform="rotate(45, 340, 110)"/>
+    <rect x="330" y="120" width="5" height="15" fill="#2ecc71" transform="rotate(-45, 330, 120)"/>
+    
+    <rect x="70" y="200" width="5" height="15" fill="#e74c3c" transform="rotate(30, 70, 200)"/>
+    <rect x="60" y="220" width="5" height="15" fill="#3498db" transform="rotate(-20, 60, 220)"/>
+    <rect x="80" y="210" width="5" height="15" fill="#f1c40f" transform="rotate(45, 80, 210)"/>
+    <rect x="90" y="230" width="5" height="15" fill="#2ecc71" transform="rotate(-45, 90, 230)"/>
+  </g>
+</svg>
