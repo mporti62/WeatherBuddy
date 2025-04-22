@@ -348,25 +348,88 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="bg-white rounded-lg shadow-lg p-6 my-4"
+          transition={{ 
+            type: "spring", 
+            stiffness: 100, 
+            damping: 10,
+            duration: 0.8 
+          }}
+          className="bg-gradient-to-br from-[#1a1a1a] to-[#2a2a2a] text-white rounded-lg shadow-lg p-6 my-4 border border-[#333] overflow-hidden relative"
         >
-          <h3 className="text-xl font-bold mb-4">
+          <motion.div 
+            className="absolute top-0 right-0 w-40 h-40 bg-blue-500 rounded-full filter blur-3xl opacity-20"
+            animate={{ 
+              scale: [1, 1.2, 1],
+              opacity: [0.1, 0.2, 0.1]
+            }}
+            transition={{ 
+              repeat: Infinity, 
+              duration: 4,
+              ease: "easeInOut"
+            }}
+          />
+          
+          <motion.h3 
+            className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
             {language === "es" ? "¡Prepárate para la aventura!" : "Get Ready for Adventure!"}
-          </h3>
-          <p className="mb-4">{currentJourney.description}</p>
-          <div className="flex items-center mb-4">
-            <MapPin className="mr-2 h-5 w-5 text-blue-500" />
-            <span>
-              {currentJourney.locations.length} {language === "es" ? "destinos" : "destinations"}
-            </span>
-          </div>
-          <div className="flex items-center mb-4">
-            <Clock className="mr-2 h-5 w-5 text-blue-500" />
-            <span>
-              {Math.round(currentJourney.totalDuration / 60)} {language === "es" ? "horas de aventura" : "hours of adventure"}
-            </span>
-          </div>
+          </motion.h3>
+          
+          <motion.p 
+            className="mb-4 text-gray-300"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            {currentJourney.description}
+          </motion.p>
+          
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+          >
+            <div className="bg-[#333] p-4 rounded-lg flex items-center space-x-3">
+              <MapPin className="h-8 w-8 text-blue-400" />
+              <div>
+                <div className="text-sm text-gray-400">{language === "es" ? "Destinos" : "Destinations"}</div>
+                <div className="text-xl font-bold">{currentJourney.locations.length}</div>
+              </div>
+            </div>
+            
+            <div className="bg-[#333] p-4 rounded-lg flex items-center space-x-3">
+              <Clock className="h-8 w-8 text-purple-400" />
+              <div>
+                <div className="text-sm text-gray-400">{language === "es" ? "Duración" : "Duration"}</div>
+                <div className="text-xl font-bold">{Math.round(currentJourney.totalDuration / 60)} {language === "es" ? "horas" : "hours"}</div>
+              </div>
+            </div>
+            
+            <div className="bg-[#333] p-4 rounded-lg flex items-center space-x-3">
+              <Star className="h-8 w-8 text-yellow-400" />
+              <div>
+                <div className="text-sm text-gray-400">{language === "es" ? "Experiencia" : "Experience"}</div>
+                <div className="text-xl font-bold">{language === "es" ? "Inolvidable" : "Unforgettable"}</div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            className="mt-6 bg-blue-900 bg-opacity-30 p-4 rounded-lg border-l-4 border-blue-500"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+          >
+            <p className="text-blue-100 italic">
+              {language === "es" 
+                ? "Este viaje te llevará a través de las mejores experiencias que ofrece la zona. Prepárate para descubrir lugares increíbles y crear recuerdos que durarán toda la vida."
+                : "This journey will take you through the best experiences the area has to offer. Get ready to discover amazing places and create memories that will last a lifetime."}
+            </p>
+          </motion.div>
         </motion.div>
       )}
       
@@ -415,6 +478,41 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
         </MapContainer>
       </div>
       
+      {/* Indicador de progreso del viaje */}
+      {animationStep === 1 && (
+        <div className="bg-[#1a1a1a] rounded-lg p-4 mb-6 shadow-lg">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-gray-300 text-sm">
+              {language === "es" ? "Progreso del viaje" : "Journey progress"}
+            </span>
+            <span className="text-gray-300 text-sm">
+              {activeLocationIndex + 1}/{currentJourney.locations.length}
+            </span>
+          </div>
+          <div className="h-2 bg-[#333] rounded-full overflow-hidden">
+            <motion.div 
+              className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
+              initial={{ width: "0%" }}
+              animate={{ 
+                width: `${((activeLocationIndex + 1) / currentJourney.locations.length) * 100}%` 
+              }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            />
+          </div>
+          <div className="flex justify-between mt-2">
+            {currentJourney.locations.map((_, index) => (
+              <div
+                key={index}
+                className={`w-6 h-6 rounded-full flex items-center justify-center text-xs 
+                  ${index <= activeLocationIndex ? 'bg-blue-500 text-white' : 'bg-[#333] text-gray-400'}`}
+              >
+                {index + 1}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      
       {/* Contenido de la ubicación actual */}
       {animationStep === 1 && currentLocation && (
         <AnimatePresence mode="wait">
@@ -423,36 +521,158 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.5 }}
-            className="bg-white rounded-lg shadow-lg p-6"
+            transition={{ 
+              type: "spring",
+              stiffness: 200,
+              damping: 20,
+              duration: 0.5 
+            }}
+            className="bg-gradient-to-br from-[#1a1a1a] to-[#2a2a2a] border border-[#333] rounded-lg shadow-lg p-6 text-white relative overflow-hidden"
           >
-            <div className="flex items-center mb-2">
+            {/* Fondo decorativo según el tipo de lugar */}
+            <motion.div 
+              className={`absolute top-0 right-0 w-40 h-40 rounded-full filter blur-3xl opacity-10
+                ${currentLocation.type === 'recreation' ? 'bg-green-500' : 
+                  currentLocation.type === 'entertainment' ? 'bg-pink-500' : 
+                    currentLocation.type === 'restaurant' ? 'bg-red-500' :
+                      currentLocation.type === 'event' ? 'bg-purple-500' : 'bg-yellow-500'}`}
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.1, 0.2, 0.1]
+              }}
+              transition={{ 
+                repeat: Infinity, 
+                duration: 4,
+                ease: "easeInOut"
+              }}
+            />
+            
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <Badge className={`
+                ${currentLocation.type === 'recreation' ? 'bg-green-500' : 
+                  currentLocation.type === 'entertainment' ? 'bg-pink-500' : 
+                    currentLocation.type === 'restaurant' ? 'bg-red-500' :
+                      currentLocation.type === 'event' ? 'bg-purple-500' : 'bg-yellow-500'} 
+                  mr-2`}
+              >
+                {currentLocation.type === 'recreation' ? (language === 'es' ? 'Recreación' : 'Recreation') : 
+                  currentLocation.type === 'entertainment' ? (language === 'es' ? 'Entretenimiento' : 'Entertainment') : 
+                    currentLocation.type === 'restaurant' ? (language === 'es' ? 'Restaurante' : 'Restaurant') :
+                      currentLocation.type === 'event' ? (language === 'es' ? 'Evento' : 'Event') : 
+                        (language === 'es' ? 'Banco' : 'Bank')}
+              </Badge>
+              
               <Badge className="bg-blue-500 mr-2">
                 {language === "es" ? "Destino " : "Destination "} {activeLocationIndex + 1}
               </Badge>
-              <Badge variant="outline">
+              
+              <Badge variant="outline" className="border-gray-500 text-gray-300">
+                <Clock className="w-3 h-3 mr-1" />
                 {language === "es" 
                   ? `${currentLocation.duration} minutos` 
                   : `${currentLocation.duration} minutes`}
               </Badge>
             </div>
             
-            <h3 className="text-xl font-bold mb-2">{currentLocation.name}</h3>
+            <motion.h3 
+              className={`text-2xl font-bold mb-4 
+                ${currentLocation.type === 'recreation' ? 'text-green-400' : 
+                  currentLocation.type === 'entertainment' ? 'text-pink-400' : 
+                    currentLocation.type === 'restaurant' ? 'text-red-400' :
+                      currentLocation.type === 'event' ? 'text-purple-400' : 'text-yellow-400'}`}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {currentLocation.name}
+            </motion.h3>
             
             <div className="flex flex-col md:flex-row md:space-x-4">
-              <div className="mb-4 md:mb-0 md:w-1/3">
+              <motion.div 
+                className="mb-4 md:mb-0 md:w-1/3"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
                 <img 
                   src={currentLocation.imageUrl} 
                   alt={currentLocation.name}
-                  className="w-full h-40 object-cover rounded-md" 
+                  className="w-full h-48 object-cover rounded-md shadow-lg border border-[#444]" 
                 />
-              </div>
+              </motion.div>
               
               <div className="md:w-2/3">
-                <p className="text-gray-700 italic mb-3">{currentLocation.description}</p>
-                <div className="bg-gray-50 p-4 rounded-md border-l-4 border-blue-500">
-                  <p className="text-gray-800">{currentLocation.story}</p>
-                </div>
+                <motion.p 
+                  className="text-gray-300 italic mb-3"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                >
+                  {currentLocation.description}
+                </motion.p>
+                
+                <motion.div 
+                  className={`
+                    ${currentLocation.type === 'recreation' ? 'bg-green-900 bg-opacity-20 border-green-500' : 
+                      currentLocation.type === 'entertainment' ? 'bg-pink-900 bg-opacity-20 border-pink-500' : 
+                        currentLocation.type === 'restaurant' ? 'bg-red-900 bg-opacity-20 border-red-500' :
+                          currentLocation.type === 'event' ? 'bg-purple-900 bg-opacity-20 border-purple-500' : 
+                            'bg-yellow-900 bg-opacity-20 border-yellow-500'} 
+                    p-4 rounded-md border-l-4`}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4, duration: 0.5 }}
+                >
+                  <p className="text-gray-100">{currentLocation.story}</p>
+                </motion.div>
+                
+                {/* Características del lugar según su tipo */}
+                <motion.div 
+                  className="mt-4 flex flex-wrap gap-2"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                >
+                  {currentLocation.type === 'recreation' && (
+                    <>
+                      <Badge variant="outline" className="bg-[#333]">Actividad al aire libre</Badge>
+                      <Badge variant="outline" className="bg-[#333]">Naturaleza</Badge>
+                      <Badge variant="outline" className="bg-[#333]">Para toda la familia</Badge>
+                    </>
+                  )}
+                  
+                  {currentLocation.type === 'entertainment' && (
+                    <>
+                      <Badge variant="outline" className="bg-[#333]">Diversión</Badge>
+                      <Badge variant="outline" className="bg-[#333]">Ocio</Badge>
+                      <Badge variant="outline" className="bg-[#333]">Cultural</Badge>
+                    </>
+                  )}
+                  
+                  {currentLocation.type === 'restaurant' && (
+                    <>
+                      <Badge variant="outline" className="bg-[#333]">Gastronomía</Badge>
+                      <Badge variant="outline" className="bg-[#333]">Servicio local</Badge>
+                      <Badge variant="outline" className="bg-[#333]">Experiencia culinaria</Badge>
+                    </>
+                  )}
+                  
+                  {currentLocation.type === 'event' && (
+                    <>
+                      <Badge variant="outline" className="bg-[#333]">Evento especial</Badge>
+                      <Badge variant="outline" className="bg-[#333]">Comunidad</Badge>
+                      <Badge variant="outline" className="bg-[#333]">Único</Badge>
+                    </>
+                  )}
+                  
+                  {currentLocation.type === 'bank' && (
+                    <>
+                      <Badge variant="outline" className="bg-[#333]">Servicios financieros</Badge>
+                      <Badge variant="outline" className="bg-[#333]">Práctico</Badge>
+                      <Badge variant="outline" className="bg-[#333]">Esencial</Badge>
+                    </>
+                  )}
+                </motion.div>
               </div>
             </div>
           </motion.div>
@@ -462,20 +682,166 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
       {/* Mensaje de final del viaje */}
       {animationStep === 2 && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg shadow-lg p-6 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="relative"
         >
-          <h3 className="text-xl font-bold mb-4">
-            {language === "es" ? "¡Viaje completado!" : "Journey Completed!"}
-          </h3>
-          <p className="mb-4">
-            {language === "es" 
-              ? `Has visitado ${currentJourney.locations.length} lugares increíbles y descubierto lo mejor de la zona.` 
-              : `You've visited ${currentJourney.locations.length} amazing places and discovered the best of the area.`}
-          </p>
-          <Star className="h-16 w-16 text-yellow-300 mx-auto my-4" />
+          <motion.div
+            className="bg-gradient-to-br from-[#1a1a1a] to-[#2a2a2a] border border-[#444] text-white rounded-lg shadow-lg p-8 text-center overflow-hidden relative"
+            initial={{ scale: 0.9, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 400,
+              damping: 30,
+              delay: 0.3,
+              duration: 0.6
+            }}
+          >
+            {/* Efectos de confeti animados */}
+            <motion.div 
+              className="absolute inset-0 overflow-hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              {[...Array(15)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className={`absolute w-3 h-3 rounded-full
+                    ${i % 5 === 0 ? 'bg-blue-500' : 
+                      i % 5 === 1 ? 'bg-purple-500' : 
+                        i % 5 === 2 ? 'bg-green-500' :
+                          i % 5 === 3 ? 'bg-pink-500' : 'bg-yellow-500'}`}
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: '-20px',
+                  }}
+                  animate={{
+                    y: ['0vh', '100vh'],
+                    x: [0, Math.random() * 40 - 20],
+                    rotate: [0, Math.random() * 360],
+                    opacity: [1, 0]
+                  }}
+                  transition={{
+                    duration: Math.random() * 2 + 2,
+                    repeat: Infinity,
+                    delay: Math.random() * 2,
+                    ease: "easeOut"
+                  }}
+                />
+              ))}
+            </motion.div>
+            
+            {/* Círculos decorativos animados */}
+            <motion.div 
+              className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full filter blur-3xl opacity-10"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.05, 0.1, 0.05]
+              }}
+              transition={{ 
+                repeat: Infinity, 
+                duration: 6,
+                ease: "easeInOut"
+              }}
+            />
+            
+            <motion.div 
+              className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500 rounded-full filter blur-3xl opacity-10"
+              animate={{ 
+                scale: [1.2, 1, 1.2],
+                opacity: [0.1, 0.05, 0.1]
+              }}
+              transition={{ 
+                repeat: Infinity, 
+                duration: 6,
+                ease: "easeInOut",
+                delay: 3
+              }}
+            />
+            
+            {/* Contenido */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.7 }}
+              className="relative z-10"
+            >
+              <motion.div
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{ 
+                  repeat: Infinity,
+                  repeatType: "reverse", 
+                  duration: 1.5,
+                  ease: "easeInOut"
+                }}
+                className="mx-auto w-24 h-24 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mb-6"
+              >
+                <Star className="h-12 w-12 text-white" />
+              </motion.div>
+              
+              <motion.h3 
+                className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9, duration: 0.5 }}
+              >
+                {language === "es" ? "¡Aventura completada!" : "Adventure Completed!"}
+              </motion.h3>
+              
+              <motion.p 
+                className="text-lg text-gray-300 mb-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.1, duration: 0.5 }}
+              >
+                {language === "es" 
+                  ? `Has explorado ${currentJourney.locations.length} lugares increíbles y descubierto lo mejor de la zona.` 
+                  : `You've explored ${currentJourney.locations.length} amazing places and discovered the best of the area.`}
+              </motion.p>
+              
+              <motion.div 
+                className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 mb-6 max-w-3xl mx-auto"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.3, duration: 0.5 }}
+              >
+                <div className="bg-[#333] p-4 rounded-lg border border-[#444]">
+                  <Clock className="h-8 w-8 text-blue-400 mb-2 mx-auto" />
+                  <div className="text-sm text-gray-400">{language === "es" ? "Tiempo total" : "Total time"}</div>
+                  <div className="text-xl font-bold">{Math.round(currentJourney.totalDuration / 60)} {language === "es" ? "horas" : "hours"}</div>
+                </div>
+                
+                <div className="bg-[#333] p-4 rounded-lg border border-[#444]">
+                  <MapPin className="h-8 w-8 text-purple-400 mb-2 mx-auto" />
+                  <div className="text-sm text-gray-400">{language === "es" ? "Destinos" : "Destinations"}</div>
+                  <div className="text-xl font-bold">{currentJourney.locations.length}</div>
+                </div>
+                
+                <div className="bg-[#333] p-4 rounded-lg border border-[#444]">
+                  <Heart className="h-8 w-8 text-red-400 mb-2 mx-auto" />
+                  <div className="text-sm text-gray-400">{language === "es" ? "Experiencias" : "Experiences"}</div>
+                  <div className="text-xl font-bold">{language === "es" ? "Memorables" : "Memorable"}</div>
+                </div>
+              </motion.div>
+              
+              <motion.div
+                className="mt-6 text-gray-300"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.5, duration: 0.5 }}
+              >
+                <p>{language === "es" 
+                  ? "¡Comparte tus experiencias y recuerdos con amigos y familia!"
+                  : "Share your experiences and memories with friends and family!"}
+                </p>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </motion.div>
       )}
       
