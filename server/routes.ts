@@ -782,6 +782,186 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // RESTAURANTS ENDPOINTS
+  app.get("/api/restaurants/:zipCode", async (req, res) => {
+    try {
+      const { zipCode } = req.params;
+      
+      // Check cache first
+      const cacheKey = `restaurants_${zipCode}`;
+      const cachedData = cache.get(cacheKey);
+      if (cachedData) {
+        return res.json(cachedData);
+      }
+      
+      // Get location data first
+      const locationRes = await axios.get(`http://localhost:${req.socket.localPort}/api/location/${zipCode}`);
+      const { latitude, longitude } = locationRes.data;
+      
+      // If we don't have Google Places API key, use mockup data for testing
+      if (!GOOGLE_PLACES_API_KEY || GOOGLE_PLACES_API_KEY === "") {
+        console.log("Using mockup data: No Google Places API key available for restaurants");
+        
+        // Create mockup restaurants
+        const mockRestaurants = [
+          {
+            id: "rest1",
+            name: "El Rincón Mexicano",
+            description: "Auténtica cocina mexicana con un ambiente acogedor y cálido servicio.",
+            address: "123 Taco Street, Test City, FL",
+            imageUrl: "/images/restaurant.svg",
+            rating: 4.7,
+            priceLevel: 2,
+            cuisine: ["mexican", "latin"],
+            hours: "11:00 AM - 10:00 PM",
+            phoneNumber: "(555) 123-4567",
+            features: ["Outdoor Seating", "Full Bar", "Takeout"],
+            latitude: latitude + 0.01,
+            longitude: longitude - 0.01
+          },
+          {
+            id: "rest2",
+            name: "Pasta Paradise",
+            description: "Restaurante italiano familiar con las mejores pastas caseras de la ciudad.",
+            address: "456 Pasta Avenue, Test City, FL",
+            imageUrl: "/images/restaurant.svg",
+            rating: 4.5,
+            priceLevel: 3,
+            cuisine: ["italian", "european"],
+            hours: "12:00 PM - 10:00 PM",
+            phoneNumber: "(555) 987-6543",
+            features: ["Family Friendly", "Wine Selection", "Reservations"],
+            latitude: latitude - 0.01,
+            longitude: longitude + 0.01
+          },
+          {
+            id: "rest3",
+            name: "Burger Bistro",
+            description: "Las hamburguesas gourmet más jugosas con ingredientes frescos y locales.",
+            address: "789 Burger Boulevard, Test City, FL",
+            imageUrl: "/images/restaurant.svg",
+            rating: 4.6,
+            priceLevel: 2,
+            cuisine: ["american", "burgers"],
+            hours: "11:00 AM - 11:00 PM",
+            phoneNumber: "(555) 456-7890",
+            features: ["Craft Beer", "Vegetarian Options", "Delivery"],
+            latitude: latitude + 0.02,
+            longitude: longitude + 0.02
+          },
+          {
+            id: "rest4",
+            name: "Sushi Sensation",
+            description: "Exquisito sushi y platos japoneses preparados por chefs expertos.",
+            address: "321 Sushi Street, Test City, FL",
+            imageUrl: "/images/restaurant.svg",
+            rating: 4.8,
+            priceLevel: 4,
+            cuisine: ["japanese", "asian", "sushi"],
+            hours: "12:00 PM - 10:30 PM",
+            phoneNumber: "(555) 321-0987",
+            features: ["Chef's Table", "Sake Bar", "Catering"],
+            latitude: latitude - 0.02,
+            longitude: longitude - 0.01
+          },
+          {
+            id: "rest5",
+            name: "Healthy Bites Café",
+            description: "Opciones saludables, orgánicas y deliciosas para todos los gustos.",
+            address: "555 Green Street, Test City, FL",
+            imageUrl: "/images/restaurant.svg",
+            rating: 4.4,
+            priceLevel: 2,
+            cuisine: ["healthy", "vegetarian", "vegan"],
+            hours: "7:00 AM - 8:00 PM",
+            phoneNumber: "(555) 555-5555",
+            features: ["Gluten-Free", "Plant-Based", "Smoothies"],
+            latitude: latitude,
+            longitude: longitude - 0.015
+          }
+        ];
+        
+        // Save to cache
+        cache.set(cacheKey, mockRestaurants);
+        
+        return res.json(mockRestaurants);
+      }
+      
+      // If we have an API key, fetch real data
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&type=restaurant&key=${GOOGLE_PLACES_API_KEY}`
+      );
+      
+      if (!response.data.results || response.data.results.length === 0) {
+        return res.json([]);
+      }
+      
+      // Process restaurants data
+      const places = response.data.results;
+      
+      // Get details for each restaurant for more information
+      const restaurantsDetailsPromises = places.slice(0, 5).map(async (place: any) => {
+        try {
+          const detailsResponse = await axios.get(
+            `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=formatted_phone_number,opening_hours,price_level&key=${GOOGLE_PLACES_API_KEY}`
+          );
+          
+          const details = detailsResponse.data.result || {};
+          
+          // Determine cuisine based on place types
+          const cuisineTypes: string[] = [];
+          if (place.types.includes("restaurant")) {
+            if (place.types.includes("mexican_restaurant")) cuisineTypes.push("mexican");
+            else if (place.types.includes("italian_restaurant")) cuisineTypes.push("italian");
+            else if (place.types.includes("japanese_restaurant")) cuisineTypes.push("japanese");
+            else if (place.types.includes("chinese_restaurant")) cuisineTypes.push("chinese");
+            else if (place.types.includes("indian_restaurant")) cuisineTypes.push("indian");
+            else cuisineTypes.push("international");
+          }
+          
+          // Determine features
+          const features = [];
+          if (details.opening_hours?.open_now) features.push("Open Now");
+          if (place.types.includes("meal_takeaway")) features.push("Takeout");
+          if (place.types.includes("meal_delivery")) features.push("Delivery");
+          if (place.types.includes("bar")) features.push("Bar");
+          
+          return {
+            id: place.place_id,
+            name: place.name,
+            description: place.vicinity,
+            address: place.vicinity,
+            imageUrl: place.photos && place.photos[0]
+              ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${GOOGLE_PLACES_API_KEY}`
+              : "https://via.placeholder.com/400x300?text=No+Image",
+            rating: place.rating || 4.0,
+            priceLevel: details.price_level || Math.floor(Math.random() * 3) + 1,
+            cuisine: cuisineTypes.length > 0 ? cuisineTypes : ["restaurant"],
+            hours: details.opening_hours?.weekday_text?.[0] || "Call for hours",
+            phoneNumber: details.formatted_phone_number || "Not available",
+            features: features.length > 0 ? features : ["Family Friendly"],
+            latitude: place.geometry.location.lat,
+            longitude: place.geometry.location.lng
+          };
+        } catch (error) {
+          console.error("Error fetching restaurant details:", error);
+          return null;
+        }
+      });
+      
+      // Wait for all details requests and filter out nulls
+      const restaurantsWithDetails = (await Promise.all(restaurantsDetailsPromises)).filter(Boolean);
+      
+      // Save to cache
+      cache.set(cacheKey, restaurantsWithDetails);
+      
+      res.json(restaurantsWithDetails);
+    } catch (error) {
+      console.error("Error fetching restaurants:", error);
+      res.status(500).json({ message: "Failed to fetch restaurants" });
+    }
+  });
+
   // JOURNEYS ENDPOINT (Nueva característica)
   app.get("/api/journeys/:zipCode", async (req, res) => {
     try {
@@ -805,6 +985,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const recreationRes = await axios.get(`http://localhost:${req.socket.localPort}/api/recreation/${zipCode}`);
       const entertainmentRes = await axios.get(`http://localhost:${req.socket.localPort}/api/entertainment/${zipCode}`);
       const eventsRes = await axios.get(`http://localhost:${req.socket.localPort}/api/events/${zipCode}`);
+      const restaurantsRes = await axios.get(`http://localhost:${req.socket.localPort}/api/restaurants/${zipCode}`);
       const banksRes = await axios.get(`http://localhost:${req.socket.localPort}/api/banks/${zipCode}`);
       
       // Crear viajes de ejemplo usando los datos reales
@@ -856,6 +1037,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
             type: "event",
             story: "Participa en este evento especial que está sucediendo cerca. Una experiencia única.",
             duration: 180
+          });
+        }
+        
+        // Agregar un restaurante si está disponible
+        if (restaurantsRes.data && restaurantsRes.data.length > 0) {
+          const restaurant = restaurantsRes.data[0];
+          locations.push({
+            id: restaurant.id,
+            name: restaurant.name,
+            description: restaurant.description,
+            imageUrl: restaurant.imageUrl,
+            latitude: restaurant.latitude,
+            longitude: restaurant.longitude,
+            type: "restaurant",
+            story: "Disfruta de una deliciosa comida en este fantástico restaurante, el lugar perfecto para recargar energías.",
+            duration: 90
           });
         }
         
@@ -924,9 +1121,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
               type: "entertainment",
               story: "Tómate un momento para apreciar la vida silvestre. Este mirador es famoso por sus increíbles vistas de aves.",
               duration: 60
+            },
+            {
+              id: "loc8",
+              name: "Restaurante Rústico",
+              description: "Cocina local con ingredientes frescos",
+              imageUrl: "/images/restaurant.svg",
+              latitude: latitude + 0.03,
+              longitude: longitude - 0.01,
+              type: "restaurant",
+              story: "Termina tu aventura con una deliciosa comida en este acogedor restaurante con vistas panorámicas al bosque.",
+              duration: 90
             }
           ],
-          totalDuration: 270 // 4.5 horas en total
+          totalDuration: 360 // 6 horas en total
         }
       ];
       
