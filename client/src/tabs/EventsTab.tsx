@@ -83,50 +83,54 @@ export default function EventsTab({ zipCode }: EventsTabProps) {
     : filteredEvents?.slice(0, 3);
 
   return (
-    <Card>
-      <CardHeader className="bg-secondary bg-opacity-10 border-b flex flex-row justify-between items-center">
-        <CardTitle>{translations.eventsNearby}</CardTitle>
+    <Card className="dark-card">
+      <CardHeader className="dark-card-header flex flex-row justify-between items-center">
+        <CardTitle className="text-blue-400">{translations.eventsNearby}</CardTitle>
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" size="sm" className="text-sm">
+            <Button variant="outline" size="sm" className="dark-secondary-button text-sm">
               <Filter className="h-4 w-4 mr-1" /> {translations.filter}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-56">
+          <PopoverContent className="bg-[#1e1e1e] border border-[#333] text-gray-200">
             <div className="p-2">
-              <div className="mb-2 font-medium">{translations.categories}</div>
+              <div className="mb-2 font-medium text-blue-400">{translations.categories}</div>
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
                   <Checkbox 
                     id="music" 
                     checked={categories.music}
                     onCheckedChange={() => handleCategoryChange('music')}
+                    className="border-blue-500 data-[state=checked]:bg-blue-500"
                   />
-                  <Label htmlFor="music">{translations.music}</Label>
+                  <Label htmlFor="music" className="text-gray-300">{translations.music}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox 
                     id="art" 
                     checked={categories.art}
                     onCheckedChange={() => handleCategoryChange('art')}
+                    className="border-blue-500 data-[state=checked]:bg-blue-500"
                   />
-                  <Label htmlFor="art">{translations.art}</Label>
+                  <Label htmlFor="art" className="text-gray-300">{translations.art}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox 
                     id="sports" 
                     checked={categories.sports}
                     onCheckedChange={() => handleCategoryChange('sports')}
+                    className="border-blue-500 data-[state=checked]:bg-blue-500"
                   />
-                  <Label htmlFor="sports">{translations.sports}</Label>
+                  <Label htmlFor="sports" className="text-gray-300">{translations.sports}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox 
                     id="food" 
                     checked={categories.food}
                     onCheckedChange={() => handleCategoryChange('food')}
+                    className="border-blue-500 data-[state=checked]:bg-blue-500"
                   />
-                  <Label htmlFor="food">{translations.food}</Label>
+                  <Label htmlFor="food" className="text-gray-300">{translations.food}</Label>
                 </div>
               </div>
             </div>
@@ -137,15 +141,15 @@ export default function EventsTab({ zipCode }: EventsTabProps) {
         {isLoading ? (
           <div className="space-y-4">
             {[...Array(3)].map((_, index) => (
-              <div key={index} className="flex flex-col md:flex-row border rounded-lg overflow-hidden">
-                <Skeleton className="w-full md:w-1/4 h-24 md:h-auto" />
+              <div key={index} className="flex flex-col md:flex-row border border-[#333] bg-[#252525] rounded-lg overflow-hidden">
+                <Skeleton className="w-full md:w-1/4 h-24 md:h-auto bg-[#333]" />
                 <div className="w-full md:w-3/4 p-4 space-y-2">
-                  <Skeleton className="h-6 w-3/4" />
-                  <Skeleton className="h-4 w-1/2" />
-                  <Skeleton className="h-4 w-5/6" />
+                  <Skeleton className="h-6 w-3/4 bg-[#333]" />
+                  <Skeleton className="h-4 w-1/2 bg-[#333]" />
+                  <Skeleton className="h-4 w-5/6 bg-[#333]" />
                   <div className="flex flex-wrap gap-2">
-                    <Skeleton className="h-4 w-16" />
-                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-4 w-16 bg-[#333]" />
+                    <Skeleton className="h-4 w-16 bg-[#333]" />
                   </div>
                 </div>
               </div>
@@ -154,7 +158,7 @@ export default function EventsTab({ zipCode }: EventsTabProps) {
         ) : displayedEvents && displayedEvents.length > 0 ? (
           <div className="space-y-4">
             {displayedEvents.map((event) => (
-              <div key={event.id} className="flex flex-col md:flex-row border rounded-lg overflow-hidden hover:shadow-md transition">
+              <div key={event.id} className="flex flex-col md:flex-row border border-[#333] bg-[#252525] rounded-lg overflow-hidden hover:shadow-lg transition">
                 {event.imageUrl ? (
                   <div className="w-full md:w-1/4 h-40 md:h-auto">
                     <img 
@@ -164,34 +168,34 @@ export default function EventsTab({ zipCode }: EventsTabProps) {
                     />
                   </div>
                 ) : (
-                  <div className="w-full md:w-1/4 bg-secondary bg-opacity-10 flex items-center justify-center p-4">
+                  <div className="w-full md:w-1/4 bg-[#1e1e1e] flex items-center justify-center p-4">
                     <div className="text-center">
-                      <div className="text-xl font-bold">{event.day}</div>
-                      <div className="text-sm">{event.month}</div>
-                      <div className="mt-2 text-sm font-medium">{event.time}</div>
+                      <div className="text-xl font-bold text-blue-400">{event.day}</div>
+                      <div className="text-sm text-gray-300">{event.month}</div>
+                      <div className="mt-2 text-sm font-medium text-gray-300">{event.time}</div>
                     </div>
                   </div>
                 )}
                 <div className="w-full md:w-3/4 p-4">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="font-medium text-lg mb-1">{event.name}</h4>
-                      <p className="text-sm text-gray-600 mb-2">
+                      <h4 className="font-medium text-lg mb-1 text-gray-200">{event.name}</h4>
+                      <p className="text-sm text-gray-400 mb-2">
                         <MapPin className="inline h-3 w-3 mr-1" /> {event.location}
                       </p>
                     </div>
                     <div className="text-center hidden md:block">
-                      <div className="text-xl font-bold">{event.day}</div>
-                      <div className="text-sm">{event.month}</div>
-                      <div className="mt-1 text-sm font-medium">{event.time}</div>
+                      <div className="text-xl font-bold text-blue-400">{event.day}</div>
+                      <div className="text-sm text-gray-300">{event.month}</div>
+                      <div className="mt-1 text-sm font-medium text-gray-300">{event.time}</div>
                     </div>
                   </div>
-                  <p className="text-sm mb-3">{event.description}</p>
+                  <p className="text-sm mb-3 text-gray-300">{event.description}</p>
                   <div className="flex flex-wrap">
                     {event.categories.map((category, index) => (
                       <span 
                         key={index}
-                        className="text-xs bg-secondary bg-opacity-20 text-secondary px-2 py-1 rounded mr-2 mb-1"
+                        className="text-xs bg-[#3d3d3d] text-blue-300 px-2 py-1 rounded mr-2 mb-1"
                       >
                         {category}
                       </span>
@@ -205,7 +209,7 @@ export default function EventsTab({ zipCode }: EventsTabProps) {
               <div className="mt-6 text-center">
                 <Button 
                   variant="outline"
-                  className="border border-secondary text-secondary hover:bg-secondary hover:text-white transition"
+                  className="dark-secondary-button"
                   onClick={() => setShowMore(!showMore)}
                 >
                   {showMore ? 
@@ -217,7 +221,7 @@ export default function EventsTab({ zipCode }: EventsTabProps) {
             )}
           </div>
         ) : (
-          <div className="text-center py-6">{translations.noEvents}</div>
+          <div className="text-center py-6 text-gray-300">{translations.noEvents}</div>
         )}
       </CardContent>
     </Card>
