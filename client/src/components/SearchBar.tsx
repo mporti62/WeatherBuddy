@@ -62,10 +62,10 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
     }
   };
 
-  const selectSuggestion = (suggestion: string) => {
-    setZipCode(suggestion.split(' - ')[0]);
+  const selectSuggestion = (suggestion: { zipCode: string; city: string }) => {
+    setZipCode(suggestion.zipCode);
     setShowSuggestions(false);
-    onSearch(suggestion.split(' - ')[0]);
+    onSearch(suggestion.zipCode);
   };
 
   return (
@@ -93,7 +93,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
                   className="px-4 py-2 hover:bg-[#3d3d3d] text-gray-200 cursor-pointer"
                   onClick={() => selectSuggestion(suggestion)}
                 >
-                  {suggestion}
+                  {suggestion.zipCode} - {suggestion.city}
                 </div>
               ))}
             </div>

@@ -1,7 +1,12 @@
 import { useState, useCallback } from "react";
 
+interface ZipCodeSuggestion {
+  zipCode: string;
+  city: string;
+}
+
 export function useZipCode(zipCode: string) {
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<ZipCodeSuggestion[]>([]);
   
   const getSuggestions = useCallback(async () => {
     if (zipCode.length < 3) {
