@@ -639,41 +639,41 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
                 >
                   {currentLocation.type === 'recreation' && (
                     <>
-                      <Badge variant="outline" className="bg-[#333]">Actividad al aire libre</Badge>
-                      <Badge variant="outline" className="bg-[#333]">Naturaleza</Badge>
-                      <Badge variant="outline" className="bg-[#333]">Para toda la familia</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Actividad al aire libre</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Naturaleza</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Para toda la familia</Badge>
                     </>
                   )}
                   
                   {currentLocation.type === 'entertainment' && (
                     <>
-                      <Badge variant="outline" className="bg-[#333]">Diversión</Badge>
-                      <Badge variant="outline" className="bg-[#333]">Ocio</Badge>
-                      <Badge variant="outline" className="bg-[#333]">Cultural</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Diversión</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Ocio</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Cultural</Badge>
                     </>
                   )}
                   
                   {currentLocation.type === 'restaurant' && (
                     <>
-                      <Badge variant="outline" className="bg-[#333]">Gastronomía</Badge>
-                      <Badge variant="outline" className="bg-[#333]">Servicio local</Badge>
-                      <Badge variant="outline" className="bg-[#333]">Experiencia culinaria</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Gastronomía</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Servicio local</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Experiencia culinaria</Badge>
                     </>
                   )}
                   
                   {currentLocation.type === 'event' && (
                     <>
-                      <Badge variant="outline" className="bg-[#333]">Evento especial</Badge>
-                      <Badge variant="outline" className="bg-[#333]">Comunidad</Badge>
-                      <Badge variant="outline" className="bg-[#333]">Único</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Evento especial</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Comunidad</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Único</Badge>
                     </>
                   )}
                   
                   {currentLocation.type === 'bank' && (
                     <>
-                      <Badge variant="outline" className="bg-[#333]">Servicios financieros</Badge>
-                      <Badge variant="outline" className="bg-[#333]">Práctico</Badge>
-                      <Badge variant="outline" className="bg-[#333]">Esencial</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Servicios financieros</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Práctico</Badge>
+                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Esencial</Badge>
                     </>
                   )}
                 </motion.div>
