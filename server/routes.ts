@@ -1034,6 +1034,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Para simplificar, siempre usamos datos de ejemplo para los viajes
       // Este endpoint podría integrarse con APIs reales para obtener rutas recomendadas
       
+      // Use real images from Unsplash for each location type
+      
       // Obtener datos de lugares cercanos para cada tipo
       const recreationRes = await axios.get(`http://localhost:${req.socket.localPort}/api/recreation/${zipCode}`);
       const entertainmentRes = await axios.get(`http://localhost:${req.socket.localPort}/api/entertainment/${zipCode}`);
@@ -1146,7 +1148,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               id: "loc5",
               name: "Sendero Natural",
               description: "Ruta escénica con vistas panorámicas",
-              imageUrl: "/images/categories/recreation.svg",
+              imageUrl: getImageByCategory("recreation", 0),
               latitude: latitude + 0.015,
               longitude: longitude - 0.015,
               type: "recreation",
@@ -1157,7 +1159,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               id: "loc6",
               name: "Lago para Kayak",
               description: "Actividades acuáticas para toda la familia",
-              imageUrl: "/images/categories/recreation.svg",
+              imageUrl: getImageByCategory("recreation", 1),
               latitude: latitude + 0.02,
               longitude: longitude - 0.02,
               type: "recreation",
@@ -1168,7 +1170,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               id: "loc7",
               name: "Mirador de Aves",
               description: "Observa especies exóticas en su hábitat natural",
-              imageUrl: "/images/categories/entertainment.svg",
+              imageUrl: getImageByCategory("entertainment", 2),
               latitude: latitude + 0.025,
               longitude: longitude - 0.025,
               type: "entertainment",
@@ -1179,7 +1181,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               id: "loc8",
               name: "Restaurante Rústico",
               description: "Cocina local con ingredientes frescos",
-              imageUrl: "/images/categories/restaurants.svg",
+              imageUrl: getImageByCategory("restaurant", 4),
               latitude: latitude + 0.03,
               longitude: longitude - 0.01,
               type: "restaurant",
