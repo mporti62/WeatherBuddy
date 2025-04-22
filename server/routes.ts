@@ -519,7 +519,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   event.classifications[0].segment.name,
                   event.classifications[0].genre?.name
                 ].filter(Boolean)
-              : ["Event"]
+              : ["Event"],
+            imageUrl: event.images && event.images.length > 0
+              ? event.images.find((img: any) => img.width > 500)?.url || event.images[0].url
+              : `https://via.placeholder.com/400x300?text=${encodeURIComponent(event.name)}`
           };
         });
         
@@ -544,7 +547,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             day: currentDay + 2,
             month: currentMonth,
             time: "7:00 PM",
-            categories: ["Music"]
+            categories: ["Music"],
+            imageUrl: "https://via.placeholder.com/400x300?text=Music+Concert"
           },
           {
             id: "evt2",
@@ -554,7 +558,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             day: currentDay + 5,
             month: currentMonth,
             time: "11:00 AM",
-            categories: ["Festival"]
+            categories: ["Festival"],
+            imageUrl: "https://via.placeholder.com/400x300?text=Community+Festival"
           }
         ];
         
@@ -804,7 +809,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           services,
           distance: ((index + 1) * 0.6).toFixed(1),
           latitude: bank.geometry.location.lat,
-          longitude: bank.geometry.location.lng
+          longitude: bank.geometry.location.lng,
+          imageUrl: bank.photos && bank.photos[0]
+            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${bank.photos[0].photo_reference}&key=${GOOGLE_PLACES_API_KEY}`
+            : `https://via.placeholder.com/400x300?text=${encodeURIComponent(bank.name)}`
         };
       });
       
