@@ -3,48 +3,66 @@ import { useState, useEffect, useCallback } from "react";
 // Definir el tipo de idioma
 type Language = "en" | "es";
 
-// Simplificamos el hook para evitar problemas con contextos
+// Variable global para manejar el idioma en toda la aplicación
+let globalLanguage: Language = "es";
+
+// Intentar obtener el idioma del almacenamiento local inicialmente
+try {
+  const stored = localStorage.getItem("language");
+  if (stored === "en" || stored === "es") {
+    globalLanguage = stored;
+  }
+} catch (e) {
+  console.error("Error al leer el idioma almacenado:", e);
+}
+
+// Lista de funciones de actualización
+const updateListeners: Array<(lang: Language) => void> = [];
+
+// Función para cambiar el idioma globalmente
+function setGlobalLanguage(newLang: Language) {
+  globalLanguage = newLang;
+  
+  // Guardar en localStorage
+  try {
+    localStorage.setItem("language", newLang);
+    document.documentElement.setAttribute("lang", newLang);
+  } catch (e) {
+    console.error("Error al guardar el idioma:", e);
+  }
+  
+  // Notificar a todos los componentes
+  updateListeners.forEach(listener => listener(newLang));
+}
+
+// Hook para usar el idioma
 export function useLanguage() {
-  // Obtener el idioma almacenado o usar español como predeterminado
-  const [language, setLanguage] = useState<Language>(() => {
-    try {
-      const stored = localStorage.getItem("language");
-      return (stored === "en" || stored === "es") ? stored as Language : "es";
-    } catch (e) {
-      return "es";
-    }
-  });
-
-  // Forza la actualización de la página al cambiar idioma
-  const forceUpdate = useCallback(() => {
-    // Este es un pequeño truco para forzar la actualización de toda la aplicación
-    window.location.reload();
-  }, []);
-
-  // Actualizar el almacenamiento local cuando cambia el idioma
+  // Estado local que se sincroniza con el estado global
+  const [language, setLanguage] = useState<Language>(globalLanguage);
+  
+  // Registrar listener para actualizaciones
   useEffect(() => {
-    try {
-      localStorage.setItem("language", language);
-      document.documentElement.setAttribute("lang", language);
-      console.log("Idioma actualizado a:", language);
-    } catch (e) {
-      console.error("Error al guardar idioma:", e);
-    }
-  }, [language]);
-
-  // Función para alternar entre idiomas
+    const updateLanguage = (newLang: Language) => {
+      setLanguage(newLang);
+    };
+    
+    updateListeners.push(updateLanguage);
+    
+    // Limpiar al desmontar
+    return () => {
+      const index = updateListeners.indexOf(updateLanguage);
+      if (index > -1) {
+        updateListeners.splice(index, 1);
+      }
+    };
+  }, []);
+  
+  // Función para alternar el idioma
   const toggleLanguage = useCallback(() => {
-    console.log("Cambiando idioma desde:", language);
-    setLanguage(prevLang => {
-      const newLang = prevLang === "en" ? "es" : "en";
-      localStorage.setItem("language", newLang);
-      
-      // Forzar actualización después de cambiar el idioma
-      setTimeout(forceUpdate, 100);
-      
-      return newLang;
-    });
-  }, [language, forceUpdate]);
-
+    const newLang = globalLanguage === "en" ? "es" : "en";
+    console.log("Cambiando idioma a:", newLang);
+    setGlobalLanguage(newLang);
+  }, []);
+  
   return { language, toggleLanguage };
 }
