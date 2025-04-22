@@ -616,7 +616,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "City Museum",
             description: "A popular destination with activities for visitors of all ages.",
             address: "200 Museum Blvd, Test City, FL",
-            imageUrl: "https://via.placeholder.com/400x300?text=Museum",
+            imageUrl: "/images/recreation.svg",
             rating: 4.2,
             tags: ["museum", "indoor"],
             hours: "9:00 - 17:00",
@@ -628,7 +628,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Sports Stadium",
             description: "Home of the local sports teams with regular events.",
             address: "300 Stadium Way, Test City, FL",
-            imageUrl: "https://via.placeholder.com/400x300?text=Stadium",
+            imageUrl: "/images/recreation.svg",
             rating: 4.0,
             tags: ["sports"],
             hours: "Varies by event",
@@ -640,7 +640,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             name: "Adventure Park",
             description: "Outdoor activities and adventure courses for all ages.",
             address: "400 Adventure Rd, Test City, FL",
-            imageUrl: "https://via.placeholder.com/400x300?text=Adventure",
+            imageUrl: "/images/recreation.svg",
             rating: 4.7,
             tags: ["park", "outdoor"],
             hours: "9:00 - 18:00",
@@ -737,7 +737,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             distance: "0.5",
             latitude: latitude + 0.005,
             longitude: longitude + 0.005,
-            imageUrl: "https://via.placeholder.com/400x300?text=National+Bank"
+            imageUrl: "/images/bank.svg"
           },
           {
             id: "bank2",
@@ -749,7 +749,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             distance: "1.2",
             latitude: latitude - 0.007,
             longitude: longitude - 0.003,
-            imageUrl: "https://via.placeholder.com/400x300?text=Credit+Union"
+            imageUrl: "/images/bank.svg"
           },
           {
             id: "bank3",
@@ -761,7 +761,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             distance: "1.8",
             latitude: latitude - 0.01,
             longitude: longitude + 0.008,
-            imageUrl: "https://via.placeholder.com/400x300?text=City+Bank"
+            imageUrl: "/images/bank.svg"
           },
           {
             id: "bank4",
@@ -773,7 +773,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             distance: "2.3",
             latitude: latitude + 0.012,
             longitude: longitude - 0.009,
-            imageUrl: "https://via.placeholder.com/400x300?text=International+Bank"
+            imageUrl: "/images/bank.svg"
           }
         ];
         
@@ -856,7 +856,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           name: "Fiesta Theater & Entertainment",
           location: "123 Cinema Drive, Test City, FL",
           description: "Experience one of the best entertainment options in your area with dining, movies, and games all in one place!",
-          imageUrl: "https://via.placeholder.com/400x300?text=Entertainment",
+          imageUrl: "/images/entertainment.svg",
           categories: ["Movie Theater", "Restaurant"]
         };
         
@@ -866,7 +866,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             id: "ent2",
             name: "Gourmet Experience Restaurant",
             location: "456 Food Blvd, Test City, FL",
-            imageUrl: "https://via.placeholder.com/400x300?text=Restaurant",
+            imageUrl: "/images/restaurant.svg",
             rating: 4.8,
             reviewCount: 120,
             category: "Restaurant"
