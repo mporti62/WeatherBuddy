@@ -432,7 +432,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             day: currentDay + 3,
             month: currentMonth,
             time: "6:00 PM",
-            categories: ["Music", "Festival"]
+            categories: ["Music", "Festival"],
+            imageUrl: "https://via.placeholder.com/400x300?text=Music+Festival"
           },
           {
             id: "evt2",
@@ -442,7 +443,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             day: currentDay + 5,
             month: currentMonth,
             time: "7:30 PM",
-            categories: ["Film", "Arts & Theatre"]
+            categories: ["Film", "Arts & Theatre"],
+            imageUrl: "https://via.placeholder.com/400x300?text=Film+Festival"
           },
           {
             id: "evt3",
@@ -452,7 +454,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             day: currentDay + 7,
             month: currentMonth,
             time: "8:00 PM",
-            categories: ["Sports"]
+            categories: ["Sports"],
+            imageUrl: (zipSeed % 2 === 0) ? "https://via.placeholder.com/400x300?text=Basketball" : "https://via.placeholder.com/400x300?text=Soccer"
           },
           {
             id: "evt4",
@@ -462,7 +465,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             day: currentDay + 10,
             month: currentMonth,
             time: "12:00 PM",
-            categories: ["Food", "Festival"]
+            categories: ["Food", "Festival"],
+            imageUrl: "https://via.placeholder.com/400x300?text=Food+Festival"
           },
           {
             id: "evt5",
@@ -472,7 +476,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             day: currentDay + 14,
             month: currentMonth,
             time: "10:00 AM",
-            categories: ["Exhibition", "Hobby"]
+            categories: ["Exhibition", "Hobby"],
+            imageUrl: "https://via.placeholder.com/400x300?text=Car+Exhibition"
           }
         ];
         
@@ -722,7 +727,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             services: ["ATM", "Customer Service", "Loans"],
             distance: "0.5",
             latitude: latitude + 0.005,
-            longitude: longitude + 0.005
+            longitude: longitude + 0.005,
+            imageUrl: "https://via.placeholder.com/400x300?text=National+Bank"
           },
           {
             id: "bank2",
@@ -733,7 +739,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             services: ["ATM", "Investments"],
             distance: "1.2",
             latitude: latitude - 0.007,
-            longitude: longitude - 0.003
+            longitude: longitude - 0.003,
+            imageUrl: "https://via.placeholder.com/400x300?text=Credit+Union"
           },
           {
             id: "bank3",
@@ -744,7 +751,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             services: ["Customer Service", "Loans", "Investments"],
             distance: "1.8",
             latitude: latitude - 0.01,
-            longitude: longitude + 0.008
+            longitude: longitude + 0.008,
+            imageUrl: "https://via.placeholder.com/400x300?text=City+Bank"
           },
           {
             id: "bank4",
@@ -755,7 +763,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             services: ["ATM", "Foreign Currency"],
             distance: "2.3",
             latitude: latitude + 0.012,
-            longitude: longitude - 0.009
+            longitude: longitude - 0.009,
+            imageUrl: "https://via.placeholder.com/400x300?text=International+Bank"
           }
         ];
         
