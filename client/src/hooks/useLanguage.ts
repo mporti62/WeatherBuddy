@@ -1,42 +1,50 @@
 import { useState, useEffect, useCallback } from "react";
 
+// Definir el tipo de idioma
 type Language = "en" | "es";
 
-// Vamos a simplificar para facilitar la solución
+// Simplificamos el hook para evitar problemas con contextos
 export function useLanguage() {
+  // Obtener el idioma almacenado o usar español como predeterminado
   const [language, setLanguage] = useState<Language>(() => {
     try {
-      // Try to get language from localStorage first
-      const savedLanguage = localStorage.getItem("language") as Language;
-      if (savedLanguage === "en" || savedLanguage === "es") return savedLanguage;
-      
-      // Default to Spanish
-      return "es";
-    } catch (error) {
-      // Fallback to Spanish if any error occurs
+      const stored = localStorage.getItem("language");
+      return (stored === "en" || stored === "es") ? stored as Language : "es";
+    } catch (e) {
       return "es";
     }
   });
-  
+
+  // Forza la actualización de la página al cambiar idioma
+  const forceUpdate = useCallback(() => {
+    // Este es un pequeño truco para forzar la actualización de toda la aplicación
+    window.location.reload();
+  }, []);
+
+  // Actualizar el almacenamiento local cuando cambia el idioma
   useEffect(() => {
     try {
       localStorage.setItem("language", language);
-      // Set the lang attribute on the html element
-      document.documentElement.lang = language;
-      console.log("LANGUAGE CHANGED TO:", language);
-    } catch (error) {
-      console.error("Error setting language:", error);
+      document.documentElement.setAttribute("lang", language);
+      console.log("Idioma actualizado a:", language);
+    } catch (e) {
+      console.error("Error al guardar idioma:", e);
     }
   }, [language]);
-  
+
+  // Función para alternar entre idiomas
   const toggleLanguage = useCallback(() => {
-    console.log("TOGGLING LANGUAGE FROM:", language);
-    setLanguage(prev => {
-      const newLang = prev === "en" ? "es" : "en";
-      console.log("NEW LANGUAGE:", newLang);
+    console.log("Cambiando idioma desde:", language);
+    setLanguage(prevLang => {
+      const newLang = prevLang === "en" ? "es" : "en";
+      localStorage.setItem("language", newLang);
+      
+      // Forzar actualización después de cambiar el idioma
+      setTimeout(forceUpdate, 100);
+      
       return newLang;
     });
-  }, [language]);
-  
+  }, [language, forceUpdate]);
+
   return { language, toggleLanguage };
 }
