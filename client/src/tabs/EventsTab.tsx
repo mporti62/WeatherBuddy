@@ -36,7 +36,7 @@ export default function EventsTab({ zipCode }: EventsTabProps) {
   });
   const [showMore, setShowMore] = useState(false);
 
-  const { data: events, isLoading } = useQuery({
+  const { data: events, isLoading } = useQuery<Event[]>({
     queryKey: [`/api/events/${zipCode}`],
     enabled: zipCode.length === 5,
   });
@@ -155,18 +155,37 @@ export default function EventsTab({ zipCode }: EventsTabProps) {
           <div className="space-y-4">
             {displayedEvents.map((event) => (
               <div key={event.id} className="flex flex-col md:flex-row border rounded-lg overflow-hidden hover:shadow-md transition">
-                <div className="w-full md:w-1/4 bg-secondary bg-opacity-10 flex items-center justify-center p-4">
-                  <div className="text-center">
-                    <div className="text-xl font-bold">{event.day}</div>
-                    <div className="text-sm">{event.month}</div>
-                    <div className="mt-2 text-sm font-medium">{event.time}</div>
+                {event.imageUrl ? (
+                  <div className="w-full md:w-1/4 h-40 md:h-auto">
+                    <img 
+                      src={event.imageUrl} 
+                      alt={event.name} 
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                </div>
+                ) : (
+                  <div className="w-full md:w-1/4 bg-secondary bg-opacity-10 flex items-center justify-center p-4">
+                    <div className="text-center">
+                      <div className="text-xl font-bold">{event.day}</div>
+                      <div className="text-sm">{event.month}</div>
+                      <div className="mt-2 text-sm font-medium">{event.time}</div>
+                    </div>
+                  </div>
+                )}
                 <div className="w-full md:w-3/4 p-4">
-                  <h4 className="font-medium text-lg mb-1">{event.name}</h4>
-                  <p className="text-sm text-gray-600 mb-2">
-                    <MapPin className="inline h-3 w-3 mr-1" /> {event.location}
-                  </p>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-medium text-lg mb-1">{event.name}</h4>
+                      <p className="text-sm text-gray-600 mb-2">
+                        <MapPin className="inline h-3 w-3 mr-1" /> {event.location}
+                      </p>
+                    </div>
+                    <div className="text-center hidden md:block">
+                      <div className="text-xl font-bold">{event.day}</div>
+                      <div className="text-sm">{event.month}</div>
+                      <div className="mt-1 text-sm font-medium">{event.time}</div>
+                    </div>
+                  </div>
                   <p className="text-sm mb-3">{event.description}</p>
                   <div className="flex flex-wrap">
                     {event.categories.map((category, index) => (

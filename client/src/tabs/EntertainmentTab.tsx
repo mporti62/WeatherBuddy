@@ -1,5 +1,6 @@
 import { useLanguage } from "@/hooks/useLanguage";
 import { useQuery } from "@tanstack/react-query";
+import { Entertainment } from "@/types";
 import { 
   Card, 
   CardHeader, 
@@ -20,7 +21,7 @@ interface EntertainmentTabProps {
 export default function EntertainmentTab({ zipCode }: EntertainmentTabProps) {
   const { language } = useLanguage();
 
-  const { data: entertainment, isLoading } = useQuery({
+  const { data: entertainment, isLoading } = useQuery<Entertainment>({
     queryKey: [`/api/entertainment/${zipCode}`],
     enabled: zipCode.length === 5,
   });

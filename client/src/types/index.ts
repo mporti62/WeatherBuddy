@@ -40,6 +40,7 @@ export interface Event {
   month: string;
   time: string;
   categories: string[];
+  imageUrl?: string;
 }
 
 // Recreation types
@@ -67,6 +68,7 @@ export interface Bank {
   distance: number;
   latitude?: number;
   longitude?: number;
+  imageUrl?: string;
 }
 
 // Entertainment types

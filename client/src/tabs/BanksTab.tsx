@@ -85,21 +85,34 @@ export default function BanksTab({ zipCode }: BanksTabProps) {
         {/* Lista de bancos en formato compacto debajo del mapa */}
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
           {banks.map((bank) => (
-            <div key={bank.id} className="border rounded-lg overflow-hidden p-3 hover:shadow-md transition">
-              <div className="flex items-start">
-                <div className="bg-darkNeutral bg-opacity-10 p-2 rounded-lg mr-3">
-                  <Building className="text-darkNeutral h-4 w-4" />
+            <div key={bank.id} className="border rounded-lg overflow-hidden hover:shadow-md transition">
+              {bank.imageUrl && (
+                <div className="w-full h-28">
+                  <img 
+                    src={bank.imageUrl} 
+                    alt={bank.name} 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <div>
-                  <h5 className="font-medium text-md mb-1">{bank.name}</h5>
-                  <p className="text-xs text-gray-600">
-                    <MapPin className="inline h-3 w-3 mr-1" /> {bank.address}
-                  </p>
-                  <div className="flex items-center mt-1">
-                    <span className="text-xs mr-2">{bank.distance} {language === 'es' ? 'km' : 'mi'}</span>
-                    <span className={`text-xs ${bank.isOpen ? "text-green-600" : "text-red-600"}`}>
-                      {bank.isOpen ? translations.openNow : translations.closed}
-                    </span>
+              )}
+              <div className="p-3">
+                <div className="flex items-start">
+                  {!bank.imageUrl && (
+                    <div className="bg-darkNeutral bg-opacity-10 p-2 rounded-lg mr-3">
+                      <Building className="text-darkNeutral h-4 w-4" />
+                    </div>
+                  )}
+                  <div>
+                    <h5 className="font-medium text-md mb-1">{bank.name}</h5>
+                    <p className="text-xs text-gray-600">
+                      <MapPin className="inline h-3 w-3 mr-1" /> {bank.address}
+                    </p>
+                    <div className="flex items-center mt-1">
+                      <span className="text-xs mr-2">{bank.distance} {language === 'es' ? 'km' : 'mi'}</span>
+                      <span className={`text-xs ${bank.isOpen ? "text-green-600" : "text-red-600"}`}>
+                        {bank.isOpen ? translations.openNow : translations.closed}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -150,54 +163,67 @@ export default function BanksTab({ zipCode }: BanksTabProps) {
     return (
       <div className="space-y-4">
         {banks.map((bank) => (
-          <div key={bank.id} className="border rounded-lg p-4 hover:shadow-md transition">
-            <div className="flex justify-between items-start">
-              <div className="flex items-start">
-                <div className="bg-darkNeutral bg-opacity-10 p-3 rounded-lg mr-3">
-                  <Building className="text-darkNeutral" />
-                </div>
-                <div>
-                  <h4 className="font-medium text-lg mb-1">{bank.name}</h4>
-                  <p className="text-sm text-gray-600 mb-2">
-                    <MapPin className="inline h-3 w-3 mr-1" /> {bank.address}
-                  </p>
-                  <div className="flex items-center text-sm mb-2">
-                    <div className="flex items-center mr-4">
-                      <Clock className="inline h-3 w-3 mr-1 text-gray-600" />
-                      <span>{bank.hours}</span>
-                    </div>
-                    <div className={bank.isOpen ? "text-green-600" : "text-red-600"}>
-                      {bank.isOpen ? translations.openNow : translations.closed}
-                    </div>
-                  </div>
-                  <div className="flex mb-2">
-                    {bank.services.map((service, index) => {
-                      let serviceTranslation = service;
-                      if (service === "ATM") serviceTranslation = translations.atm;
-                      if (service === "Customer Service") serviceTranslation = translations.customerService;
-                      if (service === "Loans") serviceTranslation = translations.loans;
-                      if (service === "Investments") serviceTranslation = translations.investments;
-                      
-                      return (
-                        <span 
-                          key={index} 
-                          className="text-xs bg-darkNeutral bg-opacity-10 text-darkNeutral px-2 py-1 rounded mr-2"
-                        >
-                          {serviceTranslation}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
+          <div key={bank.id} className="border rounded-lg overflow-hidden hover:shadow-md transition">
+            {bank.imageUrl && (
+              <div className="w-full h-40">
+                <img 
+                  src={bank.imageUrl} 
+                  alt={bank.name} 
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <div className="flex items-center">
-                <span className="text-gray-600 mr-2">{bank.distance} {language === 'es' ? 'km' : 'mi'}</span>
-                <Button 
-                  variant="link" 
-                  className="text-primary p-0 h-auto"
-                >
-                  <Navigation className="h-4 w-4" />
-                </Button>
+            )}
+            <div className="p-4">
+              <div className="flex justify-between items-start">
+                <div className="flex items-start">
+                  {!bank.imageUrl && (
+                    <div className="bg-darkNeutral bg-opacity-10 p-3 rounded-lg mr-3">
+                      <Building className="text-darkNeutral" />
+                    </div>
+                  )}
+                  <div>
+                    <h4 className="font-medium text-lg mb-1">{bank.name}</h4>
+                    <p className="text-sm text-gray-600 mb-2">
+                      <MapPin className="inline h-3 w-3 mr-1" /> {bank.address}
+                    </p>
+                    <div className="flex items-center text-sm mb-2">
+                      <div className="flex items-center mr-4">
+                        <Clock className="inline h-3 w-3 mr-1 text-gray-600" />
+                        <span>{bank.hours}</span>
+                      </div>
+                      <div className={bank.isOpen ? "text-green-600" : "text-red-600"}>
+                        {bank.isOpen ? translations.openNow : translations.closed}
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap mb-2">
+                      {bank.services.map((service, index) => {
+                        let serviceTranslation = service;
+                        if (service === "ATM") serviceTranslation = translations.atm;
+                        if (service === "Customer Service") serviceTranslation = translations.customerService;
+                        if (service === "Loans") serviceTranslation = translations.loans;
+                        if (service === "Investments") serviceTranslation = translations.investments;
+                        
+                        return (
+                          <span 
+                            key={index} 
+                            className="text-xs bg-darkNeutral bg-opacity-10 text-darkNeutral px-2 py-1 rounded mr-2 mb-1"
+                          >
+                            {serviceTranslation}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-gray-600 mr-2">{bank.distance} {language === 'es' ? 'km' : 'mi'}</span>
+                  <Button 
+                    variant="link" 
+                    className="text-primary p-0 h-auto"
+                  >
+                    <Navigation className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
