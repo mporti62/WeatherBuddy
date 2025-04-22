@@ -5,6 +5,7 @@ import {
   Network,
   Building2,
   Film,
+  Map,
 } from "lucide-react";
 
 interface CategoryTabsProps {
@@ -40,6 +41,11 @@ export default function CategoryTabs({ activeTab, onTabChange }: CategoryTabsPro
       id: "entertainment",
       icon: <Film className="text-secondary" />,
       label: language === 'es' ? "Entretenimiento" : "Entertainment",
+    },
+    {
+      id: "journey",
+      icon: <Map className="text-accent" />,
+      label: language === 'es' ? "Viajes" : "Journeys",
     },
   ];
 
