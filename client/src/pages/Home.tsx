@@ -98,7 +98,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#121212]">
       <Header 
         onSearch={handleSearch} 
         activeTab={activeTab} 
@@ -117,7 +117,7 @@ export default function Home() {
             />
           )}
           
-          <div>
+          <div className="dark-tab-panel mt-6">
             {activeTab === "weather" && <WeatherTab zipCode={zipCode} />}
             {activeTab === "events" && <EventsTab zipCode={zipCode} />}
             {activeTab === "recreation" && <RecreationTab zipCode={zipCode} />}

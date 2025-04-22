@@ -29,6 +29,19 @@
   --radius: 0.5rem;
 }
 
+/* Main dark theme colors */
+:root {
+  --dark-bg-primary: #121212;
+  --dark-bg-secondary: #1a1a1a;
+  --dark-bg-elevated: #1e1e1e;
+  --dark-bg-input: #2d2d2d;
+  --dark-text-primary: #e0e0e0;
+  --dark-text-secondary: #a0a0a0;
+  --dark-border: #333333;
+  --dark-blue: #3498db;
+  --dark-purple: #9b59b6;
+}
+
 .dark {
   --background: 224 71% 4%;
   --foreground: 213 31% 91%;
@@ -66,16 +79,16 @@
 
 /* Custom classes */
 .active-tab {
-  @apply text-primary border-b-2 border-primary;
+  @apply text-blue-400 border-b-2 border-blue-500;
 }
 
 .inactive-tab {
-  @apply hover:text-primary border-b-2 border-transparent;
+  @apply text-gray-400 hover:text-blue-400 border-b-2 border-transparent;
 }
 
 /* Dark theme customizations */
 .card {
-  @apply bg-[#1e1e1e] border-[#333] text-gray-200;
+  @apply bg-[#1e1e1e] border border-[#333] text-gray-200 shadow-md rounded-lg;
 }
 
 .gradient-text {
@@ -100,4 +113,63 @@
 
 .dark-tab-panel {
   @apply bg-[#1e1e1e] rounded-md p-4;
+}
+
+/* Card-based elements */
+.dark-card {
+  @apply bg-[#1e1e1e] border border-[#333] rounded-lg shadow-lg overflow-hidden;
+}
+
+.dark-card-header {
+  @apply border-b border-[#333] p-4 bg-[#1a1a1a];
+}
+
+.dark-card-body {
+  @apply p-4;
+}
+
+/* Button styles */
+.dark-action-button {
+  @apply bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors;
+}
+
+.dark-secondary-button {
+  @apply bg-[#2d2d2d] border border-[#444] hover:bg-[#333] text-gray-200 px-4 py-2 rounded-md transition-colors;
+}
+
+/* Badge styles */
+.dark-badge {
+  @apply bg-[#2d2d2d] text-gray-300 text-xs px-2 py-1 rounded-full;
+}
+
+/* Image styles */
+.dark-image-container {
+  @apply bg-[#2d2d2d] border border-[#333] rounded-lg overflow-hidden;
+}
+
+/* Table styles */
+.dark-table {
+  @apply w-full text-left text-gray-300;
+}
+
+.dark-table th {
+  @apply bg-[#1a1a1a] text-gray-400 p-3 border-b border-[#333];
+}
+
+.dark-table td {
+  @apply p-3 border-b border-[#333];
+}
+
+.dark-table tr:hover {
+  @apply bg-[#252525];
+}
+
+/* List items */
+.dark-list-item {
+  @apply border-b border-[#333] p-3 hover:bg-[#252525];
+}
+
+/* Leaflet map customization */
+.leaflet-container {
+  @apply rounded-lg overflow-hidden border border-[#333] shadow-lg;
 }

@@ -26,12 +26,12 @@ export default function LocationInfo({
   return (
     <div className="mb-6 flex justify-between items-center">
       <div>
-        <h2 className="text-2xl font-bold">{locationName}</h2>
-        <p className="text-sm text-gray-600">{zipCodeLabel}{zipCode}</p>
+        <h2 className="text-2xl font-bold gradient-text">{locationName}</h2>
+        <p className="text-sm text-gray-400">{zipCodeLabel}{zipCode}</p>
       </div>
       <Button
         variant="ghost"
-        className="text-primary hover:underline"
+        className="text-blue-400 hover:text-blue-300 hover:bg-[#252525]"
         onClick={onRefresh}
       >
         <RefreshCcw className="h-4 w-4 mr-1" /> {refreshLabel}
