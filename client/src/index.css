@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47.4% 11.2%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47.4% 11.2%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  
+  /* Custom LocaInfo colors */
+  --primary: 204 70% 53%; /* #3498db */
+  --primary-foreground: 210 40% 98%;
+  --secondary: 28 80% 52%; /* #e67e22 */
+  --secondary-foreground: 0 0% 100%;
+  --accent: 142 69% 49%; /* #2ecc71 */
+  --accent-foreground: 0 0% 100%;
+  --darkNeutral: 210 29% 29%; /* #34495e */
+  --lightNeutral: 192 15% 94%; /* #ecf0f1 */
+  --warning: 48 89% 50%; /* #f1c40f */
+  --error: 6 78% 57%; /* #e74c3c */
+  
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 224 71% 4%;
+  --foreground: 213 31% 91%;
+  --muted: 223 47% 11%;
+  --muted-foreground: 215.4 16.3% 56.9%;
+  --popover: 224 71% 4%;
+  --popover-foreground: 215 20.2% 65.1%;
+  --card: 224 71% 4%;
+  --card-foreground: 213 31% 91%;
+  --border: 216 34% 17%;
+  --input: 216 34% 17%;
+  
+  /* Keep the primary colors similar in dark mode */
+  --primary: 204 70% 53%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 28 80% 52%;
+  --secondary-foreground: 210 40% 98%;
+  --accent: 142 69% 49%;
+  --accent-foreground: 210 40% 98%;
+  --darkNeutral: 210 29% 40%;
+  --lightNeutral: 192 15% 20%;
+  --warning: 48 89% 50%;
+  --error: 6 78% 57%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-lightNeutral text-darkNeutral font-sans antialiased;
+  }
+}
+
+/* Custom classes */
+.active-tab {
+  @apply text-primary border-b-2 border-primary;
+}
+
+.inactive-tab {
+  @apply hover:text-primary border-b-2 border-transparent;
+}
