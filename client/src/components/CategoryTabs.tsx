@@ -3,7 +3,6 @@ import {
   Cloud,
   Calendar,
   Network,
-  Building2,
   Film,
   Map,
   Utensils,
@@ -40,11 +39,7 @@ export default function CategoryTabs({ activeTab, onTabChange, hasValidZipCode =
       icon: <Utensils className="text-red-400" />,
       label: language === 'es' ? "Restaurantes" : "Restaurants",
     },
-    {
-      id: "banks",
-      icon: <Building2 className="text-yellow-400" />,
-      label: language === 'es' ? "Bancos" : "Banks",
-    },
+
     {
       id: "entertainment",
       icon: <Film className="text-pink-400" />,

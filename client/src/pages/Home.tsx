@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import WeatherTab from "@/tabs/WeatherTab";
 import EventsTab from "@/tabs/EventsTab";
 import RecreationTab from "@/tabs/RecreationTab";
-import BanksTab from "@/tabs/BanksTab";
+
 import EntertainmentTab from "@/tabs/EntertainmentTab";
 import RestaurantsTab from "@/tabs/RestaurantsTab";
 import JourneyTab from "@/tabs/JourneyTab";
@@ -126,7 +126,7 @@ export default function Home() {
             {activeTab === "events" && <EventsTab zipCode={zipCode} />}
             {activeTab === "recreation" && <RecreationTab zipCode={zipCode} />}
             {activeTab === "restaurants" && <RestaurantsTab zipCode={zipCode} />}
-            {activeTab === "banks" && <BanksTab zipCode={zipCode} />}
+
             {activeTab === "entertainment" && <EntertainmentTab zipCode={zipCode} />}
             {activeTab === "journey" && <JourneyTab zipCode={zipCode} />}
             {activeTab === "meeting-points" && <MeetingPointsTab zipCode={zipCode} />}
