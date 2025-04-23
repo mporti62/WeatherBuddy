@@ -35,7 +35,7 @@ function getImageByCategory(category: string, index: number = 0): string {
     ],
     recreation: [
       "https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1576013551627-0ae1a0639090?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=800&auto=format&fit=crop", // Piscina
       "https://images.unsplash.com/photo-1565992441121-4367c2967103?w=800&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1603201277993-bfd45a7a4031?w=800&auto=format&fit=crop"
