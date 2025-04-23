@@ -206,7 +206,7 @@ export default function BanksTab({ zipCode }: BanksTabProps) {
                         return (
                           <span 
                             key={index} 
-                            className="text-xs bg-darkNeutral bg-opacity-10 text-white px-2 py-1 rounded mr-2 mb-1 border border-gray-500"
+                            className="text-xs bg-accent bg-opacity-10 text-white px-2 py-1 rounded mr-2 mb-1 border border-gray-500 font-medium"
                           >
                             {serviceTranslation}
                           </span>
