@@ -90,7 +90,7 @@ export default function RecreationTab({ zipCode }: RecreationTabProps) {
             variant={filter === "all" ? "default" : "ghost"}
             size="sm"
             onClick={() => setFilter("all")}
-            className={filter === "all" ? "bg-accent bg-opacity-20 text-accent" : "hover:bg-accent hover:bg-opacity-20 hover:text-accent"}
+            className={filter === "all" ? "bg-accent bg-opacity-20 text-white font-medium" : "hover:bg-accent hover:bg-opacity-20 hover:text-white"}
           >
             {translations.all}
           </Button>
@@ -98,7 +98,7 @@ export default function RecreationTab({ zipCode }: RecreationTabProps) {
             variant={filter === "park" ? "default" : "ghost"}
             size="sm"
             onClick={() => setFilter("park")}
-            className={filter === "park" ? "bg-accent bg-opacity-20 text-accent" : "hover:bg-accent hover:bg-opacity-20 hover:text-accent"}
+            className={filter === "park" ? "bg-accent bg-opacity-20 text-white font-medium" : "hover:bg-accent hover:bg-opacity-20 hover:text-white"}
           >
             {translations.parks}
           </Button>
@@ -106,7 +106,7 @@ export default function RecreationTab({ zipCode }: RecreationTabProps) {
             variant={filter === "museum" ? "default" : "ghost"}
             size="sm"
             onClick={() => setFilter("museum")}
-            className={filter === "museum" ? "bg-accent bg-opacity-20 text-accent" : "hover:bg-accent hover:bg-opacity-20 hover:text-accent"}
+            className={filter === "museum" ? "bg-accent bg-opacity-20 text-white font-medium" : "hover:bg-accent hover:bg-opacity-20 hover:text-white"}
           >
             {translations.museums}
           </Button>
@@ -186,7 +186,7 @@ export default function RecreationTab({ zipCode }: RecreationTabProps) {
                         {place.tags.map((tag, index) => (
                           <span 
                             key={index} 
-                            className="text-xs bg-accent bg-opacity-20 text-white px-2 py-1 rounded mr-2 mb-1 border border-gray-500"
+                            className="text-xs bg-accent bg-opacity-10 text-white px-2 py-1 rounded mr-2 mb-1 border border-gray-500 font-medium"
                           >
                             {tag}
                           </span>
