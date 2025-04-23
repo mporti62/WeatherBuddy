@@ -1202,6 +1202,131 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to fetch journey options" });
     }
   });
+
+  // API para puntos de encuentro
+  app.get("/api/meeting-points/:zipCode", async (req, res) => {
+    try {
+      const { zipCode } = req.params;
+      
+      // Check cache first
+      const cacheKey = `meeting_points_${zipCode}`;
+      const cachedData = cache.get(cacheKey);
+      if (cachedData) {
+        return res.json(cachedData);
+      }
+      
+      // Get location data first
+      const locationRes = await axios.get(`http://localhost:${req.socket.localPort}/api/location/${zipCode}`);
+      const { latitude, longitude, city } = locationRes.data;
+      
+      // En una implementación real, esto vendría de la base de datos
+      // Obtener categorías en español e inglés para los datos de ejemplo
+      const categories = {
+        social: ["social", "social"],
+        deporte: ["deporte", "sports"],
+        cultural: ["cultural", "cultural"],
+        educativo: ["educativo", "educational"],
+        otros: ["otros", "others"]
+      };
+      
+      // Crear datos de ejemplo para desarrollo
+      const meetingPoints = [
+        {
+          id: 1,
+          name: "Club de lectura en el parque",
+          description: "Reunión semanal para discutir libros y compartir opiniones en un ambiente relajado.",
+          zipCode: zipCode,
+          latitude: latitude + 0.005,
+          longitude: longitude - 0.003,
+          address: `Parque Central, ${city}`,
+          date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 días en el futuro
+          time: "14:00",
+          createdBy: 1,
+          createdAt: new Date(),
+          status: "active",
+          maxParticipants: 15,
+          category: "cultural",
+          contactInfo: "club.lectura@ejemplo.com"
+        },
+        {
+          id: 2,
+          name: "Grupo de running matutino",
+          description: "Salida grupal para correr 5km a un ritmo moderado. Todos los niveles bienvenidos.",
+          zipCode: zipCode,
+          latitude: latitude - 0.008,
+          longitude: longitude + 0.005,
+          address: `Pista de atletismo municipal, ${city}`,
+          date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 días en el futuro
+          time: "07:30",
+          createdBy: 2,
+          createdAt: new Date(),
+          status: "active",
+          maxParticipants: 20,
+          category: "deporte",
+          contactInfo: "runningclub@ejemplo.com"
+        },
+        {
+          id: 3,
+          name: "Intercambio de idiomas",
+          description: "Practica inglés, español y francés con hablantes nativos en un ambiente informal.",
+          zipCode: zipCode,
+          latitude: latitude + 0.002,
+          longitude: longitude + 0.008,
+          address: `Café La Esquina, Av. Central 123, ${city}`,
+          date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 días en el futuro
+          time: "18:00",
+          createdBy: 3,
+          createdAt: new Date(),
+          status: "active",
+          maxParticipants: 12,
+          category: "educativo",
+          contactInfo: "language.exchange@ejemplo.com"
+        },
+        {
+          id: 4,
+          name: "Encuentro de fotógrafos",
+          description: "Salida fotográfica por la ciudad para capturar paisajes urbanos y compartir técnicas.",
+          zipCode: zipCode,
+          latitude: latitude - 0.004,
+          longitude: longitude - 0.007,
+          address: `Plaza Principal, ${city}`,
+          date: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000), // 4 días en el futuro
+          time: "16:30",
+          createdBy: 4,
+          createdAt: new Date(),
+          status: "active",
+          maxParticipants: 10,
+          category: "cultural",
+          contactInfo: "foto.club@ejemplo.com"
+        }
+      ];
+      
+      // Save to cache
+      cache.set(cacheKey, meetingPoints);
+      
+      res.json(meetingPoints);
+    } catch (error) {
+      console.error("Error fetching meeting points:", error);
+      res.status(500).json({ message: "Failed to fetch meeting points" });
+    }
+  });
+  
+  // Crear un nuevo punto de encuentro
+  app.post("/api/meeting-points", (req, res) => {
+    try {
+      const meetingPoint = req.body;
+      // En una implementación real, esto se guardaría en la base de datos
+      res.status(201).json({ 
+        id: Math.floor(Math.random() * 1000), 
+        ...meetingPoint,
+        createdAt: new Date(),
+        status: "active"
+      });
+    } catch (error) {
+      console.error("Error creating meeting point:", error);
+      res.status(500).json({ message: "Failed to create meeting point" });
+    }
+  });
   
   const httpServer = createServer(app);
   return httpServer;
