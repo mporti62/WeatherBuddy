@@ -18,6 +18,7 @@ import {
   Utensils,
   Bookmark
 } from "lucide-react";
+import ShareButtons from "@/components/ShareButtons";
 import {
   Popover,
   PopoverContent,

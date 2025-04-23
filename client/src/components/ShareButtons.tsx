@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import {
-  FacebookShareButton,
-  TwitterShareButton,
   WhatsappShareButton,
+  TwitterShareButton,
   TelegramShareButton,
-  FacebookIcon,
-  TwitterIcon,
   WhatsappIcon,
+  TwitterIcon,
   TelegramIcon
 } from 'react-share';
 import { Button } from './ui/button';
@@ -58,17 +56,13 @@ export default function ShareButtons({
       
       {showButtons && (
         <div className={`absolute ${small ? 'bottom-10' : 'bottom-12'} left-0 bg-[#222] border border-[#444] p-2 rounded-lg shadow-lg z-50 flex gap-2`}>
-          <FacebookShareButton url={url} quote={title}>
-            <FacebookIcon size={iconSize} round />
-          </FacebookShareButton>
+          <WhatsappShareButton url={url} title={title + (description ? ` - ${description}` : '')}>
+            <WhatsappIcon size={iconSize} round />
+          </WhatsappShareButton>
           
           <TwitterShareButton url={url} title={title} hashtags={hashtags}>
             <TwitterIcon size={iconSize} round />
           </TwitterShareButton>
-          
-          <WhatsappShareButton url={url} title={title + (description ? ` - ${description}` : '')}>
-            <WhatsappIcon size={iconSize} round />
-          </WhatsappShareButton>
           
           <TelegramShareButton url={url} title={title + (description ? ` - ${description}` : '')}>
             <TelegramIcon size={iconSize} round />

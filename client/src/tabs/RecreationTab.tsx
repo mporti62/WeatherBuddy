@@ -197,12 +197,22 @@ export default function RecreationTab({ zipCode }: RecreationTabProps) {
                         <div className="text-sm text-gray-600">
                           <Clock className="inline h-3 w-3 mr-1" /> {translations.open}{place.hours}
                         </div>
-                        <Button 
-                          variant="link" 
-                          className="text-accent p-0 h-auto"
-                        >
-                          {translations.viewMoreDetails}
-                        </Button>
+                        <div className="flex items-center gap-2">
+                          <ShareButtons 
+                            url={window.location.href} 
+                            title={`${place.name} - ${translations.recreationPlaces}`} 
+                            description={place.description}
+                            hashtags={["recreation", ...place.tags]}
+                            small={true}
+                            showText={false}
+                          />
+                          <Button 
+                            variant="link" 
+                            className="text-accent p-0 h-auto"
+                          >
+                            {translations.viewMoreDetails}
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -262,12 +272,22 @@ export default function RecreationTab({ zipCode }: RecreationTabProps) {
                       <p className="text-xs text-gray-600">
                         <MapPin className="inline h-3 w-3 mr-1" /> {place.address}
                       </p>
-                      <div className="flex items-center mt-1">
-                        <div className="text-warning font-medium text-xs mr-1">{place.rating}</div>
-                        <Star className="text-warning h-3 w-3" />
-                        <span className="text-xs ml-2">
-                          <Clock className="inline h-3 w-3 mr-1" /> {place.hours}
-                        </span>
+                      <div className="flex items-center justify-between mt-1">
+                        <div className="flex items-center">
+                          <div className="text-warning font-medium text-xs mr-1">{place.rating}</div>
+                          <Star className="text-warning h-3 w-3" />
+                          <span className="text-xs ml-2">
+                            <Clock className="inline h-3 w-3 mr-1" /> {place.hours}
+                          </span>
+                        </div>
+                        <ShareButtons 
+                          url={window.location.href} 
+                          title={`${place.name} - ${translations.recreationPlaces}`} 
+                          description={place.description}
+                          hashtags={["recreation", ...place.tags]}
+                          small={true}
+                          showText={false}
+                        />
                       </div>
                     </div>
                   </div>
