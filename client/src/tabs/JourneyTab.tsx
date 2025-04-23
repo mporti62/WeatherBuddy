@@ -639,41 +639,41 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
                 >
                   {currentLocation.type === 'recreation' && (
                     <>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Actividad al aire libre</Badge>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Naturaleza</Badge>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Para toda la familia</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Actividad al aire libre</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Naturaleza</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Para toda la familia</Badge>
                     </>
                   )}
                   
                   {currentLocation.type === 'entertainment' && (
                     <>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Diversión</Badge>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Ocio</Badge>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Cultural</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Diversión</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Ocio</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Cultural</Badge>
                     </>
                   )}
                   
                   {currentLocation.type === 'restaurant' && (
                     <>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Gastronomía</Badge>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Servicio local</Badge>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Experiencia culinaria</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Gastronomía</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Servicio local</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Experiencia culinaria</Badge>
                     </>
                   )}
                   
                   {currentLocation.type === 'event' && (
                     <>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Evento especial</Badge>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Comunidad</Badge>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Único</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Evento especial</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Comunidad</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Único</Badge>
                     </>
                   )}
                   
                   {currentLocation.type === 'bank' && (
                     <>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Servicios financieros</Badge>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Práctico</Badge>
-                      <Badge variant="outline" className="bg-[#333] text-white border-gray-500">Esencial</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Servicios financieros</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Práctico</Badge>
+                      <Badge variant="outline" className="bg-accent bg-opacity-10 text-white border-gray-500 font-medium">Esencial</Badge>
                     </>
                   )}
                 </motion.div>
@@ -814,22 +814,22 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.3, duration: 0.5 }}
               >
-                <div className="bg-[#333] p-4 rounded-lg border border-[#444]">
+                <div className="bg-accent bg-opacity-10 p-4 rounded-lg border border-[#444]">
                   <Clock className="h-8 w-8 text-blue-400 mb-2 mx-auto" />
-                  <div className="text-sm text-gray-400">{language === "es" ? "Tiempo total" : "Total time"}</div>
-                  <div className="text-xl font-bold">{Math.round(currentJourney.totalDuration / 60)} {language === "es" ? "horas" : "hours"}</div>
+                  <div className="text-sm text-gray-300">{language === "es" ? "Tiempo total" : "Total time"}</div>
+                  <div className="text-xl font-bold text-white">{Math.round(currentJourney.totalDuration / 60)} {language === "es" ? "horas" : "hours"}</div>
                 </div>
                 
-                <div className="bg-[#333] p-4 rounded-lg border border-[#444]">
+                <div className="bg-accent bg-opacity-10 p-4 rounded-lg border border-[#444]">
                   <MapPin className="h-8 w-8 text-purple-400 mb-2 mx-auto" />
-                  <div className="text-sm text-gray-400">{language === "es" ? "Destinos" : "Destinations"}</div>
-                  <div className="text-xl font-bold">{currentJourney.locations.length}</div>
+                  <div className="text-sm text-gray-300">{language === "es" ? "Destinos" : "Destinations"}</div>
+                  <div className="text-xl font-bold text-white">{currentJourney.locations.length}</div>
                 </div>
                 
-                <div className="bg-[#333] p-4 rounded-lg border border-[#444]">
+                <div className="bg-accent bg-opacity-10 p-4 rounded-lg border border-[#444]">
                   <Heart className="h-8 w-8 text-red-400 mb-2 mx-auto" />
-                  <div className="text-sm text-gray-400">{language === "es" ? "Experiencias" : "Experiences"}</div>
-                  <div className="text-xl font-bold">{language === "es" ? "Memorables" : "Memorable"}</div>
+                  <div className="text-sm text-gray-300">{language === "es" ? "Experiencias" : "Experiences"}</div>
+                  <div className="text-xl font-bold text-white">{language === "es" ? "Memorables" : "Memorable"}</div>
                 </div>
               </motion.div>
               
