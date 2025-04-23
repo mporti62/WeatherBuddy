@@ -54,7 +54,25 @@ import { queryClient } from "@/lib/queryClient";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { MeetingPoint } from "@shared/schema";
+// Importamos los tipos desde la interfaz en lugar del schema de la base de datos
+// para evitar problemas de compatibilidad
+interface MeetingPoint {
+  id: number;
+  name: string;
+  description: string;
+  zipCode: string;
+  latitude: number;
+  longitude: number;
+  address: string;
+  date: Date | null;
+  time: string | null;
+  createdBy: number;
+  createdAt: Date;
+  status: string;
+  maxParticipants: number | null;
+  category: string;
+  contactInfo: string;
+}
 
 interface MeetingPointsTabProps {
   zipCode: string;
@@ -137,7 +155,16 @@ const meetingPointFormSchema = z.object({
   }),
 });
 
-type MeetingPointFormValues = z.infer<typeof meetingPointFormSchema>;
+type MeetingPointFormValues = {
+  name: string;
+  description: string;
+  address: string;
+  date?: string;
+  time?: string;
+  maxParticipants?: string;
+  category: string;
+  contactInfo: string;
+};
 
 export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
   const { language } = useLanguage();
@@ -242,12 +269,12 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
         latitude: 26.1824,
         longitude: -80.3432,
         address: values.address,
-        date: values.date ? new Date(values.date) : undefined,
-        time: values.time || undefined,
+        date: values.date ? new Date(values.date) : null,
+        time: values.time || null,
         createdBy: 1, // Usuario actual
         createdAt: new Date(),
         status: "active",
-        maxParticipants: values.maxParticipants ? parseInt(values.maxParticipants) : undefined,
+        maxParticipants: values.maxParticipants ? Number(values.maxParticipants) : null,
         category: values.category,
         contactInfo: values.contactInfo,
       };
@@ -405,7 +432,7 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
   );
 
   // Formato para la fecha
-  const formatDate = (date?: Date) => {
+  const formatDate = (date: Date | null) => {
     if (!date) return "";
     return new Intl.DateTimeFormat(language === 'es' ? 'es-ES' : 'en-US', {
       year: 'numeric',
