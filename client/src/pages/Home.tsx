@@ -10,6 +10,7 @@ import BanksTab from "@/tabs/BanksTab";
 import EntertainmentTab from "@/tabs/EntertainmentTab";
 import RestaurantsTab from "@/tabs/RestaurantsTab";
 import JourneyTab from "@/tabs/JourneyTab";
+import MeetingPointsTab from "@/tabs/MeetingPointsTab";
 import { useQuery } from "@tanstack/react-query";
 import { getLocationByZip } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
@@ -128,6 +129,7 @@ export default function Home() {
             {activeTab === "banks" && <BanksTab zipCode={zipCode} />}
             {activeTab === "entertainment" && <EntertainmentTab zipCode={zipCode} />}
             {activeTab === "journey" && <JourneyTab zipCode={zipCode} />}
+            {activeTab === "meeting-points" && <MeetingPointsTab zipCode={zipCode} />}
           </div>
         </main>
       )}

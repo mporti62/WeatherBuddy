@@ -7,6 +7,7 @@ import {
   Film,
   Map,
   Utensils,
+  Users,
 } from "lucide-react";
 
 interface CategoryTabsProps {
@@ -53,6 +54,11 @@ export default function CategoryTabs({ activeTab, onTabChange, hasValidZipCode =
       id: "journey",
       icon: <Map className="text-indigo-400" />,
       label: language === 'es' ? "Viajes" : "Journeys",
+    },
+    {
+      id: "meeting-points",
+      icon: <Users className="text-teal-400" />,
+      label: language === 'es' ? "Puntos de Encuentro" : "Meeting Points",
     },
   ];
 
