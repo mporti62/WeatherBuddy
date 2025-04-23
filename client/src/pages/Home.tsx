@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getLocationByZip } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/useLanguage";
+import { Location } from "@/types";
 
 export default function Home() {
   const [zipCode, setZipCode] = useState<string>("");
@@ -22,7 +23,7 @@ export default function Home() {
   const { toast } = useToast();
   const { language } = useLanguage();
 
-  const { data: location, refetch, isError } = useQuery({
+  const { data: location, refetch, isError } = useQuery<Location>({
     queryKey: [`/api/location/${zipCode}`],
     enabled: zipCode.length === 5,
   });
@@ -111,7 +112,7 @@ export default function Home() {
         <InitialState onUseLocation={handleUseLocation} />
       ) : (
         <main className="container mx-auto px-4 py-6 flex-grow">
-          {location && (
+          {location && 'city' in location && 'state' in location && (
             <LocationInfo 
               locationName={location.city + ", " + location.state} 
               zipCode={zipCode} 

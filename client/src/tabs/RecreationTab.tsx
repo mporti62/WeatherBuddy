@@ -114,7 +114,7 @@ export default function RecreationTab({ zipCode }: RecreationTabProps) {
             variant={filter === "sports" ? "default" : "ghost"}
             size="sm"
             onClick={() => setFilter("sports")}
-            className={filter === "sports" ? "bg-accent bg-opacity-20 text-accent" : "hover:bg-accent hover:bg-opacity-20 hover:text-accent"}
+            className={filter === "sports" ? "bg-accent bg-opacity-20 text-white font-medium" : "hover:bg-accent hover:bg-opacity-20 hover:text-white"}
           >
             {translations.sports}
           </Button>
@@ -122,7 +122,7 @@ export default function RecreationTab({ zipCode }: RecreationTabProps) {
             variant={filter === "outdoor" ? "default" : "ghost"}
             size="sm"
             onClick={() => setFilter("outdoor")}
-            className={filter === "outdoor" ? "bg-accent bg-opacity-20 text-accent" : "hover:bg-accent hover:bg-opacity-20 hover:text-accent"}
+            className={filter === "outdoor" ? "bg-accent bg-opacity-20 text-white font-medium" : "hover:bg-accent hover:bg-opacity-20 hover:text-white"}
           >
             {translations.outdoorActivities}
           </Button>
