@@ -302,13 +302,23 @@ export default function RestaurantsTab({ zipCode }: RestaurantsTabProps) {
                             <span className="text-gray-400 text-sm">{restaurant.hours}</span>
                           </div>
                         </div>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="text-gray-400 hover:text-blue-400"
-                        >
-                          <Bookmark className="h-5 w-5" />
-                        </Button>
+                        <div className="flex items-center gap-2">
+                          <ShareButtons 
+                            url={window.location.href} 
+                            title={`${restaurant.name} - ${translations.restaurants}`} 
+                            description={restaurant.description}
+                            hashtags={["restaurant", ...restaurant.cuisine]}
+                            small={true}
+                            showText={false}
+                          />
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="text-gray-400 hover:text-blue-400"
+                          >
+                            <Bookmark className="h-5 w-5" />
+                          </Button>
+                        </div>
                       </div>
                       
                       <p className="text-sm mb-3 text-gray-300">{restaurant.description}</p>

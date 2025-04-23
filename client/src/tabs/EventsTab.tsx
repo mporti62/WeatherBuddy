@@ -21,9 +21,22 @@ import {
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import ShareButtons from "@/components/ShareButtons";
 
 interface EventsTabProps {
   zipCode: string;
+}
+
+interface Event {
+  id: number;
+  name: string;
+  description: string;
+  location: string;
+  day: string;
+  month: string;
+  time: string;
+  categories: string[];
+  imageUrl?: string;
 }
 
 export default function EventsTab({ zipCode }: EventsTabProps) {
@@ -184,10 +197,20 @@ export default function EventsTab({ zipCode }: EventsTabProps) {
                         <MapPin className="inline h-3 w-3 mr-1" /> {event.location}
                       </p>
                     </div>
-                    <div className="text-center hidden md:block">
-                      <div className="text-xl font-bold text-blue-400">{event.day}</div>
-                      <div className="text-sm text-gray-300">{event.month}</div>
-                      <div className="mt-1 text-sm font-medium text-gray-300">{event.time}</div>
+                    <div className="flex items-center gap-2">
+                      <ShareButtons 
+                        url={window.location.href} 
+                        title={`${event.name} - ${translations.eventsNearby}`} 
+                        description={`${event.description} - ${event.day} ${event.month} ${event.time}`}
+                        hashtags={["event", ...event.categories]}
+                        small={true}
+                        showText={false}
+                      />
+                      <div className="text-center hidden md:block">
+                        <div className="text-xl font-bold text-blue-400">{event.day}</div>
+                        <div className="text-sm text-gray-300">{event.month}</div>
+                        <div className="mt-1 text-sm font-medium text-gray-300">{event.time}</div>
+                      </div>
                     </div>
                   </div>
                   <p className="text-sm mb-3 text-gray-300">{event.description}</p>
