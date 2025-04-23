@@ -17,6 +17,7 @@ import {
   Clock
 } from "lucide-react";
 import LocationMap from "@/components/LocationMap";
+import ShareButtons from "@/components/ShareButtons";
 import { RecreationPlace } from "@/types";
 
 interface RecreationTabProps {
