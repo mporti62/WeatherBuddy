@@ -57,3 +57,40 @@ export const insertFavoriteSchema = createInsertSchema(favorites).pick({
 
 export type InsertFavorite = z.infer<typeof insertFavoriteSchema>;
 export type Favorite = typeof favorites.$inferSelect;
+
+// Meeting Points Schema
+export const meetingPoints = pgTable("meeting_points", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description"),
+  zipCode: text("zip_code").notNull(),
+  latitude: doublePrecision("latitude").notNull(),
+  longitude: doublePrecision("longitude").notNull(),
+  address: text("address"),
+  date: timestamp("date"),
+  time: text("time"),
+  createdBy: integer("created_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  status: text("status").default("active").notNull(),
+  maxParticipants: integer("max_participants"),
+  category: text("category"),
+  contactInfo: text("contact_info"),
+});
+
+export const insertMeetingPointSchema = createInsertSchema(meetingPoints).pick({
+  name: true,
+  description: true,
+  zipCode: true,
+  latitude: true,
+  longitude: true,
+  address: true,
+  date: true,
+  time: true,
+  createdBy: true,
+  maxParticipants: true,
+  category: true,
+  contactInfo: true,
+});
+
+export type InsertMeetingPoint = z.infer<typeof insertMeetingPointSchema>;
+export type MeetingPoint = typeof meetingPoints.$inferSelect;
