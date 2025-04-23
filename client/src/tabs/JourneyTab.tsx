@@ -609,11 +609,23 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                <img 
-                  src={currentLocation.imageUrl} 
-                  alt={currentLocation.name}
-                  className="w-full h-48 object-cover rounded-md shadow-lg border border-[#444]" 
-                />
+                <div className="relative">
+                  <img 
+                    src={currentLocation.imageUrl} 
+                    alt={currentLocation.name}
+                    className="w-full h-48 object-cover rounded-md shadow-lg border border-[#444]" 
+                  />
+                  <div className="absolute top-2 right-2">
+                    <ShareButtons 
+                      url={window.location.href} 
+                      title={`${currentLocation.name} - ${currentJourney.name}`} 
+                      description={currentLocation.description}
+                      hashtags={["journey", "travel", currentLocation.type]}
+                      small={true}
+                      showText={false}
+                    />
+                  </div>
+                </div>
               </motion.div>
               
               <div className="md:w-2/3">
@@ -850,10 +862,22 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.5, duration: 0.5 }}
               >
-                <p>{language === "es" 
+                <p className="mb-3">{language === "es" 
                   ? "¡Comparte tus experiencias y recuerdos con amigos y familia!"
                   : "Share your experiences and memories with friends and family!"}
                 </p>
+                <div className="flex justify-center">
+                  <ShareButtons 
+                    url={window.location.href} 
+                    title={`${currentJourney.name} - ${language === 'es' ? 'Aventura completada' : 'Adventure Completed'}`} 
+                    description={`${language === 'es' 
+                      ? `He explorado ${currentJourney.locations.length} lugares increíbles!` 
+                      : `I've explored ${currentJourney.locations.length} amazing places!`}`}
+                    hashtags={["journey", "adventure", "travel"]}
+                    small={false}
+                    showText={true}
+                  />
+                </div>
               </motion.div>
             </motion.div>
           </motion.div>
