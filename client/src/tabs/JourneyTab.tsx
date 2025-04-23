@@ -13,6 +13,7 @@ import {
   Camera, ArrowRight, Check
 } from "lucide-react";
 import { useLanguage } from "@/hooks/useLanguage";
+import ShareButtons from "@/components/ShareButtons";
 
 // Definir interface para JourneyLocation
 interface JourneyLocation {
@@ -308,6 +309,16 @@ export default function JourneyTab({ zipCode }: JourneyTabProps) {
                     <div className="flex items-center">
                       <Clock className="mr-2 h-5 w-5 text-blue-500" />
                       <span>{Math.round(journey.totalDuration / 60)} {language === "es" ? "horas aproximadamente" : "hours approximately"}</span>
+                    </div>
+                    <div className="flex justify-end mt-2">
+                      <ShareButtons 
+                        url={window.location.href} 
+                        title={journey.name} 
+                        description={journey.description}
+                        hashtags={["journey", "travel", "adventure"]}
+                        small={true}
+                        showText={false}
+                      />
                     </div>
                   </div>
                 </CardContent>

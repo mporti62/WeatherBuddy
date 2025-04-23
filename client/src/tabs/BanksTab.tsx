@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import LocationMap from "@/components/LocationMap";
 import { Bank } from "@/types";
+import ShareButtons from "@/components/ShareButtons";
 
 interface BanksTabProps {
   zipCode: string;
@@ -215,8 +216,16 @@ export default function BanksTab({ zipCode }: BanksTabProps) {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
                   <span className="text-gray-600 mr-2">{bank.distance} {language === 'es' ? 'km' : 'mi'}</span>
+                  <ShareButtons 
+                    url={window.location.href} 
+                    title={`${bank.name} - ${translations.banksTitle}`} 
+                    description={`${bank.address} - ${bank.hours} - ${bank.isOpen ? translations.openNow : translations.closed}`}
+                    hashtags={["bank", ...bank.services]}
+                    small={true}
+                    showText={false}
+                  />
                   <Button 
                     variant="link" 
                     className="text-primary p-0 h-auto"
