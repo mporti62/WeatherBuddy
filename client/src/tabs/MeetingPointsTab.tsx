@@ -216,6 +216,63 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
     initialData: [], // Para desarrollo
   });
 
+  // Mock data function
+  const getMockMeetingPoints = (zipCode: string): MeetingPoint[] => {
+    return [
+      {
+        id: 1,
+        name: "Encuentro Social en el Parque",
+        description: "Un encuentro informal para socializar y conocer nueva gente al aire libre",
+        zipCode: zipCode,
+        latitude: 26.1824,
+        longitude: -80.3432,
+        address: "Parque Central, Test City",
+        date: new Date("2025-05-15"),
+        time: "17:00",
+        createdBy: 1,
+        createdAt: new Date(),
+        status: "active",
+        maxParticipants: 20,
+        category: "social",
+        contactInfo: "grupo@social.com"
+      },
+      {
+        id: 2,
+        name: "Torneo de Basketball Amistoso",
+        description: "Torneo para todas las edades y niveles. Trae tu equipo o únete a uno",
+        zipCode: zipCode,
+        latitude: 26.1886,
+        longitude: -80.3656,
+        address: "Complejo Deportivo, Test City",
+        date: new Date("2025-05-20"),
+        time: "10:00",
+        createdBy: 2,
+        createdAt: new Date(),
+        status: "active",
+        maxParticipants: 40,
+        category: "deporte",
+        contactInfo: "deportes@test.com"
+      },
+      {
+        id: 3,
+        name: "Club de Lectura",
+        description: "Discusión mensual sobre libros. Este mes: Cien años de soledad",
+        zipCode: zipCode,
+        latitude: 26.1765,
+        longitude: -80.3532,
+        address: "Biblioteca Municipal, Test City",
+        date: new Date("2025-05-12"),
+        time: "19:00",
+        createdBy: 3,
+        createdAt: new Date(),
+        status: "active",
+        maxParticipants: 15,
+        category: "cultural",
+        contactInfo: "clubdelectura@mail.com"
+      }
+    ];
+  };
+  
   // Efecto para cargar datos mock durante desarrollo
   useEffect(() => {
     if (zipCode && zipCode.length === 5) {
