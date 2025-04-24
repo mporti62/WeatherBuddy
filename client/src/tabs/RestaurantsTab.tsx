@@ -326,7 +326,7 @@ export default function RestaurantsTab({ zipCode }: RestaurantsTabProps) {
                       <div className="mb-3">
                         <div className="flex flex-wrap gap-1">
                           {restaurant.cuisine.map((type, index) => (
-                            <Badge key={index} variant="outline" className="text-xs bg-[#3d3d3d] text-blue-300 border-blue-500">
+                            <Badge key={index} variant="outline" className="text-xs bg-blue-900 bg-opacity-20 text-blue-300 border-blue-500 px-2.5 py-0.5">
                               {type}
                             </Badge>
                           ))}
@@ -337,9 +337,9 @@ export default function RestaurantsTab({ zipCode }: RestaurantsTabProps) {
                         {restaurant.features.map((feature, index) => (
                           <span 
                             key={index} 
-                            className="text-xs flex items-center bg-[#2d2d2d] text-gray-300 px-2 py-1 rounded"
+                            className="text-xs flex items-center bg-[#353535] text-gray-200 px-2 py-1 rounded border border-[#444] inline-block"
                           >
-                            <Utensils className="h-3 w-3 mr-1 text-gray-400" />
+                            <Utensils className="h-3 w-3 mr-1 text-gray-300" />
                             {feature}
                           </span>
                         ))}

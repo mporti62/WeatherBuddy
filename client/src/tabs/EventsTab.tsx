@@ -218,7 +218,7 @@ export default function EventsTab({ zipCode }: EventsTabProps) {
                     {event.categories.map((category, index) => (
                       <span 
                         key={index}
-                        className="text-xs bg-[#3d3d3d] text-blue-300 px-2 py-1 rounded mr-2 mb-1"
+                        className="text-xs bg-blue-900 bg-opacity-20 text-blue-300 px-2.5 py-0.5 rounded-full border border-blue-800 mr-2 mb-1 inline-block"
                       >
                         {category}
                       </span>
