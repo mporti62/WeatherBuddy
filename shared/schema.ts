@@ -94,3 +94,30 @@ export const insertMeetingPointSchema = createInsertSchema(meetingPoints).pick({
 
 export type InsertMeetingPoint = z.infer<typeof insertMeetingPointSchema>;
 export type MeetingPoint = typeof meetingPoints.$inferSelect;
+
+// Ubicaciones en tiempo real Schema
+export const liveLocations = pgTable("live_locations", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id").notNull(), // Identificador único del usuario (puede ser generado)
+  userName: text("user_name").notNull(), // Nombre público del usuario
+  meetingPointId: integer("meeting_point_id").references(() => meetingPoints.id),
+  latitude: doublePrecision("latitude").notNull(),
+  longitude: doublePrecision("longitude").notNull(),
+  lastUpdated: timestamp("last_updated").defaultNow().notNull(),
+  status: text("status").default("active").notNull(), // active, inactive
+  userAvatar: text("user_avatar"), // URL opcional para un avatar
+  device: text("device"), // Información del dispositivo
+});
+
+export const insertLiveLocationSchema = createInsertSchema(liveLocations).pick({
+  userId: true,
+  userName: true,
+  meetingPointId: true,
+  latitude: true,
+  longitude: true,
+  userAvatar: true,
+  device: true,
+});
+
+export type InsertLiveLocation = z.infer<typeof insertLiveLocationSchema>;
+export type LiveLocation = typeof liveLocations.$inferSelect;
