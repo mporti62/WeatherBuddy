@@ -9,8 +9,8 @@ export default function Footer() {
       ? "Información local a tu alcance" 
       : "Local information at your fingertips",
     rights: language === 'es'
-      ? "© 2023 LocaInfo. Todos los derechos reservados."
-      : "© 2023 LocaInfo. All rights reserved.",
+      ? "© 2023 PlanToGoOutBuddy. Todos los derechos reservados."
+      : "© 2023 PlanToGoOutBuddy. All rights reserved.",
     privacy: language === 'es' ? "Privacidad" : "Privacy",
     terms: language === 'es' ? "Términos" : "Terms",
     contact: language === 'es' ? "Contacto" : "Contact"
@@ -23,7 +23,7 @@ export default function Footer() {
           <div className="mb-4 md:mb-0">
             <div className="flex items-center">
               <MapPin className="text-blue-400 mr-2" />
-              <h2 className="text-xl font-bold gradient-text">LocaInfo</h2>
+              <h2 className="text-xl font-bold gradient-text">PlanToGoOutBuddy</h2>
             </div>
             <p className="text-sm text-gray-400 mt-1">{texts.tagline}</p>
           </div>

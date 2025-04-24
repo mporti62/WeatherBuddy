@@ -38,7 +38,7 @@ export default function Header({ onSearch, activeTab, onTabChange, hasValidZipCo
                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-            <h1 className="text-xl font-bold gradient-text">LocaInfo</h1>
+            <h1 className="text-xl font-bold gradient-text">PlanToGoOutBuddy</h1>
             <div className="ml-auto md:hidden">
               <button 
                 className="px-2 py-1 text-sm border border-blue-500 text-blue-400 rounded"
