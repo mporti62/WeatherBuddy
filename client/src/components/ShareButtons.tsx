@@ -55,7 +55,7 @@ export default function ShareButtons({
       </Button>
       
       {showButtons && (
-        <div className={`absolute ${small ? 'bottom-10' : 'bottom-12'} left-0 bg-[#222] border border-[#444] p-2 rounded-lg shadow-lg z-50 flex gap-2`}>
+        <div className={`absolute ${small ? 'bottom-10' : 'bottom-12'} right-0 sm:left-0 sm:right-auto bg-[#222] border border-[#444] p-2 rounded-lg shadow-lg z-50 flex gap-2 flex-wrap justify-center max-w-[180px]`}>
           <WhatsappShareButton url={url} title={title + (description ? ` - ${description}` : '')}>
             <WhatsappIcon size={iconSize} round />
           </WhatsappShareButton>

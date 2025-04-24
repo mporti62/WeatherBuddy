@@ -187,7 +187,7 @@ export default function RecreationTab({ zipCode }: RecreationTabProps) {
                         {place.tags.map((tag, index) => (
                           <span 
                             key={index} 
-                            className="text-xs bg-accent bg-opacity-10 text-white px-2 py-1 rounded mr-2 mb-1 border border-gray-500 font-medium"
+                            className="text-xs bg-[#2d2d2d] text-gray-200 px-2 py-1 rounded mr-2 mb-1 border border-[#444] font-medium inline-block"
                           >
                             {tag}
                           </span>
