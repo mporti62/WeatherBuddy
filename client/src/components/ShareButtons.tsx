@@ -36,7 +36,7 @@ export default function ShareButtons({
   const { language } = useLanguage();
   const [showButtons, setShowButtons] = useState(false);
   
-  const iconSize = small ? 32 : 40;
+  const iconSize = small ? 36 : 44;
   
   const toggleButtons = () => {
     setShowButtons(!showButtons);
@@ -47,25 +47,25 @@ export default function ShareButtons({
       <Button 
         variant="outline" 
         size="sm" 
-        className={`flex items-center justify-center bg-accent bg-opacity-10 border-[#444] text-white ${small ? 'p-1' : 'p-2'}`}
+        className={`flex items-center justify-center ${showButtons ? 'bg-blue-900 bg-opacity-30 border-blue-500 text-blue-300' : 'bg-accent bg-opacity-10 border-[#444] text-white hover:bg-blue-900 hover:bg-opacity-20 hover:border-blue-500 hover:text-blue-400'} transition-colors ${small ? 'p-1.5' : 'p-2'}`}
         onClick={toggleButtons}
       >
         {showButtons ? <X size={18} /> : <Share2 size={18} />}
-        {showText && !small && <span className="ml-2">{language === "es" ? "Compartir" : "Share"}</span>}
+        {showText && !small && <span className="ml-2 font-medium">{language === "es" ? "Compartir" : "Share"}</span>}
       </Button>
       
       {showButtons && (
-        <div className={`absolute ${small ? 'bottom-10' : 'bottom-12'} right-0 sm:left-0 sm:right-auto bg-[#222] border border-[#444] p-2 rounded-lg shadow-lg z-50 flex gap-2 flex-wrap justify-center max-w-[180px]`}>
+        <div className={`fixed sm:absolute ${small ? 'bottom-20 sm:bottom-10' : 'bottom-24 sm:bottom-12'} left-1/2 sm:left-0 -translate-x-1/2 sm:translate-x-0 right-auto bg-[#252525] border border-[#444] p-3 rounded-lg shadow-xl z-50 flex flex-row sm:flex-wrap justify-center sm:justify-start gap-4 w-auto min-w-[240px]`}>
           <WhatsappShareButton url={url} title={title + (description ? ` - ${description}` : '')}>
-            <WhatsappIcon size={iconSize} round />
+            <WhatsappIcon size={iconSize} round className="hover:scale-110 transition-transform" />
           </WhatsappShareButton>
           
           <TwitterShareButton url={url} title={title} hashtags={hashtags}>
-            <TwitterIcon size={iconSize} round />
+            <TwitterIcon size={iconSize} round className="hover:scale-110 transition-transform" />
           </TwitterShareButton>
           
           <TelegramShareButton url={url} title={title + (description ? ` - ${description}` : '')}>
-            <TelegramIcon size={iconSize} round />
+            <TelegramIcon size={iconSize} round className="hover:scale-110 transition-transform" />
           </TelegramShareButton>
         </div>
       )}
