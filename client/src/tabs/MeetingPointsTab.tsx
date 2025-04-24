@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useQuery } from "@tanstack/react-query";
 import { 
@@ -209,13 +209,21 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
     }
   });
 
+  // Estado local para almacenar puntos de encuentro
+  const [localMeetingPoints, setLocalMeetingPoints] = useState<MeetingPoint[]>([]);
+  
   // Obtener puntos de encuentro
-  const { data: meetingPoints, isLoading, refetch } = useQuery<MeetingPoint[]>({
+  const { data: apiMeetingPoints, isLoading, refetch } = useQuery<MeetingPoint[]>({
     queryKey: [`/api/meeting-points/${zipCode}`],
     enabled: zipCode.length === 5,
-    initialData: [], // Para desarrollo
-    staleTime: 0 // Asegurarse de que siempre refresque los datos
+    initialData: [], 
+    staleTime: 0
   });
+
+  // Combinar datos de la API con datos locales
+  const meetingPoints = useMemo(() => {
+    return localMeetingPoints.length > 0 ? localMeetingPoints : apiMeetingPoints || [];
+  }, [localMeetingPoints, apiMeetingPoints]);
 
   // Mock data function
   const getMockMeetingPoints = (zipCode: string): MeetingPoint[] => {
@@ -277,9 +285,8 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
   // Efecto para cargar datos mock durante desarrollo
   useEffect(() => {
     if (zipCode && zipCode.length === 5) {
-      // Simular la carga de datos desde la API
       const mockData = getMockMeetingPoints(zipCode);
-      queryClient.setQueryData([`/api/meeting-points/${zipCode}`], mockData);
+      setLocalMeetingPoints(mockData);
     }
   }, [zipCode]);
 
@@ -333,7 +340,7 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
   };
 
   // Filtrar por categoría
-  const filteredMeetingPoints = meetingPoints?.filter(point => 
+  const filteredMeetingPoints = meetingPoints?.filter((point: MeetingPoint) => 
     category === 'all' || point.category === category
   );
 
@@ -374,19 +381,8 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
 
       console.log("Nuevo punto creado:", newPoint);
       
-      // Obtener la lista actual de puntos
-      const currentPoints = queryClient.getQueryData<MeetingPoint[]>([`/api/meeting-points/${zipCode}`]) || [];
-      console.log("Puntos actuales:", currentPoints);
-      
-      // Actualizar la lista de puntos
-      const updatedPoints = [...currentPoints, newPoint];
-      console.log("Puntos actualizados:", updatedPoints);
-      
-      // Actualizar el cache de TanStack Query
-      queryClient.setQueryData([`/api/meeting-points/${zipCode}`], updatedPoints);
-      
-      // Invalidar la consulta para forzar una actualización
-      queryClient.invalidateQueries({ queryKey: [`/api/meeting-points/${zipCode}`] });
+      // Añadir el nuevo punto al estado local
+      setLocalMeetingPoints(prevPoints => [...prevPoints, newPoint]);
       
       console.log("Punto de encuentro creado y guardado exitosamente");
 
@@ -394,13 +390,14 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
       setOpenCreateDialog(false);
       form.reset();
       
-      // Refrescar los datos después de crear el punto
-      await refetch();
+      // También actualizamos el caché de React Query para mantener la coherencia
+      const currentPoints = queryClient.getQueryData<MeetingPoint[]>([`/api/meeting-points/${zipCode}`]) || [];
+      const updatedPoints = [...currentPoints, newPoint];
+      queryClient.setQueryData([`/api/meeting-points/${zipCode}`], updatedPoints);
       
-      // Comprobar los datos en el caché después de la actualización
+      // Comprobar los datos después de crear
       setTimeout(() => {
-        const updatedData = queryClient.getQueryData<MeetingPoint[]>([`/api/meeting-points/${zipCode}`]);
-        console.log("Datos actualizados después de crear:", updatedData);
+        console.log("Estado local actualizado:", localMeetingPoints);
       }, 500);
       
     } catch (error) {
