@@ -210,10 +210,11 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
   });
 
   // Obtener puntos de encuentro
-  const { data: meetingPoints, isLoading } = useQuery<MeetingPoint[]>({
+  const { data: meetingPoints, isLoading, refetch } = useQuery<MeetingPoint[]>({
     queryKey: [`/api/meeting-points/${zipCode}`],
     enabled: zipCode.length === 5,
     initialData: [], // Para desarrollo
+    staleTime: 0 // Asegurarse de que siempre refresque los datos
   });
 
   // Mock data function
@@ -393,7 +394,10 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
       setOpenCreateDialog(false);
       form.reset();
       
-      // Agregar un pequeño retraso para que se cierre el diálogo antes de actualizar la vista
+      // Refrescar los datos después de crear el punto
+      await refetch();
+      
+      // Comprobar los datos en el caché después de la actualización
       setTimeout(() => {
         const updatedData = queryClient.getQueryData<MeetingPoint[]>([`/api/meeting-points/${zipCode}`]);
         console.log("Datos actualizados después de crear:", updatedData);
@@ -406,9 +410,13 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
 
   // Componente para el formulario de creación
   const CreateMeetingPointForm = () => {
-    const onSubmit = (data: MeetingPointFormValues) => {
+    const onSubmit = async (data: MeetingPointFormValues) => {
       console.log("Datos del formulario:", data);
-      handleCreateMeetingPoint(data);
+      try {
+        await handleCreateMeetingPoint(data);
+      } catch (error) {
+        console.error("Error en onSubmit:", error);
+      }
     };
     
     return (
