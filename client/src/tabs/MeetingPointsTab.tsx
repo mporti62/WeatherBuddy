@@ -45,7 +45,10 @@ import {
   Share2,
   Tag,
   Phone,
-  User
+  User,
+  X,
+  Save,
+  UserPlus
 } from "lucide-react";
 import ShareButtons from "@/components/ShareButtons";
 import LocationMap from "@/components/LocationMap";
