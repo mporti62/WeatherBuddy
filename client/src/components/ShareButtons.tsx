@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
@@ -36,11 +36,30 @@ export default function ShareButtons({
 }: ShareButtonsProps) {
   const { language } = useLanguage();
   const [showButtons, setShowButtons] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   
   // Tamaños responsivos para iconos
   const mobileIconSize = small ? 32 : 40;
   const desktopIconSize = small ? 36 : 44;
-  const iconSize = useIsMobile() ? mobileIconSize : desktopIconSize;
+  const iconSize = isMobile ? mobileIconSize : desktopIconSize;
+  
+  // Cerrar el menú cuando se hace clic fuera de él
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowButtons(false);
+      }
+    }
+    
+    if (showButtons) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showButtons]);
   
   const toggleButtons = () => {
     setShowButtons(!showButtons);
@@ -69,7 +88,10 @@ export default function ShareButtons({
       </Button>
       
       {showButtons && (
-        <div className={`fixed sm:absolute ${small ? 'bottom-20 sm:bottom-10' : 'bottom-24 sm:bottom-12'} left-1/2 sm:left-0 -translate-x-1/2 sm:translate-x-0 right-auto bg-[#252525] border border-[#444] p-3 rounded-lg shadow-xl z-50 flex flex-row sm:flex-wrap justify-center sm:justify-start gap-4 w-auto min-w-[240px]`}>
+        <div 
+          ref={menuRef}
+          className={`fixed sm:absolute ${small ? 'bottom-20 sm:bottom-10' : 'bottom-24 sm:bottom-12'} left-1/2 sm:left-0 -translate-x-1/2 sm:translate-x-0 right-auto bg-[#252525] border border-[#444] p-3 rounded-lg shadow-xl z-50 flex flex-row sm:flex-wrap justify-center sm:justify-start gap-4 w-auto min-w-[240px]`}
+        >
           <WhatsappShareButton url={url} title={title + (description ? ` - ${description}` : '')}>
             <WhatsappIcon size={iconSize} round className="hover:scale-110 transition-transform" />
           </WhatsappShareButton>
