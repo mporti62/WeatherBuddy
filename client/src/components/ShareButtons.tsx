@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   WhatsappShareButton,
   TwitterShareButton,
@@ -36,7 +37,10 @@ export default function ShareButtons({
   const { language } = useLanguage();
   const [showButtons, setShowButtons] = useState(false);
   
-  const iconSize = small ? 36 : 44;
+  // Tamaños responsivos para iconos
+  const mobileIconSize = small ? 32 : 40;
+  const desktopIconSize = small ? 36 : 44;
+  const iconSize = useIsMobile() ? mobileIconSize : desktopIconSize;
   
   const toggleButtons = () => {
     setShowButtons(!showButtons);
@@ -47,11 +51,21 @@ export default function ShareButtons({
       <Button 
         variant="outline" 
         size="sm" 
-        className={`flex items-center justify-center ${showButtons ? 'bg-blue-900 bg-opacity-30 border-blue-500 text-blue-300' : 'bg-accent bg-opacity-10 border-[#444] text-white hover:bg-blue-900 hover:bg-opacity-20 hover:border-blue-500 hover:text-blue-400'} transition-colors ${small ? 'p-1.5' : 'p-2'}`}
+        className={`flex items-center justify-center ${showButtons 
+          ? 'bg-blue-900 bg-opacity-50 border-blue-500 text-blue-300' 
+          : 'bg-accent bg-opacity-10 border-[#444] text-white hover:bg-blue-900 hover:bg-opacity-20 hover:border-blue-500 hover:text-blue-400 animate-pulse-soft'} 
+          shadow-sm hover:shadow-md transition-all duration-300 ${small ? 'p-1.5' : 'p-2'}`}
         onClick={toggleButtons}
       >
-        {showButtons ? <X size={18} /> : <Share2 size={18} />}
-        {showText && !small && <span className="ml-2 font-medium">{language === "es" ? "Compartir" : "Share"}</span>}
+        {showButtons 
+          ? <X size={18} className="text-blue-300" /> 
+          : <Share2 size={18} className="text-blue-400" />
+        }
+        {showText && !small && (
+          <span className="ml-2 font-medium">
+            {language === "es" ? "Compartir" : "Share"}
+          </span>
+        )}
       </Button>
       
       {showButtons && (
