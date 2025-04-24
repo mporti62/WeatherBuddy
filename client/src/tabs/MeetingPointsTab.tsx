@@ -503,7 +503,7 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
           {point.category && (
             <div className="flex items-center">
               <Tag className="h-5 w-5 text-red-400 mr-2" />
-              <span className="text-gray-300">{
+              <span className="bg-red-900 bg-opacity-20 text-red-300 px-2.5 py-0.5 rounded-full border border-red-800 text-sm">{
                 point.category === 'social' ? translations.social :
                 point.category === 'deporte' ? translations.deporte :
                 point.category === 'cultural' ? translations.cultural :
@@ -594,7 +594,7 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
                 className="h-full w-full rounded-none"
               />
               {point.category && (
-                <span className="absolute top-2 left-2 bg-black bg-opacity-60 text-white px-3 py-1 rounded-full text-xs">
+                <span className="absolute top-2 left-2 bg-[#000000] bg-opacity-80 text-white border border-[#444] px-3 py-1 rounded-full text-xs shadow-md">
                   {point.category === 'social' ? translations.social :
                    point.category === 'deporte' ? translations.deporte :
                    point.category === 'cultural' ? translations.cultural :
