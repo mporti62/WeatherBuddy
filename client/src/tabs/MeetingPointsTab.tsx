@@ -66,6 +66,18 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Switch } from "@/components/ui/switch";
 // Importamos los tipos desde la interfaz en lugar del schema de la base de datos
 // para evitar problemas de compatibilidad
+interface Participant {
+  id: number;
+  name: string;
+  avatar?: string;
+  joinedAt: Date;
+  status: "active" | "inactive";
+  sharingLocation?: boolean;
+  latitude?: number;
+  longitude?: number;
+  lastLocationUpdate?: Date;
+}
+
 interface MeetingPoint {
   id: number;
   name: string;
@@ -82,6 +94,7 @@ interface MeetingPoint {
   maxParticipants: number | null;
   category: string;
   contactInfo: string;
+  participants?: Participant[]; // Lista de participantes
 }
 
 interface MeetingPointsTabProps {
@@ -243,7 +256,34 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
         status: "active",
         maxParticipants: 20,
         category: "social",
-        contactInfo: "grupo@social.com"
+        contactInfo: "grupo@social.com",
+        participants: [
+          {
+            id: 101,
+            name: "María García",
+            avatar: "https://ui-avatars.com/api/?name=Maria+Garcia&background=random",
+            joinedAt: new Date("2025-04-20"),
+            status: "active",
+            sharingLocation: true,
+            latitude: 26.1834,
+            longitude: -80.3422,
+            lastLocationUpdate: new Date()
+          },
+          {
+            id: 102,
+            name: "Carlos Pérez",
+            avatar: "https://ui-avatars.com/api/?name=Carlos+Perez&background=random",
+            joinedAt: new Date("2025-04-22"),
+            status: "active"
+          },
+          {
+            id: 103,
+            name: "Ana Rodríguez",
+            avatar: "https://ui-avatars.com/api/?name=Ana+Rodriguez&background=random",
+            joinedAt: new Date("2025-04-23"),
+            status: "active"
+          }
+        ]
       },
       {
         id: 2,
@@ -260,7 +300,23 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
         status: "active",
         maxParticipants: 40,
         category: "deporte",
-        contactInfo: "deportes@test.com"
+        contactInfo: "deportes@test.com",
+        participants: [
+          {
+            id: 201,
+            name: "Juan Torres",
+            avatar: "https://ui-avatars.com/api/?name=Juan+Torres&background=random",
+            joinedAt: new Date("2025-04-15"),
+            status: "active"
+          },
+          {
+            id: 202,
+            name: "Lucía Martínez",
+            avatar: "https://ui-avatars.com/api/?name=Lucia+Martinez&background=random",
+            joinedAt: new Date("2025-04-18"),
+            status: "active"
+          }
+        ]
       },
       {
         id: 3,
@@ -277,7 +333,41 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
         status: "active",
         maxParticipants: 15,
         category: "cultural",
-        contactInfo: "clubdelectura@mail.com"
+        contactInfo: "clubdelectura@mail.com",
+        participants: [
+          {
+            id: 301,
+            name: "Roberto Gómez",
+            avatar: "https://ui-avatars.com/api/?name=Roberto+Gomez&background=random",
+            joinedAt: new Date("2025-04-10"),
+            status: "active",
+            sharingLocation: true,
+            latitude: 26.1755,
+            longitude: -80.3542,
+            lastLocationUpdate: new Date()
+          },
+          {
+            id: 302,
+            name: "Laura Sánchez",
+            avatar: "https://ui-avatars.com/api/?name=Laura+Sanchez&background=random",
+            joinedAt: new Date("2025-04-12"),
+            status: "active"
+          },
+          {
+            id: 303,
+            name: "Miguel Fernández",
+            avatar: "https://ui-avatars.com/api/?name=Miguel+Fernandez&background=random",
+            joinedAt: new Date("2025-04-13"),
+            status: "active"
+          },
+          {
+            id: 304,
+            name: "Paula Ramírez",
+            avatar: "https://ui-avatars.com/api/?name=Paula+Ramirez&background=random",
+            joinedAt: new Date("2025-04-14"),
+            status: "active"
+          }
+        ]
       }
     ];
   };
@@ -592,7 +682,17 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
         description: point.description || "",
         imageUrl: ""
       },
-      // Ubicaciones en tiempo real de otros participantes
+      // Ubicaciones en tiempo real de los participantes que comparten ubicación
+      ...(point.participants || [])
+        .filter(participant => participant.sharingLocation && participant.latitude && participant.longitude)
+        .map(participant => ({
+          latitude: participant.latitude!,
+          longitude: participant.longitude!,
+          name: participant.name,
+          description: `${translations.otherParticipants}`,
+          imageUrl: participant.avatar || ""
+        })),
+      // Ubicaciones en tiempo real de otros usuarios usando WebSockets
       ...liveLocations.filter(loc => loc.userId !== `user-${Math.floor(Math.random() * 10000)}`).map(loc => ({
         latitude: loc.latitude,
         longitude: loc.longitude,
@@ -693,6 +793,65 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
             </div>
           </div>
           
+          {/* Sección para compartir ubicación en tiempo real */}
+          {/* Lista de participantes */}
+          {point.participants && point.participants.length > 0 && (
+            <div className="mt-6 mb-6 space-y-4 border border-[#333] rounded-lg p-4 bg-[#1a1a1a]">
+              <h4 className="text-lg font-medium text-green-400 flex items-center">
+                <Users className="h-5 w-5 mr-2" />
+                {translations.participants} ({point.participants.length})
+              </h4>
+              
+              <div className="space-y-2">
+                {point.participants.map((participant) => (
+                  <div key={participant.id} className="flex items-center justify-between bg-[#252525] p-2 rounded-md">
+                    <div className="flex items-center">
+                      <div className="relative">
+                        <div className="h-8 w-8 rounded-full overflow-hidden bg-gray-700">
+                          {participant.avatar ? (
+                            <img src={participant.avatar} alt={participant.name} className="h-full w-full object-cover" />
+                          ) : (
+                            <div className="h-full w-full flex items-center justify-center text-white font-medium">
+                              {participant.name.charAt(0)}
+                            </div>
+                          )}
+                        </div>
+                        {participant.sharingLocation && (
+                          <div className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full bg-green-500 border-2 border-[#252525]"></div>
+                        )}
+                      </div>
+                      <div className="ml-2">
+                        <div className="text-sm font-medium text-white">{participant.name}</div>
+                        <div className="text-xs text-gray-400">
+                          {new Intl.DateTimeFormat(language === 'es' ? 'es-ES' : 'en-US', {
+                            month: 'short',
+                            day: 'numeric'
+                          }).format(new Date(participant.joinedAt))}
+                          {participant.sharingLocation && participant.lastLocationUpdate && (
+                            <span className="ml-1">• {translations.locationSharing}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Badge 
+                      className={`
+                        text-xs px-2 py-0 h-5
+                        ${participant.status === 'active' ? 'bg-green-900 text-green-300' : 'bg-gray-800 text-gray-300'}
+                      `}
+                    >
+                      {participant.status === 'active' ? (
+                        language === 'es' ? 'Activo' : 'Active'
+                      ) : (
+                        language === 'es' ? 'Inactivo' : 'Inactive'
+                      )}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Sección para compartir ubicación en tiempo real */}
           <div className="mt-6 mb-6 space-y-4 border border-[#333] rounded-lg p-4 bg-[#1a1a1a]">
             <div className="flex justify-between items-center">
