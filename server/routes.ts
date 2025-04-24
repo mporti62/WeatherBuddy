@@ -3,10 +3,14 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import express, { Express, Request, Response, NextFunction } from "express";
 import { createServer, Server } from "http";
+import { WebSocketServer, WebSocket } from 'ws';
 import cors from "cors";
 import NodeCache from "node-cache";
 import axios from "axios";
 import { log, serveStatic } from "./vite";
+import { db } from "./db";
+import { eq, and } from "drizzle-orm";
+import { liveLocations, meetingPoints } from "../shared/schema";
 
 // ESM no tiene __dirname, así que creamos nuestra propia versión
 const __filename = fileURLToPath(import.meta.url);
@@ -66,6 +70,58 @@ function getImageByCategory(category: string, index: number = 0): string {
   
   // Devolver una imagen según el índice (con wrap-around)
   return images[index % images.length];
+}
+
+// Tipos de mensajes WebSocket
+interface LiveLocationMessage {
+  type: 'updateLocation';
+  data: {
+    userId: string;
+    userName: string;
+    meetingPointId: number;
+    latitude: number;
+    longitude: number;
+    userAvatar?: string;
+    device?: string;
+  };
+}
+
+// Estructura para almacenar las conexiones WebSocket por punto de encuentro
+const meetingPointConnections: { [meetingPointId: number]: Set<WebSocket> } = {};
+
+// Función para enviar datos de ubicación a todas las conexiones de un punto de encuentro
+async function broadcastLocationUpdates(meetingPointId: number) {
+  try {
+    if (!meetingPointConnections[meetingPointId]) return;
+    
+    // Obtener todas las ubicaciones en tiempo real para este punto de encuentro
+    const locations = await db
+      .select()
+      .from(liveLocations)
+      .where(
+        and(
+          eq(liveLocations.meetingPointId, meetingPointId),
+          eq(liveLocations.status, 'active')
+        )
+      );
+    
+    // Solo difundir si hay conexiones activas
+    if (meetingPointConnections[meetingPointId]?.size > 0) {
+      const message = JSON.stringify({
+        type: 'locationUpdates',
+        data: locations
+      });
+      
+      // Enviar a todas las conexiones activas
+      meetingPointConnections[meetingPointId].forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(message);
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error al difundir actualizaciones de ubicación:', error);
+  }
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -1328,6 +1384,224 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Endpoints para ubicación en tiempo real
+  app.post("/api/live-location", async (req, res) => {
+    try {
+      const { userId, userName, meetingPointId, latitude, longitude, userAvatar, device } = req.body;
+      
+      if (!userId || !userName || !meetingPointId || !latitude || !longitude) {
+        return res.status(400).json({ message: "Faltan campos requeridos" });
+      }
+      
+      // Verificar que el punto de encuentro exista
+      const [meetingPoint] = await db.select().from(meetingPoints).where(eq(meetingPoints.id, meetingPointId));
+      
+      if (!meetingPoint) {
+        return res.status(404).json({ message: "Punto de encuentro no encontrado" });
+      }
+      
+      // Buscar si ya existe un registro para este usuario y punto de encuentro
+      const [existingLocation] = await db
+        .select()
+        .from(liveLocations)
+        .where(
+          and(
+            eq(liveLocations.userId, userId),
+            eq(liveLocations.meetingPointId, meetingPointId)
+          )
+        );
+      
+      if (existingLocation) {
+        // Actualizar la ubicación existente
+        await db
+          .update(liveLocations)
+          .set({
+            latitude,
+            longitude,
+            lastUpdated: new Date(),
+            status: 'active',
+            userAvatar,
+            device
+          })
+          .where(eq(liveLocations.id, existingLocation.id));
+          
+        // Difundir la actualización a todos los clientes conectados
+        await broadcastLocationUpdates(meetingPointId);
+          
+        return res.json({ message: "Ubicación actualizada correctamente", id: existingLocation.id });
+      } else {
+        // Crear un nuevo registro de ubicación
+        const [newLocation] = await db
+          .insert(liveLocations)
+          .values({
+            userId,
+            userName,
+            meetingPointId,
+            latitude,
+            longitude,
+            userAvatar,
+            device,
+            status: 'active'
+          })
+          .returning();
+          
+        // Difundir la actualización a todos los clientes conectados
+        await broadcastLocationUpdates(meetingPointId);
+          
+        return res.json({ message: "Ubicación registrada correctamente", id: newLocation.id });
+      }
+    } catch (error) {
+      console.error("Error al actualizar la ubicación en tiempo real:", error);
+      res.status(500).json({ message: "Error al actualizar la ubicación" });
+    }
+  });
+  
+  app.delete("/api/live-location/:userId/:meetingPointId", async (req, res) => {
+    try {
+      const { userId, meetingPointId } = req.params;
+      
+      // Marcar la ubicación como inactiva
+      await db
+        .update(liveLocations)
+        .set({ status: 'inactive' })
+        .where(
+          and(
+            eq(liveLocations.userId, userId),
+            eq(liveLocations.meetingPointId, parseInt(meetingPointId))
+          )
+        );
+        
+      // Difundir la actualización a todos los clientes conectados
+      await broadcastLocationUpdates(parseInt(meetingPointId));
+        
+      res.json({ message: "Ubicación desactivada correctamente" });
+    } catch (error) {
+      console.error("Error al desactivar la ubicación:", error);
+      res.status(500).json({ message: "Error al desactivar la ubicación" });
+    }
+  });
+  
+  app.get("/api/live-location/:meetingPointId", async (req, res) => {
+    try {
+      const { meetingPointId } = req.params;
+      
+      // Obtener todas las ubicaciones activas para este punto de encuentro
+      const locations = await db
+        .select()
+        .from(liveLocations)
+        .where(
+          and(
+            eq(liveLocations.meetingPointId, parseInt(meetingPointId)),
+            eq(liveLocations.status, 'active')
+          )
+        );
+        
+      res.json(locations);
+    } catch (error) {
+      console.error("Error al obtener las ubicaciones en tiempo real:", error);
+      res.status(500).json({ message: "Error al obtener las ubicaciones" });
+    }
+  });
+  
   const httpServer = createServer(app);
+  
+  // Configurar el servidor WebSocket
+  const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
+  
+  wss.on('connection', (ws, req) => {
+    console.log('Nueva conexión WebSocket');
+    
+    // Extraer el ID del punto de encuentro de la URL
+    const url = new URL(req.url || '', `http://${req.headers.host}`);
+    const meetingPointId = parseInt(url.searchParams.get('meetingPointId') || '0');
+    
+    if (!meetingPointId) {
+      console.error('Conexión sin ID de punto de encuentro');
+      ws.close();
+      return;
+    }
+    
+    // Añadir esta conexión al conjunto para este punto de encuentro
+    if (!meetingPointConnections[meetingPointId]) {
+      meetingPointConnections[meetingPointId] = new Set();
+    }
+    meetingPointConnections[meetingPointId].add(ws);
+    
+    // Enviar inmediatamente las ubicaciones actuales
+    broadcastLocationUpdates(meetingPointId);
+    
+    // Manejar los mensajes entrantes
+    ws.on('message', async (message) => {
+      try {
+        const data = JSON.parse(message.toString()) as LiveLocationMessage;
+        
+        if (data.type === 'updateLocation') {
+          // Procesar la actualización de ubicación
+          const locationData = data.data;
+          
+          // Actualizar en la base de datos
+          const [existingLocation] = await db
+            .select()
+            .from(liveLocations)
+            .where(
+              and(
+                eq(liveLocations.userId, locationData.userId),
+                eq(liveLocations.meetingPointId, locationData.meetingPointId)
+              )
+            );
+          
+          if (existingLocation) {
+            // Actualizar la ubicación existente
+            await db
+              .update(liveLocations)
+              .set({
+                latitude: locationData.latitude,
+                longitude: locationData.longitude,
+                lastUpdated: new Date(),
+                status: 'active',
+                userAvatar: locationData.userAvatar,
+                device: locationData.device
+              })
+              .where(eq(liveLocations.id, existingLocation.id));
+          } else {
+            // Crear un nuevo registro de ubicación
+            await db
+              .insert(liveLocations)
+              .values({
+                userId: locationData.userId,
+                userName: locationData.userName,
+                meetingPointId: locationData.meetingPointId,
+                latitude: locationData.latitude,
+                longitude: locationData.longitude,
+                userAvatar: locationData.userAvatar,
+                device: locationData.device,
+                status: 'active'
+              });
+          }
+          
+          // Difundir la actualización a todos los clientes conectados
+          await broadcastLocationUpdates(locationData.meetingPointId);
+        }
+      } catch (error) {
+        console.error('Error procesando mensaje WebSocket:', error);
+      }
+    });
+    
+    // Manejar desconexiones
+    ws.on('close', () => {
+      console.log('Conexión WebSocket cerrada');
+      
+      // Eliminar esta conexión del conjunto
+      if (meetingPointConnections[meetingPointId]) {
+        meetingPointConnections[meetingPointId].delete(ws);
+        
+        // Eliminar el conjunto si está vacío
+        if (meetingPointConnections[meetingPointId].size === 0) {
+          delete meetingPointConnections[meetingPointId];
+        }
+      }
+    });
+  });
+  
   return httpServer;
 }
