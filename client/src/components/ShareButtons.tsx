@@ -5,6 +5,8 @@ import {
   WhatsappShareButton,
   TwitterShareButton,
   TelegramShareButton,
+  FacebookShareButton,
+  FacebookIcon,
   WhatsappIcon,
   TwitterIcon,
   TelegramIcon
@@ -12,8 +14,12 @@ import {
 import { Button } from './ui/button';
 import { 
   Share2,
-  X 
+  X,
+  MapPin,
+  Radio
 } from 'lucide-react';
+import { LiveLocation } from '@/hooks/useLiveLocation';
+import { Badge } from './ui/badge';
 
 interface ShareButtonsProps {
   url: string;
@@ -23,6 +29,12 @@ interface ShareButtonsProps {
   className?: string;
   small?: boolean;
   showText?: boolean;
+  location?: {
+    latitude: number;
+    longitude: number;
+    name?: string;
+  };
+  liveLocations?: LiveLocation[];
 }
 
 export default function ShareButtons({ 
@@ -32,7 +44,9 @@ export default function ShareButtons({
   hashtags = [], 
   className = "",
   small = false,
-  showText = true
+  showText = true,
+  location,
+  liveLocations = []
 }: ShareButtonsProps) {
   const { language } = useLanguage();
   const [showButtons, setShowButtons] = useState(false);
@@ -65,6 +79,33 @@ export default function ShareButtons({
     setShowButtons(!showButtons);
   };
   
+  // Preparar la información de ubicación para compartir
+  const getLocationInfo = () => {
+    let locationText = "";
+    let locationUrl = "";
+    
+    if (location) {
+      const locationName = location.name ? ` (${location.name})` : '';
+      locationText = `\n📍 ${language === 'es' ? 'Ubicación' : 'Location'}${locationName}: `;
+      locationUrl = `\nhttps://maps.google.com/?q=${location.latitude},${location.longitude}`;
+    }
+    
+    // Añadir información sobre usuarios en tiempo real si está disponible
+    if (liveLocations.length > 0) {
+      locationText += `\n🔴 ${liveLocations.length} ${language === 'es' 
+        ? 'persona(s) compartiendo ubicación en tiempo real'
+        : 'person(s) sharing real-time location'}`;
+    }
+    
+    return { locationText, locationUrl };
+  };
+  
+  const { locationText, locationUrl } = getLocationInfo();
+  
+  // Construir el mensaje completo para compartir
+  const fullMessage = `${title}${description ? ` - ${description}` : ''}${locationText}${locationUrl}`;
+  const fullUrl = location ? `${url}?lat=${location.latitude}&lng=${location.longitude}` : url;
+  
   return (
     <div className={`relative ${className}`}>
       <Button 
@@ -90,19 +131,50 @@ export default function ShareButtons({
       {showButtons && (
         <div 
           ref={menuRef}
-          className={`fixed sm:absolute ${small ? 'bottom-20 sm:bottom-10' : 'bottom-24 sm:bottom-12'} left-1/2 sm:left-0 -translate-x-1/2 sm:translate-x-0 right-auto bg-[#252525] border border-[#444] p-3 rounded-lg shadow-xl z-50 flex flex-row sm:flex-wrap justify-center sm:justify-start gap-4 w-auto min-w-[240px]`}
+          className={`fixed sm:absolute ${small ? 'bottom-20 sm:bottom-10' : 'bottom-24 sm:bottom-12'} left-1/2 sm:left-0 -translate-x-1/2 sm:translate-x-0 right-auto bg-[#252525] border border-[#444] p-3 rounded-lg shadow-xl z-50 flex flex-col sm:flex-wrap gap-4 w-auto min-w-[240px]`}
         >
-          <WhatsappShareButton url={url} title={title + (description ? ` - ${description}` : '')}>
-            <WhatsappIcon size={iconSize} round className="hover:scale-110 transition-transform" />
-          </WhatsappShareButton>
+          {/* Mostrar información de ubicación si está disponible */}
+          {location && (
+            <div className="flex items-center gap-2 px-2 py-1 bg-blue-900 bg-opacity-20 rounded-md border border-blue-800">
+              <MapPin size={16} className="text-blue-400" />
+              <span className="text-blue-300 text-sm">{language === 'es' ? 'Ubicación incluida' : 'Location included'}</span>
+            </div>
+          )}
           
-          <TwitterShareButton url={url} title={title} hashtags={hashtags}>
-            <TwitterIcon size={iconSize} round className="hover:scale-110 transition-transform" />
-          </TwitterShareButton>
+          {/* Mostrar badge de ubicaciones en tiempo real si hay */}
+          {liveLocations.length > 0 && (
+            <div className="flex items-center justify-between px-2 py-1 bg-green-900 bg-opacity-20 rounded-md border border-green-800">
+              <div className="flex items-center gap-2">
+                <Radio size={16} className="text-green-400 animate-pulse" />
+                <span className="text-green-300 text-sm">
+                  {language === 'es' ? 'Ubicaciones en tiempo real' : 'Live locations'}
+                </span>
+              </div>
+              <Badge className="bg-green-700 text-white text-xs">{liveLocations.length}</Badge>
+            </div>
+          )}
           
-          <TelegramShareButton url={url} title={title + (description ? ` - ${description}` : '')}>
-            <TelegramIcon size={iconSize} round className="hover:scale-110 transition-transform" />
-          </TelegramShareButton>
+          {/* Botones para compartir */}
+          <div className="flex flex-row justify-center gap-4">
+            <WhatsappShareButton url={fullUrl} title={fullMessage}>
+              <WhatsappIcon size={iconSize} round className="hover:scale-110 transition-transform" />
+            </WhatsappShareButton>
+            
+            <TwitterShareButton url={fullUrl} title={title} hashtags={[...hashtags, 'location', 'map']}>
+              <TwitterIcon size={iconSize} round className="hover:scale-110 transition-transform" />
+            </TwitterShareButton>
+            
+            <TelegramShareButton url={fullUrl} title={fullMessage}>
+              <TelegramIcon size={iconSize} round className="hover:scale-110 transition-transform" />
+            </TelegramShareButton>
+            
+            <FacebookShareButton 
+              url={fullUrl}
+              hashtag={hashtags.length > 0 ? `#${hashtags[0]}` : '#location'}
+            >
+              <FacebookIcon size={iconSize} round className="hover:scale-110 transition-transform" />
+            </FacebookShareButton>
+          </div>
         </div>
       )}
     </div>

@@ -533,6 +533,12 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
               hashtags={["meetingPoint", point.category || ""]}
               small={true}
               showText={false}
+              location={{
+                latitude: point.latitude,
+                longitude: point.longitude,
+                name: point.name
+              }}
+              liveLocations={liveLocations}
             />
           </div>
         </div>
@@ -733,7 +739,7 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
         {filteredMeetingPoints.map((point) => (
           <Card key={point.id} className="border-[#333] bg-[#252525] overflow-hidden hover:shadow-lg transition cursor-pointer" onClick={() => setSelectedPoint(point)}>
             <div className="relative h-32 bg-[#1a1a1a]">
-              {/* Aquí iría una imagen del lugar o un mapa miniatua */}
+              {/* Mapa miniatura */}
               <LocationMap 
                 location={{
                   latitude: point.latitude,
@@ -752,6 +758,23 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
                    translations.otros}
                 </span>
               )}
+              
+              {/* Botón para compartir */}
+              <div className="absolute top-2 right-2" onClick={(e) => e.stopPropagation()}>
+                <ShareButtons 
+                  url={`${window.location.origin}${window.location.pathname}?punto=${point.id}`} 
+                  title={point.name} 
+                  description={point.description || ""}
+                  hashtags={["meetingPoint", point.category || ""]}
+                  small={true}
+                  showText={false}
+                  location={{
+                    latitude: point.latitude,
+                    longitude: point.longitude,
+                    name: point.name
+                  }}
+                />
+              </div>
             </div>
             <CardContent className="p-4">
               <h3 className="font-medium text-lg mb-1 text-white truncate">{point.name}</h3>
