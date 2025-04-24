@@ -295,13 +295,13 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
   const CreateMeetingPointForm = () => (
     <form onSubmit={form.handleSubmit(handleCreateMeetingPoint)} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="name">
+        <Label htmlFor="name" className="font-medium text-blue-300">
           {translations.name} <span className="text-red-500">*</span>
         </Label>
         <Input
           id="name"
           {...form.register("name")}
-          className="bg-[#252525] border-[#444] text-white"
+          className="bg-[#252525] border-[#444] text-white hover:border-blue-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
         />
         {form.formState.errors.name && (
           <p className="text-sm text-red-500">{form.formState.errors.name.message}</p>
@@ -309,13 +309,13 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">
+        <Label htmlFor="description" className="font-medium text-blue-300">
           {translations.description} <span className="text-red-500">*</span>
         </Label>
         <Textarea
           id="description"
           {...form.register("description")}
-          className="bg-[#252525] border-[#444] text-white"
+          className="bg-[#252525] border-[#444] text-white hover:border-blue-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           rows={3}
         />
         {form.formState.errors.description && (
@@ -324,13 +324,13 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="address">
+        <Label htmlFor="address" className="font-medium text-blue-300">
           {translations.address} <span className="text-red-500">*</span>
         </Label>
         <Input
           id="address"
           {...form.register("address")}
-          className="bg-[#252525] border-[#444] text-white"
+          className="bg-[#252525] border-[#444] text-white hover:border-blue-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
         />
         {form.formState.errors.address && (
           <p className="text-sm text-red-500">{form.formState.errors.address.message}</p>
@@ -339,26 +339,26 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="date">
+          <Label htmlFor="date" className="text-purple-300 font-medium">
             {translations.date} <span className="text-gray-400 text-xs">({translations.optional})</span>
           </Label>
           <Input
             id="date"
             type="date"
             {...form.register("date")}
-            className="bg-[#252525] border-[#444] text-white"
+            className="bg-[#252525] border-[#444] text-white hover:border-purple-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="time">
+          <Label htmlFor="time" className="text-yellow-300 font-medium">
             {translations.time} <span className="text-gray-400 text-xs">({translations.optional})</span>
           </Label>
           <Input
             id="time"
             type="time"
             {...form.register("time")}
-            className="bg-[#252525] border-[#444] text-white"
+            className="bg-[#252525] border-[#444] text-white hover:border-yellow-500 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500"
           />
         </div>
       </div>
@@ -372,40 +372,40 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
             onValueChange={(value) => form.setValue("category", value)} 
             defaultValue={form.getValues("category")}
           >
-            <SelectTrigger className="bg-[#252525] border-[#444] text-white">
+            <SelectTrigger className="bg-[#252525] border-[#444] text-white hover:border-blue-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
               <SelectValue placeholder={translations.category} />
             </SelectTrigger>
             <SelectContent className="bg-[#252525] border-[#444] text-white">
-              <SelectItem value="social">{translations.social}</SelectItem>
-              <SelectItem value="deporte">{translations.deporte}</SelectItem>
-              <SelectItem value="cultural">{translations.cultural}</SelectItem>
-              <SelectItem value="educativo">{translations.educativo}</SelectItem>
-              <SelectItem value="otros">{translations.otros}</SelectItem>
+              <SelectItem value="social" className="focus:bg-blue-900 focus:bg-opacity-20 focus:text-blue-300">{translations.social}</SelectItem>
+              <SelectItem value="deporte" className="focus:bg-green-900 focus:bg-opacity-20 focus:text-green-300">{translations.deporte}</SelectItem>
+              <SelectItem value="cultural" className="focus:bg-purple-900 focus:bg-opacity-20 focus:text-purple-300">{translations.cultural}</SelectItem>
+              <SelectItem value="educativo" className="focus:bg-yellow-900 focus:bg-opacity-20 focus:text-yellow-300">{translations.educativo}</SelectItem>
+              <SelectItem value="otros" className="focus:bg-gray-900 focus:bg-opacity-20 focus:text-gray-300">{translations.otros}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="maxParticipants">
+          <Label htmlFor="maxParticipants" className="text-green-300 font-medium">
             {translations.maxParticipants} <span className="text-gray-400 text-xs">({translations.optional})</span>
           </Label>
           <Input
             id="maxParticipants"
             type="number"
             {...form.register("maxParticipants")}
-            className="bg-[#252525] border-[#444] text-white"
+            className="bg-[#252525] border-[#444] text-white hover:border-green-500 focus:border-green-500 focus:ring-1 focus:ring-green-500"
           />
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="contactInfo">
+        <Label htmlFor="contactInfo" className="text-indigo-300 font-medium">
           {translations.contactInfo} <span className="text-red-500">*</span>
         </Label>
         <Input
           id="contactInfo"
           {...form.register("contactInfo")}
-          className="bg-[#252525] border-[#444] text-white"
+          className="bg-[#252525] border-[#444] text-white hover:border-indigo-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
           placeholder="Email, teléfono o redes sociales"
         />
         {form.formState.errors.contactInfo && (
@@ -417,14 +417,16 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
         <Button 
           variant="outline" 
           onClick={() => setOpenCreateDialog(false)}
-          className="border-[#444] text-gray-300 hover:text-white hover:bg-[#333]"
+          className="border-[#444] text-gray-300 hover:text-white hover:bg-[#333] hover:shadow-md transition-all duration-200"
         >
+          <X className="h-4 w-4 mr-1.5" />
           {translations.cancel}
         </Button>
         <Button 
           type="submit"
-          className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-md hover:shadow-lg transition-all duration-200"
         >
+          <Save className="h-4 w-4 mr-1.5" />
           {translations.save}
         </Button>
       </DialogFooter>
@@ -528,16 +530,17 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
         
         <div className="flex space-x-2 mt-6">
           <Button 
-            className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 flex-1"
+            className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 flex-1 shadow-md hover:shadow-lg transition-all duration-200"
           >
+            <UserPlus className="h-4 w-4 mr-1.5" />
             {translations.join}
           </Button>
           
           <Button 
             variant="outline" 
-            className="border-blue-500 text-blue-400 hover:bg-blue-900 hover:bg-opacity-20"
+            className="border-blue-500 text-blue-400 hover:bg-blue-900 hover:bg-opacity-20 hover:shadow-md transition-all duration-200"
           >
-            <FileEdit className="h-4 w-4 mr-1" />
+            <FileEdit className="h-4 w-4 mr-1.5" />
             {translations.edit}
           </Button>
         </div>
