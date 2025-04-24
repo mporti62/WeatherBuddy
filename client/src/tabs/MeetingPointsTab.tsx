@@ -48,7 +48,10 @@ import {
   User,
   X,
   Save,
-  UserPlus
+  UserPlus,
+  Radio,
+  MapPinOff,
+  AlertCircle
 } from "lucide-react";
 import ShareButtons from "@/components/ShareButtons";
 import LocationMap from "@/components/LocationMap";
@@ -57,6 +60,10 @@ import { queryClient } from "@/lib/queryClient";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useLiveLocation, LiveLocation } from "@/hooks/useLiveLocation";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Switch } from "@/components/ui/switch";
 // Importamos los tipos desde la interfaz en lugar del schema de la base de datos
 // para evitar problemas de compatibilidad
 interface MeetingPoint {
@@ -175,6 +182,17 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
   const [selectedPoint, setSelectedPoint] = useState<MeetingPoint | null>(null);
   const [activeView, setActiveView] = useState<"list" | "map">("list");
   const [category, setCategory] = useState<string>("all");
+  const [userName, setUserName] = useState<string>("Usuario" + Math.floor(Math.random() * 1000));
+  const [sharingLocation, setSharingLocation] = useState<boolean>(false);
+  
+  // Hook para la funcionalidad de ubicación en tiempo real
+  const { 
+    locations: liveLocations, 
+    isSharing, 
+    error: liveLocationError, 
+    shareLocation,
+    stopSharingLocation
+  } = useLiveLocation(selectedPoint?.id || null, `user-${Math.floor(Math.random() * 10000)}`);
 
   // React Hook Form para la creación de puntos de encuentro
   const form = useForm<MeetingPointFormValues>({
@@ -242,6 +260,18 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
     organizer: language === 'es' ? "Organizador" : "Organizer",
     comingSoon: language === 'es' ? "Próximamente" : "Coming soon",
     noMeetingPoints: language === 'es' ? "No hay puntos de encuentro en esta zona. ¡Crea uno!" : "No meeting points in this area. Create one!",
+    // Traducciones para la ubicación en tiempo real
+    shareLocation: language === 'es' ? "Compartir mi ubicación" : "Share my location",
+    stopSharing: language === 'es' ? "Dejar de compartir" : "Stop sharing",
+    liveLocation: language === 'es' ? "Ubicación en tiempo real" : "Live location",
+    userName: language === 'es' ? "Tu nombre" : "Your name",
+    locationSharing: language === 'es' ? "Compartiendo ubicación..." : "Sharing location...",
+    locationError: language === 'es' ? "Error al compartir ubicación" : "Error sharing location", 
+    otherParticipants: language === 'es' ? "Otros participantes" : "Other participants",
+    noParticipants: language === 'es' ? "No hay otros participantes compartiendo su ubicación" : "No other participants sharing their location",
+    youAreHere: language === 'es' ? "Estás aquí" : "You are here",
+    liveLocations: language === 'es' ? "Ubicaciones en tiempo real" : "Live locations",
+    enableLocation: language === 'es' ? "Habilita tu ubicación para unirte" : "Enable your location to join",
   };
 
   // Filtrar por categoría
@@ -446,110 +476,224 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
     }).format(new Date(date));
   };
 
+  // Función para manejar el cambio en compartir ubicación
+  const handleLocationSharingToggle = () => {
+    if (isSharing) {
+      stopSharingLocation();
+    } else {
+      if (selectedPoint) {
+        shareLocation(userName);
+      }
+    }
+  };
+  
   // Componente para los detalles del punto de encuentro
-  const MeetingPointDetails = ({ point }: { point: MeetingPoint }) => (
-    <div className="space-y-4">
-      <div className="relative h-40 overflow-hidden rounded-t-lg">
-        {/* Aquí iría una imagen del lugar o un mapa */}
-        <div className="h-full">
-          <LocationMap 
-            location={{
-              latitude: point.latitude,
-              longitude: point.longitude,
-              name: point.name
-            }}
-            zoom={15}
-            className="h-full w-full rounded-none"
-          />
-        </div>
-        <div className="absolute top-2 right-2">
-          <ShareButtons 
-            url={window.location.href} 
-            title={point.name} 
-            description={point.description || ""}
-            hashtags={["meetingPoint", point.category || ""]}
-            small={true}
-            showText={false}
-          />
-        </div>
-      </div>
-      
-      <div className="px-6 py-4">
-        <h3 className="text-xl font-bold mb-2 text-white">{point.name}</h3>
-        <p className="text-gray-300 mb-4">{point.description}</p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div className="flex items-center">
-            <MapPin className="h-5 w-5 text-blue-400 mr-2" />
-            <span className="text-gray-300">{point.address}</span>
+  const MeetingPointDetails = ({ point }: { point: MeetingPoint }) => {
+    // Lugares para mostrar en el mapa (incluyendo ubicaciones en tiempo real)
+    const mapPlaces = [
+      // El punto de encuentro principal
+      {
+        latitude: point.latitude,
+        longitude: point.longitude,
+        name: point.name,
+        description: point.description || "",
+        imageUrl: ""
+      },
+      // Ubicaciones en tiempo real de otros participantes
+      ...liveLocations.filter(loc => loc.userId !== `user-${Math.floor(Math.random() * 10000)}`).map(loc => ({
+        latitude: loc.latitude,
+        longitude: loc.longitude,
+        name: loc.userName,
+        description: `${translations.otherParticipants}`,
+        imageUrl: loc.userAvatar || ""
+      }))
+    ];
+    
+    return (
+      <div className="space-y-4">
+        <div className="relative h-60 overflow-hidden rounded-t-lg">
+          {/* Mapa con ubicaciones en tiempo real */}
+          <div className="h-full">
+            <LocationMap 
+              location={{
+                latitude: point.latitude,
+                longitude: point.longitude,
+                name: point.name
+              }}
+              places={mapPlaces}
+              zoom={15}
+              className="h-full w-full rounded-none"
+            />
           </div>
-          
-          {point.date && (
-            <div className="flex items-center">
-              <Calendar className="h-5 w-5 text-purple-400 mr-2" />
-              <span className="text-gray-300">{formatDate(new Date(point.date))}</span>
-            </div>
-          )}
-          
-          {point.time && (
-            <div className="flex items-center">
-              <Clock className="h-5 w-5 text-yellow-400 mr-2" />
-              <span className="text-gray-300">{point.time}</span>
-            </div>
-          )}
-          
-          {point.maxParticipants && (
-            <div className="flex items-center">
-              <Users className="h-5 w-5 text-green-400 mr-2" />
-              <span className="text-gray-300">{point.maxParticipants} {translations.participants}</span>
-            </div>
-          )}
-          
-          {point.category && (
-            <div className="flex items-center">
-              <Tag className="h-5 w-5 text-red-400 mr-2" />
-              <span className="bg-red-900 bg-opacity-20 text-red-300 px-2.5 py-0.5 rounded-full border border-red-800 text-sm">{
-                point.category === 'social' ? translations.social :
-                point.category === 'deporte' ? translations.deporte :
-                point.category === 'cultural' ? translations.cultural :
-                point.category === 'educativo' ? translations.educativo :
-                translations.otros
-              }</span>
-            </div>
-          )}
-          
-          {point.contactInfo && (
-            <div className="flex items-center">
-              <Phone className="h-5 w-5 text-indigo-400 mr-2" />
-              <span className="text-gray-300">{point.contactInfo}</span>
-            </div>
-          )}
-          
-          <div className="flex items-center">
-            <User className="h-5 w-5 text-orange-400 mr-2" />
-            <span className="text-gray-300">{translations.organizer} #{point.createdBy}</span>
+          <div className="absolute top-2 right-2">
+            <ShareButtons 
+              url={window.location.href} 
+              title={point.name} 
+              description={point.description || ""}
+              hashtags={["meetingPoint", point.category || ""]}
+              small={true}
+              showText={false}
+            />
           </div>
         </div>
         
-        <div className="flex space-x-2 mt-6">
-          <Button 
-            className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 flex-1 shadow-md hover:shadow-lg transition-all duration-200"
-          >
-            <UserPlus className="h-4 w-4 mr-1.5" />
-            {translations.join}
-          </Button>
+        <div className="px-6 py-4">
+          <h3 className="text-xl font-bold mb-2 text-white">{point.name}</h3>
+          <p className="text-gray-300 mb-4">{point.description}</p>
           
-          <Button 
-            variant="outline" 
-            className="border-blue-500 text-blue-400 hover:bg-blue-900 hover:bg-opacity-20 hover:shadow-md transition-all duration-200"
-          >
-            <FileEdit className="h-4 w-4 mr-1.5" />
-            {translations.edit}
-          </Button>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div className="flex items-center">
+              <MapPin className="h-5 w-5 text-blue-400 mr-2" />
+              <span className="text-gray-300">{point.address}</span>
+            </div>
+            
+            {point.date && (
+              <div className="flex items-center">
+                <Calendar className="h-5 w-5 text-purple-400 mr-2" />
+                <span className="text-gray-300">{formatDate(new Date(point.date))}</span>
+              </div>
+            )}
+            
+            {point.time && (
+              <div className="flex items-center">
+                <Clock className="h-5 w-5 text-yellow-400 mr-2" />
+                <span className="text-gray-300">{point.time}</span>
+              </div>
+            )}
+            
+            {point.maxParticipants && (
+              <div className="flex items-center">
+                <Users className="h-5 w-5 text-green-400 mr-2" />
+                <span className="text-gray-300">{point.maxParticipants} {translations.participants}</span>
+              </div>
+            )}
+            
+            {point.category && (
+              <div className="flex items-center">
+                <Tag className="h-5 w-5 text-red-400 mr-2" />
+                <span className="bg-red-900 bg-opacity-20 text-red-300 px-2.5 py-0.5 rounded-full border border-red-800 text-sm">{
+                  point.category === 'social' ? translations.social :
+                  point.category === 'deporte' ? translations.deporte :
+                  point.category === 'cultural' ? translations.cultural :
+                  point.category === 'educativo' ? translations.educativo :
+                  translations.otros
+                }</span>
+              </div>
+            )}
+            
+            {point.contactInfo && (
+              <div className="flex items-center">
+                <Phone className="h-5 w-5 text-indigo-400 mr-2" />
+                <span className="text-gray-300">{point.contactInfo}</span>
+              </div>
+            )}
+            
+            <div className="flex items-center">
+              <User className="h-5 w-5 text-orange-400 mr-2" />
+              <span className="text-gray-300">{translations.organizer} #{point.createdBy}</span>
+            </div>
+          </div>
+          
+          {/* Sección para compartir ubicación en tiempo real */}
+          <div className="mt-6 mb-6 space-y-4 border border-[#333] rounded-lg p-4 bg-[#1a1a1a]">
+            <div className="flex justify-between items-center">
+              <h4 className="text-lg font-medium text-blue-400 flex items-center">
+                <Radio className="h-5 w-5 mr-2" />
+                {translations.liveLocation}
+              </h4>
+              
+              {isSharing && (
+                <Badge className="bg-green-600 text-white animate-pulse">
+                  {translations.locationSharing}
+                </Badge>
+              )}
+            </div>
+            
+            {liveLocationError && (
+              <Alert variant="destructive" className="bg-red-900 bg-opacity-20 border border-red-800">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  {translations.locationError}: {liveLocationError}
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            <div className="flex flex-col space-y-4">
+              <div className="flex flex-col space-y-2">
+                <Label htmlFor="userName" className="text-gray-300">
+                  {translations.userName}
+                </Label>
+                <Input
+                  id="userName"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  className="bg-[#252525] border-[#444] text-white max-w-[300px]"
+                  disabled={isSharing}
+                />
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="location-sharing"
+                  checked={isSharing}
+                  onCheckedChange={handleLocationSharingToggle}
+                  className="data-[state=checked]:bg-green-600"
+                />
+                <Label htmlFor="location-sharing" className="text-gray-300">
+                  {isSharing ? translations.stopSharing : translations.shareLocation}
+                </Label>
+              </div>
+              
+              {/* Lista de participantes que comparten ubicación */}
+              {liveLocations.length > 0 && (
+                <div className="mt-4">
+                  <h5 className="text-md font-medium text-gray-300 mb-2">
+                    {translations.otherParticipants} ({liveLocations.length})
+                  </h5>
+                  <div className="space-y-2">
+                    {liveLocations.map((loc) => (
+                      <div key={loc.id} className="flex items-center justify-between bg-[#252525] p-2 rounded-md">
+                        <div className="flex items-center">
+                          <Radio className="h-4 w-4 text-green-500 mr-2 animate-pulse" />
+                          <span className="text-white">{loc.userName}</span>
+                        </div>
+                        <Badge className="bg-blue-900 bg-opacity-30 text-blue-300 border border-blue-800">
+                          online
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {liveLocations.length === 0 && (
+                <p className="text-gray-400 text-sm italic">
+                  {translations.noParticipants}
+                </p>
+              )}
+            </div>
+          </div>
+          
+          <div className="flex space-x-2 mt-6">
+            <Button 
+              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 flex-1 shadow-md hover:shadow-lg transition-all duration-200"
+            >
+              <UserPlus className="h-4 w-4 mr-1.5" />
+              {translations.join}
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              className="border-blue-500 text-blue-400 hover:bg-blue-900 hover:bg-opacity-20 hover:shadow-md transition-all duration-200"
+            >
+              <FileEdit className="h-4 w-4 mr-1.5" />
+              {translations.edit}
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   // Renderizado de la lista de puntos de encuentro
   const renderMeetingPointsList = () => {
@@ -654,25 +798,52 @@ export default function MeetingPointsTab({ zipCode }: MeetingPointsTabProps) {
 
     // Obtén el primer punto para centrar el mapa (o usa una posición predeterminada)
     const centerLocation = filteredMeetingPoints[0] || { latitude: 26.1224, longitude: -80.3432 };
+    
+    // Crear la lista de lugares para mostrar en el mapa
+    const mapPlaces = [
+      // Puntos de encuentro
+      ...filteredMeetingPoints.map(point => ({
+        latitude: point.latitude,
+        longitude: point.longitude,
+        name: point.name,
+        description: point.description || "",
+        imageUrl: "" // En una implementación real, se podría añadir una imagen
+      })),
+      
+      // Añadir ubicaciones en tiempo real si estamos viendo un punto específico
+      ...(selectedPoint && liveLocations.length > 0 
+        ? liveLocations.map(loc => ({
+            latitude: loc.latitude,
+            longitude: loc.longitude,
+            name: loc.userName,
+            description: translations.liveLocation,
+            imageUrl: loc.userAvatar || ""
+          }))
+        : [])
+    ];
 
     return (
-      <div className="h-[500px] rounded-lg overflow-hidden">
-        <LocationMap 
-          location={{
-            latitude: centerLocation.latitude,
-            longitude: centerLocation.longitude,
-            name: centerLocation.name
-          }}
-          places={filteredMeetingPoints.map(point => ({
-            latitude: point.latitude,
-            longitude: point.longitude,
-            name: point.name,
-            description: point.description || "",
-            imageUrl: "" // En una implementación real, se podría añadir una imagen
-          }))}
-          zoom={13}
-          className="h-full w-full"
-        />
+      <div className="space-y-4">
+        {/* Mostrar mensaje informativo si hay ubicaciones en tiempo real */}
+        {selectedPoint && liveLocations.length > 0 && (
+          <div className="bg-blue-900 bg-opacity-20 border border-blue-800 rounded-md p-3 flex items-center">
+            <Radio className="h-5 w-5 text-blue-400 mr-2 animate-pulse" />
+            <span className="text-blue-300">{translations.liveLocations}: {liveLocations.length}</span>
+          </div>
+        )}
+      
+        <div className="h-[500px] rounded-lg overflow-hidden">
+          <LocationMap 
+            location={{
+              latitude: centerLocation.latitude,
+              longitude: centerLocation.longitude,
+              name: centerLocation.name
+            }}
+            places={mapPlaces}
+            zoom={13}
+            className="h-full w-full"
+          />
+        </div>
       </div>
     );
   };
